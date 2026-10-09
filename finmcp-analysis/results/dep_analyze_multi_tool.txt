@@ -1,0 +1,50 @@
+===== data/benchmark_multi_tool.json: 249 samples
+  selection(upstream,>1 candidates)       2867   52.3%
+  other(const/enum/generated)              984   17.9%
+  from_user_query                          979   17.9%
+  direct_ref(upstream,unique)              625   11.4%
+  bool/flag                                 28    0.5%
+  samples with any upstream dependency: 212 (85%); with selection-type: 167 (67%)
+  candidate set size: median 14 max 1604 p90 41
+  LLM tool-call turns per sample: mean 5.73 median 5 max 18
+  tool calls per sample: mean 7.34 max 18
+  tool response chars: median 1540 mean 8664 p90 19399
+
+## direct_ref(upstream,unique)
+   (0, 'GetStrategyAssetClassAnalysis', 'strategyCode', 'LONG_WIN', ('?', 'assetCode', 1))
+   (0, 'GetCompositeModel', 'assetPlanId', 'AAP000117', ('?', 'assetPlanId', 1))
+   (1, 'StrategySearchByKeyword', 'pageSize', '20', ('?', 'pageSize', 1))
+   (3, 'GetStrategyRiskInfo', 'strategyCode', 'ZH159580', ('?', '策略代码', 1))
+   (4, 'GetCompositeModel', 'assetPlanId', 'AAP000107', ('?', 'assetPlanId', 1))
+   (5, 'SearchFunds', 'page', '0', ('?', 'total', 1))
+
+## other(const/enum/generated)
+   (0, 'GetAssetAllocationPlan', 'expectedInvestTime', 'overFive')
+   (1, 'StrategySearchByKeyword', 'keyword', 'QDII')
+   (1, 'StrategySearchByKeyword', 'pageNum', '1')
+   (1, 'StrategySearchByKeyword', 'pageSize', '20')
+   (1, 'StrategySearchByKeyword', 'keyword', '海外')
+   (1, 'StrategySearchByKeyword', 'pageNum', '1')
+   (1, 'GetStrategyDetails', 'pageNum', '1')
+   (4, 'GetAssetAllocationPlan', 'expectedAnnualizedReturnRate', '0.045')
+   (5, 'SearchFunds', 'page', '0')
+   (5, 'SearchFunds', 'size', '10')
+   (5, 'SearchFunds', 'keyword', '安信稳健增值')
+   (5, 'SearchFunds', 'size', '5')
+   (5, 'SearchManagerViewpoint', 'pageSize', '5')
+   (5, 'SearchFunds', 'keyword', '安信恒鑫增强')
+   (6, 'BatchGetFundTradeRules', 'op', 'redeem')
+
+## selection(upstream,>1 candidates)
+   (1, 'GetStrategyDetails', 'strategyCodes', 'ZH159580', ('?', '策略代码', 17))
+   (1, 'GetStrategyDetails', 'strategyCodes', 'ZH158559', ('?', '策略代码', 17))
+   (1, 'GetStrategyDetails', 'strategyCodes', 'ZH158593', ('?', '策略代码', 17))
+   (3, 'GetStrategyDetails', 'strategyCodes', 'ZH159580', ('?', '策略代码', 17))
+   (5, 'BatchGetFundsDetail', 'fundCodes', '001316', ('?', 'fundCode', 2))
+   (5, 'BatchGetFundsDetail', 'fundCodes', '001338', ('?', 'fundCode', 2))
+   (5, 'BatchGetFundsDetail', 'fundCodes', '015979', ('?', 'code', 2))
+   (5, 'BatchGetFundsDetail', 'fundCodes', '015978', ('?', 'fundCode', 2))
+   (5, 'SearchFunds', 'keyword', '750002', ('?', 'fundCode', 2))
+   (11, 'GetStrategyDetails', 'strategyCodes', 'ZH000095', ('?', '策略代码', 12))
+   (16, 'GetStrategyRiskInfo', 'strategyCode', 'ZH013136', ('?', 'assetCode', 4))
+   (20, 'BatchGetFundsDetail', 'fundCodes', '001698', ('?', 'fundCode', 13))

@@ -1,0 +1,3 @@
+\section{Conclusion}
+\label{sec:conclusion}
+Web agents are slow and expensive because every dependent tool call costs an LLM round, and writing code removes only the mechanical rounds. \jif is a graph-guided tool compiler that removes the semantic ones as well. A split object--operation graph gives the agent typed stubs, gives the compiler data-flow checks, and gives each run-time decision its entity semantics. System-1 primitives let the agent write every decision into the program, and a calibrated model evaluates them under a gate that calls the LLM back only when needed. The agent writes code once, and Jev evaluates its decisions. \todo{one-sentence headline result.}

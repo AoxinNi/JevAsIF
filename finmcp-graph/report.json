@@ -1,0 +1,138 @@
+{
+ "objects": 25,
+ "properties": 260,
+ "relations": 39,
+ "actions": 52,
+ "derived_edges": 466,
+ "observed_edges": 185,
+ "zszq_compile": {
+  "ok": true,
+  "hash": "b496a6ece512277fdea0e9c03a85e103a15e6eae96deb084bfb748fbdb4dffd4",
+  "traceable": [
+   "Account.accountId",
+   "AllocationPlan.assetPlanId",
+   "Announcement.announcementId",
+   "Announcement.announcementType",
+   "Fund.fundCode",
+   "NavPoint.dimensionType",
+   "Strategy.strategyCode"
+  ]
+ },
+ "coverage": {
+  "selection": {
+   "covered": 2730,
+   "total": 2737,
+   "recall": 0.997
+  },
+  "reference": {
+   "covered": 621,
+   "total": 630,
+   "recall": 0.986
+  },
+  "all": {
+   "covered": 3351,
+   "total": 3367,
+   "recall": 0.995
+  },
+  "top_missed": [
+   {
+    "src": "GetStrategyRiskInfo.strategyCode",
+    "dst": "GetFundAnnouncements.fundCodes",
+    "dst_property": "Fund.fundCode",
+    "src_properties": "Strategy.strategyCode",
+    "count": 2
+   },
+   {
+    "src": "MonteCarloSimulate.data[*].windowType",
+    "dst": "MonteCarloSimulate.frequency",
+    "dst_property": "PortfolioAnalysis.simulationFrequency",
+    "src_properties": "—",
+    "count": 2
+   },
+   {
+    "src": "SearchManagerViewpoint.data.list[*].fundCode",
+    "dst": "SearchFunds.keyword",
+    "dst_property": "QueryCondition.keyword",
+    "src_properties": "Fund.fundCode",
+    "count": 1
+   },
+   {
+    "src": "BatchGetFundNavHistory.[*].data.allDimension[*].type",
+    "dst": "GetAssetAllocationPlan.expectedInvestTime",
+    "dst_property": "AllocationPlan.expectedInvestTime",
+    "src_properties": "—",
+    "count": 1
+   },
+   {
+    "src": "BatchGetFundsDetail.[*].data.tradeLimit.largeLimitAmount",
+    "dst": "AnalyzeAssetLiability.annualExpense",
+    "dst_property": "FinancialProfile.annualExpense",
+    "src_properties": "—",
+    "count": 1
+   },
+   {
+    "src": "GetBatchFundPerformance.[*].data.metricsAnalyzes[*].stageType",
+    "dst": "BatchGetFundNavHistory.dimensionType",
+    "dst_property": "NavPoint.dimensionType",
+    "src_properties": "—",
+    "count": 1
+   },
+   {
+    "src": "BatchGetStrategiesComposition.ZH149034.股票基金.持有成分[*].策略代码",
+    "dst": "AnalyzeFundRisk.fundCodes",
+    "dst_property": "Fund.fundCode",
+    "src_properties": "Strategy.strategyCode",
+    "count": 1
+   },
+   {
+    "src": "AnalyzeCashFlow.analysisData[*][*]",
+    "dst": "AnalyzeInvestmentPerformance.totalInvestableAssets",
+    "dst_property": "FinancialProfile.totalInvestableAssets",
+    "src_properties": "—",
+    "count": 1
+   },
+   {
+    "src": "BatchGetFundNavHistory.[*].data.allDimension[*].type",
+    "dst": "BatchGetFundNavHistory.dimensionType",
+    "dst_property": "NavPoint.dimensionType",
+    "src_properties": "—",
+    "count": 1
+   },
+   {
+    "src": "GetBatchFundPerformance.[*].data.metricsAnalyzes[*].stageType",
+    "dst": "GetAssetAllocationPlan.expectedInvestTime",
+    "dst_property": "AllocationPlan.expectedInvestTime",
+    "src_properties": "—",
+    "count": 1
+   },
+   {
+    "src": "BatchGetFundsDetail.[*].fundCode",
+    "dst": "GetLatestProfit.prodCodeList",
+    "dst_property": "Strategy.strategyCode",
+    "src_properties": "Fund.fundCode",
+    "count": 1
+   },
+   {
+    "src": "BatchGetFundsHolding.[*].data.fundInvests[*].code",
+    "dst": "BatchGetFundsHolding.fundCodes",
+    "dst_property": "Fund.fundCode",
+    "src_properties": "—",
+    "count": 1
+   },
+   {
+    "src": "BatchGetFundNavHistory.[*].data.curDimensionType",
+    "dst": "BatchGetFundNavHistory.dimensionType",
+    "dst_property": "NavPoint.dimensionType",
+    "src_properties": "—",
+    "count": 1
+   },
+   {
+    "src": "GetCompositeModel.assetPlanId",
+    "dst": "GetStrategyRiskInfo.strategyCode",
+    "dst_property": "Strategy.strategyCode",
+    "src_properties": "AllocationPlan.assetPlanId",
+    "count": 1
+   }
+  ]
+ }
+}

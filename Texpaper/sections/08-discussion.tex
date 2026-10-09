@@ -1,0 +1,18 @@
+\section{Discussion and Limitations}
+\label{sec:discussion}
+
+\paragraph{What ``accurate'' means here.} Writing the chain once removes the agent's chance to react to each observation. We therefore claim no loss of task success rather than a gain. The gains we expect are specific: fewer invalid calls (static checking), fewer wrong-entity decisions (graph semantics), and no fabricated arguments (provenance). \todo{confirm with Table~\ref{tab:errors}.}
+
+\paragraph{Graph authoring cost.} \jif needs a \sog. The construction procedure automates operation, property, entity and relation induction, but meanings, rules and access annotations still need an expert. The same artifact also serves as documentation, access policy and audit schema. \todo{curation person-hours; quality gap between automatic and curated graphs.}
+
+\paragraph{Confidently wrong decisions.} The gate controls risk only if the probabilities are informative. System-1 models can be confidently misled by near-duplicate names or by text that argues for its own classification~\cite{li2026jevjudge}. Calibration on in-distribution data does not protect against such shifts. \todo{report the hard-case subset separately.}
+
+\paragraph{Program errors.} The gate catches uncertain decisions, not wrong programs. Static checking catches only structural errors. A program with sound structure but wrong logic fails silently until the answer is judged. \todo{error attribution.}
+
+\paragraph{Expressiveness.} \pyif forbids unbounded loops and user-defined functions. Tasks that need open-ended exploration, such as searching until a condition holds, fall back to the agent loop. \todo{share of FinMCP tasks expressible in \pyif.}
+
+\paragraph{Closed models and language.} Jev is proprietary and its documentation reports lower accuracy for CJK languages. We therefore report every result with an open-source backend as well.
+
+\paragraph{Scope.} We target read-mostly information tasks. Writes need idempotent protocols and compensation, which the runtime supports but our evaluation does not cover.
+
+\paragraph{Data and ethics.} FinMCP-Bench is released under CC BY-NC-SA 4.0, and our screened splits inherit this license. No customer data from the deployment is released; deployment scenarios use synthetic records. \todo{GenAI usage disclosure per ACM policy.}

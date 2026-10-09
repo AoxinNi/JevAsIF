@@ -1,0 +1,148 @@
+\section{Evaluation}
+\label{sec:experiments}
+%% Experimental section intentionally left as a skeleton: structure, setup and empty tables only.
+
+We ask four questions.
+\begin{description}
+  \item[RQ1] \emph{Overall.} Is \jif faster and cheaper than ReAct, plan-then-execute compilers and programmatic tool calling, without losing task success? Which error types does it reduce?
+  \item[RQ2] \emph{Graph guidance.} What do the split representation, derived data flow, scoped disclosure, typed stubs and the construction procedure each contribute?
+  \item[RQ3] \emph{System-1 conditionals.} What do in-program primitives, the System-1 backend, graph-based elaboration, batching and the gate each contribute?
+  \item[RQ4] \emph{Interaction and scaling.} On top of programmatic tool calling, are graph guidance and \jif complementary? How do the savings scale with chain length, fan-out and the number of tools?
+\end{description}
+
+\subsection{Data and Task Screening}
+\label{sec:screening}
+\paragraph{FinMCP-Bench.} Our main benchmark is FinMCP-Bench~\cite{zhu2026finmcp}: Chinese wealth-management requests over real MCP tools, with logged tool responses and reference answers. We use the multi-tool split (249 tasks, 51 tools) as the main testbed and the multi-turn split (219) as a secondary one. \todo{tool schema source; replay environment and live-server sanity subset.}
+
+\paragraph{Screening by decision structure.} Compilation methods differ most on tasks that contain semantic decisions, so we screen every task by how its reference trajectory obtains each argument. A value counts as a \emph{decision} if it was chosen among several values of the same upstream field, and as \emph{mechanical} otherwise. Choosing all candidates counts as mechanical. Table~\ref{tab:screening} gives the resulting splits. We report results separately on the \emph{decision} subset and on the \emph{mechanical} control subset. The extracted decisions also serve as the calibration set for the gate (\S\ref{sec:gate}). \todo{manual verification of screening; inter-annotator agreement.}
+
+\begin{table}[t]
+  \caption{Screening of FinMCP-Bench (preliminary, heuristic; \todo{replace with manually verified counts}).}
+  \label{tab:screening}
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{@{}lrr@{}}
+    \toprule
+    & Multi-tool & Multi-turn \\
+    \midrule
+    Tasks & 249 & 219 \\
+    \quad \emph{Decision} subset ($\geq1$ decision) & 149 & 63 \\
+    \quad\quad choose one: tasks / median cand. & 121 / 5 & 35 / 6 \\
+    \quad\quad choose several: tasks / median cand. & 84 / 20 & 33 / 10 \\
+    \quad \emph{Mechanical} subset (control) & \todo{100} & \todo{156} \\
+    Mean LLM rounds per reference trajectory & 5.73 & 5.00 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{Advisory deployment.} An anonymized \sog from the deployment in \S\ref{sec:implementation}, with synthetic customer records. \todo{size: entities, properties, operations; scenario count.}
+
+\paragraph{Scaling suites.} A generator over the advisory \sog varies chain length, candidate-set size, fan-out size and name ambiguity. A distractor generator adds 50--500 unrelated tools. FuncBenchGen~\cite{maekawa2026funcbenchgen} serves as a mechanical-only control.
+
+\paragraph{Baselines.} ReAct with native function calling~\cite{yao2023react}; ReWOO~\cite{xu2023rewoo}; LLMCompiler with re-planning~\cite{kim2024llmcompiler}; programmatic tool calling (PTC), in which the agent writes Python over the raw tool schemas in the same sandbox and returns to the model whenever it needs a judgment~\cite{wang2024codeact,anthropic2025advancedtooluse}. All methods use the same agent and answerer LLM, the same tool schemas and the same environment. \todo{models; temperature; runs per configuration.}
+
+\paragraph{Metrics.} Task success (LLM judge validated against human labels); LLM calls on the critical path; LLM input and output tokens; System-1 tokens; cost at list prices; end-to-end latency (P50/P95); first-pass check rate (programs accepted without repair); decision accuracy; fallback rate. Errors are classified as invalid call, wrong entity, fabricated argument, program logic, decision, or answer.
+
+\subsection{RQ1: Overall Results}
+\label{sec:rq1}
+\begin{table}[t]
+  \caption{Main results on FinMCP-Bench multi-tool, decision subset / mechanical subset. \todo{fill}}
+  \label{tab:main}
+  \small
+  \setlength{\tabcolsep}{3pt}
+  \begin{tabular}{@{}lccccc@{}}
+    \toprule
+    Method & Succ. & LLM calls & Tokens & Cost & P50 lat. \\
+    \midrule
+    ReAct & \tbd & \tbd & \tbd & \tbd & \tbd \\
+    ReWOO & \tbd & \tbd & \tbd & \tbd & \tbd \\
+    LLMCompiler & \tbd & \tbd & \tbd & \tbd & \tbd \\
+    PTC & \tbd & \tbd & \tbd & \tbd & \tbd \\
+    \midrule
+    \jif (ours) & \tbd & \tbd & \tbd & \tbd & \tbd \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[t]
+  \caption{Error types per 100 tasks. \todo{fill}}
+  \label{tab:errors}
+  \small
+  \setlength{\tabcolsep}{3pt}
+  \begin{tabular}{@{}lccccc@{}}
+    \toprule
+    & Invalid & Wrong & Fabricated & Logic / & \\
+    Method & call & entity & argument & decision & Answer \\
+    \midrule
+    ReAct & \tbd & \tbd & \tbd & \tbd & \tbd \\
+    PTC & \tbd & \tbd & \tbd & \tbd & \tbd \\
+    \jif & \tbd & \tbd & \tbd & \tbd & \tbd \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\todo{Tables~\ref{tab:main} and~\ref{tab:errors}, with paired confidence intervals.}
+
+\subsection{RQ2: Graph Guidance}
+\label{sec:rq2}
+\begin{table}[t]
+  \caption{Graph ablation with the \jif compiler fixed. All representations are rendered from the same curated source. \todo{fill}}
+  \label{tab:abl-sog}
+  \small
+  \setlength{\tabcolsep}{3pt}
+  \begin{tabular}{@{}lcccc@{}}
+    \toprule
+    Representation & 1st-pass & Dec.\ acc. & Succ. & Prompt tok. \\
+    \midrule
+    Flat tool schemas & \tbd & \tbd & \tbd & \tbd \\
+    Operation graph only & \tbd & \tbd & \tbd & \tbd \\
+    Object graph only & \tbd & \tbd & \tbd & \tbd \\
+    Unified single graph & \tbd & \tbd & \tbd & \tbd \\
+    \sog w/o static checking & \tbd & \tbd & \tbd & \tbd \\
+    \sog (ours) & \tbd & \tbd & \tbd & \tbd \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\todo{Table~\ref{tab:abl-sog}. Disclosure: $h\in\{0,1,2,\infty\}$ vs.\ top-$k$ tool retrieval, plotted against the number of tools. Construction: automatic vs.\ curated \sog (success, recall of trajectory dependencies by derived edges, curation person-hours).}
+
+\subsection{RQ3: System-1 Conditionals}
+\label{sec:rq3}
+\begin{table}[t]
+  \caption{How semantic decisions are executed, on the decision subset, with the \sog fixed. \todo{fill}}
+  \label{tab:abl-jif}
+  \small
+  \setlength{\tabcolsep}{3pt}
+  \begin{tabular}{@{}lcccc@{}}
+    \toprule
+    Variant & Succ. & LLM calls & Tokens & Lat. \\
+    \midrule
+    No primitives (return to LLM) & \tbd & \tbd & \tbd & \tbd \\
+    No primitives (code rules only) & \tbd & \tbd & \tbd & \tbd \\
+    Re-plan at each decision & \tbd & \tbd & \tbd & \tbd \\
+    Primitives evaluated by LLM & \tbd & \tbd & \tbd & \tbd \\
+    Primitives evaluated by OSS model & \tbd & \tbd & \tbd & \tbd \\
+    \midrule
+    \jif w/o $\Gobj$ elaboration & \tbd & \tbd & \tbd & \tbd \\
+    \jif w/o batching & \tbd & \tbd & \tbd & \tbd \\
+    \jif w/o gate & \tbd & \tbd & \tbd & \tbd \\
+    \jif (ours) & \tbd & \tbd & \tbd & \tbd \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\todo{Table~\ref{tab:abl-jif}. Gate: realized wrong-action rate and fallback rate vs.\ $\alpha$. Breakdown by primitive (choice-one, choice-several, noul guard, filter). Order debiasing on/off.}
+
+\subsection{RQ4: Interaction and Scaling}
+\label{sec:rq4}
+\begin{table}[t]
+  \caption{Factorial study on top of programmatic tool calling: graph guidance $\times$ System-1 primitives (success / LLM calls). \todo{fill}}
+  \label{tab:factorial}
+  \small
+  \begin{tabular}{@{}lcc@{}}
+    \toprule
+    & No primitives & \jif primitives \\
+    \midrule
+    Flat tool schemas & \tbd \ (= PTC) & \tbd \\
+    \sog guidance & \tbd & \tbd \ (= ours) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\todo{Table~\ref{tab:factorial} with main effects and interaction. Scaling plots: LLM calls and tokens vs.\ chain length and fan-out; prompt tokens and success vs.\ number of tools.}

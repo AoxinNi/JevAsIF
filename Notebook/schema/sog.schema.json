@@ -1,0 +1,412 @@
+{
+  "$defs": {
+    "Entity": {
+      "properties": {
+        "id": {
+          "description": "实体 id，如 Fund",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "description": "中文名称",
+          "title": "Label",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "description": "业务含义；会写进 Jev 的判断依据",
+          "title": "Description",
+          "type": "string"
+        },
+        "identifier": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "标识属性的 id",
+          "title": "Identifier"
+        },
+        "label_property": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "给标识配可读名称的属性 id",
+          "title": "Label Property"
+        },
+        "properties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Property"
+          },
+          "description": "属性列表",
+          "title": "Properties"
+        },
+        "rules": {
+          "description": "业务规则；会写进接口桩和 Jev 的判断依据",
+          "items": {
+            "type": "string"
+          },
+          "title": "Rules",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "Entity",
+      "type": "object"
+    },
+    "InputParam": {
+      "properties": {
+        "name": {
+          "description": "工具参数名",
+          "title": "Name",
+          "type": "string"
+        },
+        "type": {
+          "default": "string",
+          "description": "参数类型",
+          "title": "Type",
+          "type": "string"
+        },
+        "required": {
+          "default": false,
+          "description": "是否必填",
+          "title": "Required",
+          "type": "boolean"
+        },
+        "description": {
+          "default": "",
+          "description": "参数说明",
+          "title": "Description",
+          "type": "string"
+        },
+        "property": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "这个参数消费的属性 id；派生数据流据此推导",
+          "title": "Property"
+        },
+        "fill": {
+          "default": "agent",
+          "description": "谁来填：agent 模型 / identity 运行身份注入 / host 可信宿主 / const 固定值",
+          "enum": [
+            "agent",
+            "identity",
+            "host",
+            "const"
+          ],
+          "title": "Fill",
+          "type": "string"
+        },
+        "check": {
+          "description": "执行时复核：traced 必须取自已观测的值，scope 必须在客户范围内",
+          "items": {
+            "enum": [
+              "scope",
+              "traced"
+            ],
+            "type": "string"
+          },
+          "title": "Check",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "InputParam",
+      "type": "object"
+    },
+    "ObjectGraph": {
+      "properties": {
+        "entry": {
+          "description": "入口实体；按对象范围披露从这里出发",
+          "title": "Entry",
+          "type": "string"
+        },
+        "entities": {
+          "description": "实体",
+          "items": {
+            "$ref": "#/$defs/Entity"
+          },
+          "title": "Entities",
+          "type": "array"
+        },
+        "relations": {
+          "description": "实体之间的关系",
+          "items": {
+            "$ref": "#/$defs/Relation"
+          },
+          "title": "Relations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "entry",
+        "entities"
+      ],
+      "title": "ObjectGraph",
+      "type": "object"
+    },
+    "Operation": {
+      "properties": {
+        "id": {
+          "description": "操作 id，也是 agent 代码里调用的函数名",
+          "title": "Id",
+          "type": "string"
+        },
+        "tool": {
+          "description": "绑定的工具名（MCP 工具）",
+          "title": "Tool",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "description": "中文名称",
+          "title": "Label",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "description": "功能说明，写进接口桩",
+          "title": "Description",
+          "type": "string"
+        },
+        "inputs": {
+          "description": "输入参数",
+          "items": {
+            "$ref": "#/$defs/InputParam"
+          },
+          "title": "Inputs",
+          "type": "array"
+        },
+        "outputs": {
+          "description": "输出绑定：返回值的哪些位置产出哪些属性",
+          "items": {
+            "$ref": "#/$defs/OutputBinding"
+          },
+          "title": "Outputs",
+          "type": "array"
+        },
+        "returns": {
+          "additionalProperties": true,
+          "description": "返回值形状树：{t: object|array|string|…, f: 字段, i: 元素, entity: 实体, map: 以代码为键}",
+          "title": "Returns",
+          "type": "object"
+        },
+        "rules": {
+          "description": "操作级规则",
+          "items": {
+            "type": "string"
+          },
+          "title": "Rules",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "tool"
+      ],
+      "title": "Operation",
+      "type": "object"
+    },
+    "OperationGraph": {
+      "properties": {
+        "operations": {
+          "description": "操作；数据流边不存储，由属性的产出与消费推导",
+          "items": {
+            "$ref": "#/$defs/Operation"
+          },
+          "title": "Operations",
+          "type": "array"
+        },
+        "control_edges": {
+          "description": "可选的业务流程边",
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Control Edges",
+          "type": "array"
+        }
+      },
+      "required": [
+        "operations"
+      ],
+      "title": "OperationGraph",
+      "type": "object"
+    },
+    "OutputBinding": {
+      "properties": {
+        "path": {
+          "description": "返回值中的路径，如 rows[*].fundCode；map 内部的键写作 <key>",
+          "title": "Path",
+          "type": "string"
+        },
+        "property": {
+          "description": "这个位置的值对应的属性 id",
+          "title": "Property",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "property"
+      ],
+      "title": "OutputBinding",
+      "type": "object"
+    },
+    "Property": {
+      "properties": {
+        "id": {
+          "description": "Entity.name，全图唯一",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "description": "数据中出现的字段名",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "description": "含义、口径、单位",
+          "title": "Description",
+          "type": "string"
+        },
+        "type": {
+          "default": "string",
+          "description": "string / integer / number / boolean / array / object",
+          "title": "Type",
+          "type": "string"
+        },
+        "aliases": {
+          "description": "表示同一个值的其他字段名或参数名",
+          "items": {
+            "type": "string"
+          },
+          "title": "Aliases",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "Property",
+      "type": "object"
+    },
+    "Relation": {
+      "properties": {
+        "id": {
+          "description": "关系 id",
+          "title": "Id",
+          "type": "string"
+        },
+        "source": {
+          "description": "起点实体；披露沿 source → target 方向展开",
+          "title": "Source",
+          "type": "string"
+        },
+        "target": {
+          "description": "终点实体",
+          "title": "Target",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "description": "关系含义，如 可咨询、包含、引用",
+          "title": "Label",
+          "type": "string"
+        },
+        "via": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "承载这条关系的属性 id",
+          "title": "Via"
+        }
+      },
+      "required": [
+        "id",
+        "source",
+        "target"
+      ],
+      "title": "Relation",
+      "type": "object"
+    }
+  },
+  "description": "Split object--operation graph.",
+  "properties": {
+    "sog_version": {
+      "const": "0.1",
+      "default": "0.1",
+      "title": "Sog Version",
+      "type": "string"
+    },
+    "id": {
+      "description": "图 id",
+      "title": "Id",
+      "type": "string"
+    },
+    "label": {
+      "default": "",
+      "description": "名称",
+      "title": "Label",
+      "type": "string"
+    },
+    "description": {
+      "default": "",
+      "description": "说明",
+      "title": "Description",
+      "type": "string"
+    },
+    "objects": {
+      "$ref": "#/$defs/ObjectGraph",
+      "description": "对象图"
+    },
+    "operations": {
+      "$ref": "#/$defs/OperationGraph",
+      "description": "操作图"
+    },
+    "meta": {
+      "additionalProperties": true,
+      "description": "来源、构建方式等元信息",
+      "title": "Meta",
+      "type": "object"
+    }
+  },
+  "required": [
+    "id",
+    "objects",
+    "operations"
+  ],
+  "title": "SOG",
+  "type": "object"
+}

@@ -1,0 +1,35 @@
+samples 219
+  pick 1 of n          events    57 | samples   35 (16%) | n median 6 p90 20 max 72
+  pick subset k of n   events    41 | samples   33 (15%) | n median 10 p90 39 max 39
+  pick all n           events    24 | samples   22 (10%) | n median 3.0 p90 10 max 12
+  samples needing a real judgment (pick 1 or subset): 63 (29%)
+
+## pick subset k of n
+   (5, '你好！我最近有一笔闲钱，想做个长期投资规划，但对具体怎么操作还不太清楚。我想请教', 'GetFundAnnouncements', 'fundCodes', '2/29', 'fundCode')
+   (6, '你好！我最近对投资理财挺感兴趣的，特别是想了解下现在市场情况比较低迷的情况下，有', 'BatchGetFundsDetail', 'fundCodes', '2/10', 'fundCode')
+   (13, '你好，我是住在浙江杭州的Noah Brown，我想了解一下为什么现在无法买入博时', 'BatchGetFundsFeeRule', 'fundCodes', '7/10', 'fundCode')
+   (25, '你好！我最近在关注一些低风险的投资机会，想请你帮我推荐几个由基金经理提供的风险较', 'BatchGetFundsDetail', 'fundCodes', '2/33', 'fundCode')
+   (26, '你好！我最近有点闲钱，想了解一下有什么适合中短期稳健投资的理财建议。', 'BatchGetFundsDetail', 'fundCodes', '7/33', 'fundCode')
+   (27, '你好！我最近有点闲钱，想找个稳妥的方式短期稳钱，但不太懂这方面，你能给我一些建议', 'BatchGetFundsFeeRule', 'fundCodes', '3/5', 'fundCode')
+   (35, '你好！我最近有点儿闲钱，大概10万元，想存一年定期。但不太清楚能有多少利息，能不', 'BatchGetFundTradeLimit', 'fundCodes', '5/10', 'fundCode')
+   (36, '你好！我住在浙江杭州，最近一直在想怎么更好地管理每个月还房贷的钱。这部分钱我希望', 'BatchGetFundsDetail', 'fundCodes', '2/4', 'fundCode')
+
+## pick 1 of n
+   (16, '你好，我是住在浙江杭州的Noah Brown。我最近发现我投资的钱没有显示在总资', 'AnalyzeFinancialIndicators', 'liquidAssets', '1/6', 'totalValue')
+   (16, '你好，我是住在浙江杭州的Noah Brown。我最近发现我投资的钱没有显示在总资', 'AnalyzeFinancialIndicators', 'currentLiabilities', '1/6', 'totalValue')
+   (16, '你好，我是住在浙江杭州的Noah Brown。我最近发现我投资的钱没有显示在总资', 'AnalyzeFinancialIndicators', 'investmentAssets', '1/6', 'totalValue')
+   (16, '你好，我是住在浙江杭州的Noah Brown。我最近发现我投资的钱没有显示在总资', 'AnalyzeFinancialIndicators', 'investmentLiabilities', '1/6', 'totalValue')
+   (16, '你好，我是住在浙江杭州的Noah Brown。我最近发现我投资的钱没有显示在总资', 'AnalyzeFinancialIndicators', 'annualExpense', '1/12', 'value')
+   (16, '你好，我是住在浙江杭州的Noah Brown。我最近发现我投资的钱没有显示在总资', 'AnalyzeFinancialIndicators', 'annualInvestmentIncome', '1/6', 'totalValue')
+   (36, '你好！我住在浙江杭州，最近一直在想怎么更好地管理每个月还房贷的钱。这部分钱我希望', 'BatchGetFundsFeeRule', 'fundCodes', '1/2', 'fundCode')
+   (39, '你好！我最近听说“且慢”这个平台可以投资海外的投顾策略，我对这方面了解不多，想详', 'BatchGetFundsDetail', 'fundCodes', '1/6', 'fundCode')
+
+## pick all n
+   (33, '你好，我是住在浙江杭州的Noah Brown，我想了解一下为什么我的总资产比期末', 'BatchGetFundsDividendRecord', 'fundCodes', '2/2', 'fundCode')
+   (60, '你好，请问是XX金融机构吗？我这边是客户Noah Brown，想咨询一下我的账户', 'BatchGetFundsFeeRule', 'fundCodes', '2/2', 'fundCode')
+   (101, '你好！我最近在考虑投资一些低估值基金，但对当前的市场环境不太确定，想了解下是否适', 'AnalyzeFundRisk', 'fundCodes', '5/5', 'fundCode')
+   (102, '你好！我最近在关注纳斯达克指数，想了解现在是不是一个合适的买入时机。你能帮我分析', 'BatchGetFundsDetail', 'fundCodes', '2/2', 'fundCode')
+   (102, '你好！我最近在关注纳斯达克指数，想了解现在是不是一个合适的买入时机。你能帮我分析', 'BatchGetFundsHolding', 'fundCodes', '2/2', 'fundCode')
+   (117, '你好，我是住在浙江杭州的Noah Brown。最近我在关注花好月圆组合的分红情况', 'BatchGetFundsDividendRecord', 'fundCodes', '10/10', '基金代码')
+   (127, '你好！我最近一直在想孩子的教育金问题，所以想请教一下关于长期投资、风险等级中低的', 'GetStrategyDetails', 'strategyCodes', '3/3', '策略代码')
+   (132, '你好！我住在浙江杭州，最近想请教你几个关于基金投资的问题。', 'AnalyzeFundRisk', 'fundCodes', '2/2', 'fundCode')

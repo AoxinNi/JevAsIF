@@ -1,0 +1,65 @@
+\section{The Graph: Split Object--Operation Graphs}
+\label{sec:sog}
+
+The compiler reads one artifact per tool domain, a split object--operation graph. This section defines it, explains why it is split, and shows how the compiler presents it to the agent and how it is built.
+
+\subsection{Definition}
+A \sog is a pair $(\Gobj,\Gop)$ coupled only through properties.
+
+\paragraph{Object graph.} $\Gobj=(\mathcal{E},\mathcal{P},\mathcal{R})$ consists of entity types $\mathcal{E}$ (e.g., \kw{Customer}, \kw{Portfolio}, \kw{FeeSchedule}), properties $\mathcal{P}$ written \kw{Entity.prop}, and directed relations $\mathcal{R}\subseteq\mathcal{E}\times\mathcal{E}$ (e.g., \kw{Portfolio}$\to$\kw{FeeSchedule}, ``is charged by''). Every entity and property carries a natural-language meaning, and entities may carry business rules (``a standard fee rate is not the customer's actual charge''). An identifier property may name a \emph{label property} of the same entity (\kw{Portfolio.code} is labeled by \kw{Portfolio.name}).
+
+\paragraph{Operation graph.} $\Gop=(\mathcal{A}, D, F)$ consists of operations $\mathcal{A}$, each bound to a Web tool and declaring $\mathrm{in}(a),\mathrm{out}(a)\subseteq\mathcal{P}$. Data-flow edges are \emph{derived}, never drawn by hand:
+\begin{equation}
+D=\{(a,a',p)\;:\;p\in\mathrm{out}(a)\cap\mathrm{in}(a')\}.
+\end{equation}
+Optional control-flow edges $F$ encode prescribed business processes (approval, signing). Otherwise $F=\emptyset$ and the agent composes operations freely.
+
+\paragraph{Coupling.} The only links between the graphs are property references. Each operation is \emph{owned} by the entities it produces, $\mathrm{own}(a)=\{e:\exists\,e.p\in\mathrm{out}(a)\}$. An access annotation on each input property states who fills it (run identity, trusted host, agent, constant) and how it is checked (customer scope, provenance).
+
+\subsection{Why Split}
+\label{sec:whysplit}
+Table~\ref{tab:repr} compares the \sog with the representations an agent typically receives.
+\begin{itemize}
+  \item \emph{Two kinds of edges, two jobs.} Object relations are conceptual: they say what is related to what, and they drive disclosure. Operation edges concern execution: they say what feeds what, and they drive type and data-flow checking. A single graph mixes the two, and an agent can mistake a conceptual relation for a call order.
+  \item \emph{Derived, checkable data flow.} Dependencies follow from property declarations, so nobody annotates tool-to-tool edges~\cite{lee2026innout}, and the compiler can verify that every input is produced upstream.
+  \item \emph{Entity semantics for run-time decisions.} A decision over raw codes is guesswork. The object graph supplies labels, meanings and rules that turn it into a well-posed question (\S\ref{sec:elaborate}).
+  \item \emph{Separate maintenance.} Entity models change slowly and belong to domain experts. Tool bindings change with services. Only property references must stay consistent, and they are checked automatically.
+\end{itemize}
+
+\begin{table}[t]
+  \caption{What each representation gives the agent and the compiler.}
+  \label{tab:repr}
+  \footnotesize
+  \setlength{\tabcolsep}{2pt}
+  \begin{tabular}{@{}lccccc@{}}
+    \toprule
+    & Output & Data & Entity & Scoped & Separate \\
+    Representation & types & flow & semantics & disclosure & upkeep \\
+    \midrule
+    Flat tool schemas & -- & -- & -- & -- & \checkmark \\
+    Tool dependency graph & \checkmark & annotated & -- & -- & -- \\
+    Knowledge graph only & -- & -- & \checkmark & \checkmark & -- \\
+    Unified single graph & \checkmark & mixed & \checkmark & partial & -- \\
+    \textbf{\sog (ours)} & \checkmark & \textbf{derived} & \checkmark & \checkmark & \checkmark \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{What the Agent Sees: Scoped, Typed Stubs}
+\label{sec:disclosure}
+The agent never sees the whole tool set. Starting from an entry entity, the compiler takes the entities within $h$ relation hops, $S_h$, and discloses an operation iff $\mathrm{own}(a)\subseteq S_h$. Inputs do not count, because nearly every operation consumes the customer and would otherwise always be shown. Entities just outside the scope are listed with their relations and owning operations, so the agent can request them. The agent's context is therefore bounded by the size of the object scope, not by the number of tools.
+
+The disclosed part is rendered as \pyif stubs. Each entity becomes a record type whose fields are its properties, with their meanings as comments. Each operation becomes a function whose agent-filled parameters are typed and whose return type is a list of entity records. Identity- and host-filled parameters are omitted entirely, so the agent cannot even write a call on behalf of another customer. Entity and operation rules become docstrings. Appendix~\ref{app:program} shows an example.
+
+\subsection{Construction}
+\label{sec:construction}
+We build a \sog from tool schemas and, when available, call logs, in six steps.
+\begin{enumerate}
+  \item \emph{Operations}: one per tool; inputs from the schema; outputs from the response schema or, when that is missing, from fields observed in logged responses.
+  \item \emph{Property alignment}: merge fields that denote the same value across tools (e.g., \texttt{fundCode} and \texttt{code}), using name similarity and value co-occurrence in logs.
+  \item \emph{Entity induction}: group properties that co-occur in the same response records around an identifier; choose a label property (the most name-like co-occurring string field).
+  \item \emph{Relation induction}: add $e\to e'$ when records of $e$ carry identifiers of $e'$.
+  \item \emph{Derivation and validation}: derive $D$; check that every entity is reachable from the entry entity and every agent-filled input is producible or constant.
+  \item \emph{Curation}: an expert edits meanings, rules and access annotations.
+\end{enumerate}
+Steps 1--5 are automatic. We report the curation effort and compare automatic and curated graphs in \S\ref{sec:rq2}. \todo{coverage metric: fraction of dependencies in reference trajectories recovered by derived edges.}

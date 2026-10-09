@@ -1,0 +1,49 @@
+{
+ "kept_units": 324,
+ "by_source_group_split": {
+  "multi_tool/D/dev": 22,
+  "multi_tool/D/test": 88,
+  "multi_tool/I/dev": 7,
+  "multi_tool/I/test": 27,
+  "multi_tool/M/dev": 21,
+  "multi_tool/M/test": 83,
+  "multi_turn/D/dev": 2,
+  "multi_turn/D/test": 5,
+  "multi_turn/M/dev": 15,
+  "multi_turn/M/test": 54
+ },
+ "by_source_group": {
+  "multi_tool/D": 110,
+  "multi_tool/I": 34,
+  "multi_tool/M": 104,
+  "multi_turn/D": 7,
+  "multi_turn/M": 69
+ },
+ "excluded": {
+  "single_tool：单工具子集：只有一次调用": 145,
+  "multi_tool：工具调用少于 2 次，没有调用链": 1,
+  "multi_turn：轮内调用彼此独立（多为报错后重试，或复用前几轮已知的值）": 156,
+  "multi_turn：含需要生成内容的调用（RenderEchart、RenderHtmlToPdf）": 2,
+  "multi_turn：含需要生成内容的调用（RenderEchart）": 5,
+  "multi_turn：含需要生成内容的调用（RenderHtmlToPdf）": 10
+ },
+ "multi_turn_turns": {
+  "all": 1303,
+  "fewer_than_2_calls": 1054
+ },
+ "decisions": {
+  "total": 203,
+  "pick_one": 87,
+  "pick_subset": 116,
+  "candidates_median": 8,
+  "candidates_p90": 20,
+  "candidates_max": 40,
+  "over_255": 0
+ },
+ "flags": {
+  "不涉及用户身份": 110,
+  "参考轨迹含报错或非JSON返回": 3
+ },
+ "seed": 2026,
+ "dev_share": 0.2
+}

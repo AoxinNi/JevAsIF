@@ -1,0 +1,2335 @@
+{
+ "tools": [
+  {
+   "name": "StrategySearchByKeyword",
+   "calls": 297,
+   "groups": {
+    "D": 136,
+    "I": 23,
+    "M": 138
+   },
+   "sources": {
+    "multi_tool": 266,
+    "multi_turn": 31
+   },
+   "args": {
+    "keyword": {
+     "count": 297,
+     "types": {
+      "str": 297
+     },
+     "examples": [
+      "\"QDII\"",
+      "\"海外\"",
+      "\"全球资产配置\"",
+      "\"全球\"",
+      "\"长赢\""
+     ]
+    },
+    "pageNum": {
+     "count": 82,
+     "types": {
+      "int": 82
+     },
+     "examples": [
+      "1"
+     ]
+    },
+    "pageSize": {
+     "count": 85,
+     "types": {
+      "int": 85
+     },
+     "examples": [
+      "20",
+      "1",
+      "10",
+      "3",
+      "5"
+     ]
+    },
+    "category": {
+     "count": 1,
+     "types": {
+      "str": 1
+     },
+     "examples": [
+      "\"偏债混合型\""
+     ]
+    },
+    "size": {
+     "count": 1,
+     "types": {
+      "int": 1
+     },
+     "examples": [
+      "5"
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetStrategyAssetClassAnalysis",
+   "calls": 143,
+   "groups": {
+    "M": 66,
+    "D": 69,
+    "I": 8
+   },
+   "sources": {
+    "multi_tool": 137,
+    "multi_turn": 6
+   },
+   "args": {
+    "strategyCode": {
+     "count": 143,
+     "types": {
+      "str": 143
+     },
+     "examples": [
+      "\"LONG_WIN\"",
+      "\"ZH000095\"",
+      "\"ZH013136\"",
+      "\"ZH032680\"",
+      "\"ZH130979\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "BatchGetStrategiesComposition",
+   "calls": 140,
+   "groups": {
+    "M": 59,
+    "D": 70,
+    "I": 11
+   },
+   "sources": {
+    "multi_tool": 129,
+    "multi_turn": 11
+   },
+   "args": {
+    "strategyCodes": {
+     "count": 140,
+     "types": {
+      "list": 140
+     },
+     "examples": [
+      "[\"ZH099893\", \"ZH156399\"]",
+      "[\"ZH099893\"]",
+      "[\"LONG_WIN_S\"]",
+      "[\"SI000200\", \"ZH006498\", \"ZH009762\", \"ZH019933\", \"ZH030684\",",
+      "[\"LONG_WIN\", \"LONG_WIN_S\"]"
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetStrategyDetails",
+   "calls": 135,
+   "groups": {
+    "D": 58,
+    "M": 67,
+    "I": 10
+   },
+   "sources": {
+    "multi_tool": 110,
+    "multi_turn": 25
+   },
+   "args": {
+    "strategyCodes": {
+     "count": 135,
+     "types": {
+      "list": 135
+     },
+     "examples": [
+      "[\"ZH159580\", \"ZH158559\", \"ZH158593\"]",
+      "[\"ZH159580\"]",
+      "[\"ZH000095\"]",
+      "[\"IDX_EVAL\"]",
+      "[\"ZH130979\"]"
+     ]
+    },
+    "pageNum": {
+     "count": 33,
+     "types": {
+      "int": 33
+     },
+     "examples": [
+      "1"
+     ]
+    },
+    "pageSize": {
+     "count": 33,
+     "types": {
+      "int": 33
+     },
+     "examples": [
+      "3",
+      "20",
+      "2",
+      "1",
+      "5"
+     ]
+    }
+   }
+  },
+  {
+   "name": "SearchFunds",
+   "calls": 112,
+   "groups": {
+    "D": 61,
+    "M": 37,
+    "I": 14
+   },
+   "sources": {
+    "multi_tool": 98,
+    "multi_turn": 14
+   },
+   "args": {
+    "keyword": {
+     "count": 60,
+     "types": {
+      "str": 60
+     },
+     "examples": [
+      "\"张翼飞\"",
+      "\"安信稳健增值\"",
+      "\"安信恒鑫增强\"",
+      "\"750002\"",
+      "\"张坤\""
+     ]
+    },
+    "page": {
+     "count": 32,
+     "types": {
+      "int": 32
+     },
+     "examples": [
+      "0",
+      "1"
+     ]
+    },
+    "size": {
+     "count": 82,
+     "types": {
+      "int": 82
+     },
+     "examples": [
+      "10",
+      "5",
+      "1",
+      "3",
+      "20"
+     ]
+    },
+    "category": {
+     "count": 81,
+     "types": {
+      "str": 81
+     },
+     "examples": [
+      "\"纯债\"",
+      "\"货币型\"",
+      "\"债券型\"",
+      "\"QDII型\"",
+      "\"商品型\""
+     ]
+    },
+    "sortColumn": {
+     "count": 70,
+     "types": {
+      "str": 70
+     },
+     "examples": [
+      "\"近一年收益\"",
+      "\"收益率\"",
+      "\"七日年化收益率\"",
+      "\"综合费率\"",
+      "\"基金规模\""
+     ]
+    },
+    "sortOrder": {
+     "count": 70,
+     "types": {
+      "str": 70
+     },
+     "examples": [
+      "\"降序\"",
+      "\"升序\""
+     ]
+    },
+    "tradeStatus": {
+     "count": 25,
+     "types": {
+      "str": 25
+     },
+     "examples": [
+      "\"正常开放\"",
+      "\"不限\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetStrategyRiskInfo",
+   "calls": 106,
+   "groups": {
+    "D": 39,
+    "M": 55,
+    "I": 12
+   },
+   "sources": {
+    "multi_tool": 102,
+    "multi_turn": 4
+   },
+   "args": {
+    "strategyCode": {
+     "count": 106,
+     "types": {
+      "str": 106
+     },
+     "examples": [
+      "\"ZH159580\"",
+      "\"ZH013136\"",
+      "\"LONG_WIN\"",
+      "\"ZH156399\"",
+      "\"LONG_WIN_S\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "SearchManagerViewpoint",
+   "calls": 101,
+   "groups": {
+    "D": 40,
+    "I": 19,
+    "M": 42
+   },
+   "sources": {
+    "multi_tool": 101
+   },
+   "args": {
+    "keyword": {
+     "count": 100,
+     "types": {
+      "str": 100
+     },
+     "examples": [
+      "\"张翼飞\"",
+      "\"中国平安\"",
+      "\"军工\"",
+      "\"恒生\"",
+      "\"颐养天年\""
+     ]
+    },
+    "page": {
+     "count": 47,
+     "types": {
+      "int": 47
+     },
+     "examples": [
+      "1"
+     ]
+    },
+    "pageSize": {
+     "count": 56,
+     "types": {
+      "int": 56
+     },
+     "examples": [
+      "5",
+      "3",
+      "10",
+      "2"
+     ]
+    },
+    "author": {
+     "count": 1,
+     "types": {
+      "str": 1
+     },
+     "examples": [
+      "\"王斌\""
+     ]
+    },
+    "startDate": {
+     "count": 36,
+     "types": {
+      "str": 36
+     },
+     "examples": [
+      "\"2025-01-01\"",
+      "\"2024-01-01\"",
+      "\"2025-07-01\"",
+      "\"2025-05-14\"",
+      "\"2023-01-01\""
+     ]
+    },
+    "endDate": {
+     "count": 36,
+     "types": {
+      "str": 36
+     },
+     "examples": [
+      "\"2025-08-19\"",
+      "\"2024-06-30\"",
+      "\"2025-08-15\"",
+      "\"2025-08-14\"",
+      "\"2023-12-31\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetAssetAllocationPlan",
+   "calls": 93,
+   "groups": {
+    "M": 57,
+    "D": 31,
+    "I": 5
+   },
+   "sources": {
+    "multi_tool": 62,
+    "multi_turn": 31
+   },
+   "args": {
+    "expectedInvestTime": {
+     "count": 81,
+     "types": {
+      "str": 81
+     },
+     "examples": [
+      "\"overFive\"",
+      "\"oneToThree\"",
+      "\"threeToFive\"",
+      "\"oneYear\"",
+      "\"spare\""
+     ]
+    },
+    "expectedAnnualizedReturnRate": {
+     "count": 52,
+     "types": {
+      "float": 52
+     },
+     "examples": [
+      "0.045",
+      "0.05",
+      "0.03",
+      "0.07",
+      "0.04"
+     ]
+    },
+    "expectedDrawdown": {
+     "count": 48,
+     "types": {
+      "float": 48
+     },
+     "examples": [
+      "0.02",
+      "0.05",
+      "0.1",
+      "0.15",
+      "0.005"
+     ]
+    }
+   }
+  },
+  {
+   "name": "BatchGetFundsDetail",
+   "calls": 81,
+   "groups": {
+    "D": 47,
+    "I": 5,
+    "M": 29
+   },
+   "sources": {
+    "multi_tool": 72,
+    "multi_turn": 9
+   },
+   "args": {
+    "fundCodes": {
+     "count": 81,
+     "types": {
+      "list": 81
+     },
+     "examples": [
+      "[\"001316\", \"001338\"]",
+      "[\"015979\"]",
+      "[\"015978\"]",
+      "[\"750002\"]",
+      "[\"005827\"]"
+     ]
+    }
+   }
+  },
+  {
+   "name": "SearchFinancialNews",
+   "calls": 66,
+   "groups": {
+    "I": 12,
+    "M": 24,
+    "D": 30
+   },
+   "sources": {
+    "multi_tool": 65,
+    "multi_turn": 1
+   },
+   "args": {
+    "keyword": {
+     "count": 65,
+     "types": {
+      "str": 65
+     },
+     "examples": [
+      "\"中国平安\"",
+      "\"军工\"",
+      "\"债券\"",
+      "\"黄金\"",
+      "\"债券市场\""
+     ]
+    },
+    "page": {
+     "count": 51,
+     "types": {
+      "int": 51
+     },
+     "examples": [
+      "1"
+     ]
+    },
+    "pageSize": {
+     "count": 58,
+     "types": {
+      "int": 58
+     },
+     "examples": [
+      "10",
+      "5",
+      "3",
+      "20"
+     ]
+    },
+    "startDate": {
+     "count": 26,
+     "types": {
+      "str": 26
+     },
+     "examples": [
+      "\"2024-01-01\"",
+      "\"2025-07-15\"",
+      "\"2024-04-30\"",
+      "\"2025-07-17\"",
+      "\"2025-07-01\""
+     ]
+    },
+    "endDate": {
+     "count": 26,
+     "types": {
+      "str": 26
+     },
+     "examples": [
+      "\"2024-08-15\"",
+      "\"2025-08-15\"",
+      "\"2024-10-30\"",
+      "\"2025-08-17\"",
+      "\"2025-08-19\""
+     ]
+    },
+    "size": {
+     "count": 1,
+     "types": {
+      "int": 1
+     },
+     "examples": [
+      "3"
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetCompositeModel",
+   "calls": 62,
+   "groups": {
+    "M": 50,
+    "D": 12
+   },
+   "sources": {
+    "multi_tool": 31,
+    "multi_turn": 31
+   },
+   "args": {
+    "assetPlanId": {
+     "count": 62,
+     "types": {
+      "str": 62
+     },
+     "examples": [
+      "\"AAP000117\"",
+      "\"AAP000107\"",
+      "\"AAP000116\"",
+      "\"AAP000064\"",
+      "\"AAP000118\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetFundAnnouncements",
+   "calls": 58,
+   "groups": {
+    "M": 25,
+    "D": 29,
+    "I": 4
+   },
+   "sources": {
+    "multi_tool": 55,
+    "multi_turn": 3
+   },
+   "args": {
+    "fundCodes": {
+     "count": 58,
+     "types": {
+      "list": 58
+     },
+     "examples": [
+      "[\"000218\"]",
+      "[\"100032\", \"000478\", \"100038\"]",
+      "[\"006884\", \"161713\", \"000015\", \"003949\", \"000191\", \"110037\",",
+      "[\"420102\", \"006597\", \"110017\", \"240003\", \"013650\", \"519680\",",
+      "[\"003207\", \"015503\", \"013449\", \"000833\", \"002592\", \"007105\","
+     ]
+    },
+    "pageNum": {
+     "count": 36,
+     "types": {
+      "int": 36
+     },
+     "examples": [
+      "1"
+     ]
+    },
+    "pageSize": {
+     "count": 44,
+     "types": {
+      "int": 44
+     },
+     "examples": [
+      "5",
+      "3",
+      "20",
+      "10"
+     ]
+    },
+    "announcementType": {
+     "count": 20,
+     "types": {
+      "str": 20
+     },
+     "examples": [
+      "\"ALL\"",
+      "\"ISSUE_OPERATION\"",
+      "\"DIVIDEND\""
+     ]
+    },
+    "startDate": {
+     "count": 25,
+     "types": {
+      "str": 25
+     },
+     "examples": [
+      "\"2025-02-15\"",
+      "\"2024-01-01\"",
+      "\"2025-01-01\"",
+      "\"2025-07-15\"",
+      "\"2023-01-01\""
+     ]
+    },
+    "endDate": {
+     "count": 25,
+     "types": {
+      "str": 25
+     },
+     "examples": [
+      "\"2025-08-15\"",
+      "\"2025-08-19\"",
+      "\"2023-12-31\"",
+      "\"2024-08-17\"",
+      "\"2025-08-20\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetPortfolioNavHistory",
+   "calls": 48,
+   "groups": {
+    "M": 24,
+    "D": 22,
+    "I": 2
+   },
+   "sources": {
+    "multi_tool": 46,
+    "multi_turn": 2
+   },
+   "args": {
+    "poCode": {
+     "count": 48,
+     "types": {
+      "str": 48
+     },
+     "examples": [
+      "\"ZH099893\"",
+      "\"LONG_WIN\"",
+      "\"ZH150669\"",
+      "\"ZH032680\"",
+      "\"ZH156399\""
+     ]
+    },
+    "start": {
+     "count": 21,
+     "types": {
+      "str": 21
+     },
+     "examples": [
+      "\"2025-02-15\"",
+      "\"2025-02-19\"",
+      "\"2025-08-12\"",
+      "\"\"",
+      "\"2025-08-01\""
+     ]
+    },
+    "end": {
+     "count": 21,
+     "types": {
+      "str": 21
+     },
+     "examples": [
+      "\"2025-08-15\"",
+      "\"2025-08-19\"",
+      "\"2025-08-18\"",
+      "\"\"",
+      "\"2024-04-01\""
+     ]
+    },
+    "dimensionType": {
+     "count": 5,
+     "types": {
+      "str": 5
+     },
+     "examples": [
+      "\"oneYear\"",
+      "\"oneMonth\""
+     ]
+    },
+    "isDesc": {
+     "count": 3,
+     "types": {
+      "bool": 3
+     },
+     "examples": [
+      "true"
+     ]
+    },
+    "noACL": {
+     "count": 3,
+     "types": {
+      "bool": 3
+     },
+     "examples": [
+      "false"
+     ]
+    },
+    "poManagerId": {
+     "count": 3,
+     "types": {
+      "int": 3
+     },
+     "examples": [
+      "-1"
+     ]
+    },
+    "brokerCode": {
+     "count": 3,
+     "types": {
+      "str": 3
+     },
+     "examples": [
+      "\"\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetUserAssetView",
+   "calls": 42,
+   "groups": {
+    "M": 15,
+    "D": 24,
+    "I": 3
+   },
+   "sources": {
+    "multi_tool": 42
+   },
+   "args": {
+    "userId": {
+     "count": 42,
+     "types": {
+      "str": 42
+     },
+     "examples": [
+      "\"9b9b9a9c929a9c\"",
+      "\"9b989c939a9c9b\"",
+      "\"939b9a9e9e9d\"",
+      "\"9b989c9c9d9b9d\"",
+      "\"9b989c9e999b92\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "AnalyzeFundRisk",
+   "calls": 41,
+   "groups": {
+    "I": 4,
+    "M": 20,
+    "D": 17
+   },
+   "sources": {
+    "multi_tool": 39,
+    "multi_turn": 2
+   },
+   "args": {
+    "fundCodes": {
+     "count": 41,
+     "types": {
+      "list": 41
+     },
+     "examples": [
+      "[\"005827\"]",
+      "[\"000218\"]",
+      "[\"003207\", \"001961\", \"006596\", \"519188\", \"007530\", \"000606\",",
+      "[\"000290\", \"001065\", \"000103\", \"000274\", \"000342\"]",
+      "[\"270023\", \"009108\", \"016533\", \"007722\", \"012349\"]"
+     ]
+    }
+   }
+  },
+  {
+   "name": "BatchGetFundsFeeRule",
+   "calls": 41,
+   "groups": {
+    "M": 16,
+    "D": 23,
+    "I": 2
+   },
+   "sources": {
+    "multi_tool": 31,
+    "multi_turn": 10
+   },
+   "args": {
+    "fundCodes": {
+     "count": 41,
+     "types": {
+      "list": 41
+     },
+     "examples": [
+      "[\"000218\"]",
+      "[\"003207\", \"001961\", \"006596\", \"519188\", \"007530\", \"000606\",",
+      "[\"015727\", \"016674\", \"110051\", \"014377\", \"000509\", \"012680\",",
+      "[\"100032\", \"000071\", \"000478\", \"164906\", \"001180\", \"100038\",",
+      "[\"016396\", \"519782\", \"519723\", \"006793\", \"519718\", \"008204\","
+     ]
+    }
+   }
+  },
+  {
+   "name": "BatchGetFundNavHistory",
+   "calls": 38,
+   "groups": {
+    "D": 19,
+    "I": 3,
+    "M": 16
+   },
+   "sources": {
+    "multi_tool": 32,
+    "multi_turn": 6
+   },
+   "args": {
+    "fundCodes": {
+     "count": 38,
+     "types": {
+      "list": 38
+     },
+     "examples": [
+      "[\"000037\", \"519718\", \"008204\", \"016396\", \"006793\", \"519782\"]",
+      "[\"000051\", \"100038\"]",
+      "[\"020156\"]",
+      "[\"000218\"]",
+      "[\"110027\", \"000509\", \"002708\", \"000727\", \"340001\", \"011309\","
+     ]
+    },
+    "dimensionType": {
+     "count": 38,
+     "types": {
+      "str": 38
+     },
+     "examples": [
+      "\"oneMonth\"",
+      "\"fiveYear\"",
+      "\"halfYear\"",
+      "\"threeYear\"",
+      "\"oneYear\""
+     ]
+    },
+    "isDesc": {
+     "count": 22,
+     "types": {
+      "bool": 22
+     },
+     "examples": [
+      "true"
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetFundsCorrelation",
+   "calls": 32,
+   "groups": {
+    "D": 24,
+    "M": 8
+   },
+   "sources": {
+    "multi_tool": 32
+   },
+   "args": {
+    "fundList": {
+     "count": 32,
+     "types": {
+      "list": 32
+     },
+     "examples": [
+      "[{\"fundCode\": \"006884\"}, {\"fundCode\": \"161713\"}, {\"fundCode\"",
+      "[{\"fundCode\": \"000037\"}, {\"fundCode\": \"519718\"}, {\"fundCode\"",
+      "[{\"fundCode\": \"000051\"}, {\"fundCode\": \"100038\"}, {\"fundCode\"",
+      "[{\"fundCode\": \"420102\"}, {\"fundCode\": \"006597\"}, {\"fundCode\"",
+      "[{\"fundCode\": \"110027\"}, {\"fundCode\": \"000509\"}, {\"fundCode\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetBatchFundPerformance",
+   "calls": 28,
+   "groups": {
+    "D": 18,
+    "I": 4,
+    "M": 6
+   },
+   "sources": {
+    "multi_tool": 28
+   },
+   "args": {
+    "fundCodes": {
+     "count": 28,
+     "types": {
+      "list": 28
+     },
+     "examples": [
+      "[\"100032\", \"000478\", \"100038\", \"001051\", \"161017\"]",
+      "[\"003207\", \"001961\", \"006596\", \"519188\", \"007530\", \"000606\",",
+      "[\"000107\", \"000305\", \"006852\", \"000385\", \"000147\", \"000090\",",
+      "[\"001512\"]",
+      "[\"513280\", \"159892\", \"513120\", \"159615\", \"019670\"]"
+     ]
+    }
+   }
+  },
+  {
+   "name": "BatchGetFundsHolding",
+   "calls": 27,
+   "groups": {
+    "I": 4,
+    "D": 15,
+    "M": 8
+   },
+   "sources": {
+    "multi_tool": 24,
+    "multi_turn": 3
+   },
+   "args": {
+    "fundCodes": {
+     "count": 27,
+     "types": {
+      "list": 27
+     },
+     "examples": [
+      "[\"005827\"]",
+      "[\"006884\", \"161713\", \"000015\", \"003949\", \"000191\", \"110037\",",
+      "[\"003207\", \"015503\", \"013449\", \"000833\", \"002592\", \"007105\",",
+      "[\"000218\"]",
+      "[\"001469\"]"
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetUserAssetHoldingDistribution",
+   "calls": 27,
+   "groups": {
+    "M": 13,
+    "D": 10,
+    "I": 4
+   },
+   "sources": {
+    "multi_tool": 27
+   },
+   "args": {
+    "userId": {
+     "count": 27,
+     "types": {
+      "str": 27
+     },
+     "examples": [
+      "\"9b989c9c939b9f\"",
+      "\"9b989c9d92939e\"",
+      "\"9b989f9b9d9b92\"",
+      "\"9b989c9e999b92\"",
+      "\"9b989c999f9c9e\""
+     ]
+    },
+    "fundCodes": {
+     "count": 8,
+     "types": {
+      "list": 8
+     },
+     "examples": [
+      "[\"003473\"]",
+      "[\"020156\"]",
+      "[]",
+      "[\"001595\", \"011972\"]",
+      "[\"001316\", \"001338\"]"
+     ]
+    },
+    "poCodes": {
+     "count": 22,
+     "types": {
+      "list": 22
+     },
+     "examples": [
+      "[\"SI000035\"]",
+      "[\"LONG_WIN\", \"ZH000095\", \"ZH013136\"]",
+      "[\"ZH032680\", \"ZH000193\", \"ZH013804\", \"ZH013136\", \"ZH022440\",",
+      "[\"LONG_WIN\", \"LONG_WIN_S\", \"ZH000095\", \"ZH047973\", \"ZH049490",
+      "[\"ZH099893\"]"
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetCurrentTime",
+   "calls": 26,
+   "groups": {
+    "I": 4,
+    "D": 8,
+    "M": 14
+   },
+   "sources": {
+    "multi_tool": 23,
+    "multi_turn": 3
+   },
+   "args": {}
+  },
+  {
+   "name": "AnalyzePortfolioRisk",
+   "calls": 26,
+   "groups": {
+    "D": 16,
+    "M": 9,
+    "I": 1
+   },
+   "sources": {
+    "multi_tool": 26
+   },
+   "args": {
+    "holdings": {
+     "count": 26,
+     "types": {
+      "list": 26
+     },
+     "examples": [
+      "[{\"fundCode\": \"003207\", \"weight\": 0.0502}, {\"fundCode\": \"001",
+      "[{\"fundCode\": \"000107\", \"weight\": 0.1143}, {\"fundCode\": \"000",
+      "[{\"fundCode\": \"008204\", \"weight\": 0.9}, {\"fundCode\": \"007950",
+      "[{\"fundCode\": \"161713\", \"weight\": 0.0194}, {\"fundCode\": \"003",
+      "[{\"fundCode\": \"003956\", \"weight\": 0.2}, {\"fundCode\": \"019524"
+     ]
+    }
+   }
+  },
+  {
+   "name": "BatchGetFundTradeRules",
+   "calls": 25,
+   "groups": {
+    "I": 2,
+    "D": 14,
+    "M": 9
+   },
+   "sources": {
+    "multi_tool": 24,
+    "multi_turn": 1
+   },
+   "args": {
+    "fundCodes": {
+     "count": 25,
+     "types": {
+      "list": 25
+     },
+     "examples": [
+      "[\"001180\"]",
+      "[\"100032\"]",
+      "[\"100032\", \"000478\", \"100038\"]",
+      "[\"001821\"]",
+      "[\"003207\", \"015503\", \"013449\", \"000833\", \"002592\", \"007105\","
+     ]
+    },
+    "op": {
+     "count": 25,
+     "types": {
+      "str": 25
+     },
+     "examples": [
+      "\"redeem\"",
+      "\"allot\""
+     ]
+    },
+    "txnTime": {
+     "count": 4,
+     "types": {
+      "str": 4
+     },
+     "examples": [
+      "\"2024-02-19 14:00:00\"",
+      "\"2025-08-18 15:00:00\"",
+      "\"2024-06-18\"",
+      "\"2025-08-15\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetUserAssetBrief",
+   "calls": 23,
+   "groups": {
+    "D": 11,
+    "I": 2,
+    "M": 10
+   },
+   "sources": {
+    "multi_tool": 23
+   },
+   "args": {
+    "userId": {
+     "count": 23,
+     "types": {
+      "str": 23
+     },
+     "examples": [
+      "\"9b989c9e999b92\"",
+      "\"9b989f99999a99\"",
+      "\"92939e939f98\"",
+      "\"9b989c9d999f93\"",
+      "\"9b989c9c9f9a98\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetTxnDayRange",
+   "calls": 22,
+   "groups": {
+    "I": 6,
+    "D": 8,
+    "M": 8
+   },
+   "sources": {
+    "multi_tool": 22
+   },
+   "args": {
+    "beforeDays": {
+     "count": 22,
+     "types": {
+      "str": 22
+     },
+     "examples": [
+      "\"1\"",
+      "\"0\"",
+      "\"5\"",
+      "\"7\"",
+      "\"3\""
+     ]
+    },
+    "afterDays": {
+     "count": 22,
+     "types": {
+      "str": 22
+     },
+     "examples": [
+      "\"1\"",
+      "\"5\"",
+      "\"0\"",
+      "\"7\"",
+      "\"30\""
+     ]
+    },
+    "centerTime": {
+     "count": 10,
+     "types": {
+      "str": 10
+     },
+     "examples": [
+      "\"2023-08-29 00:00:00\"",
+      "\"2025-08-17 15:16:18\"",
+      "\"2025-08-19 19:37:14\"",
+      "\"2025-08-19 12:08:40\"",
+      "\"2025-08-15 20:00:09\""
+     ]
+    },
+    "fundCode": {
+     "count": 2,
+     "types": {
+      "str": 2
+     },
+     "examples": [
+      "\"009326\"",
+      "\"007147\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "BatchGetPoTradeComposition",
+   "calls": 20,
+   "groups": {
+    "I": 3,
+    "D": 5,
+    "M": 12
+   },
+   "sources": {
+    "multi_tool": 14,
+    "multi_turn": 6
+   },
+   "args": {
+    "strategyCodes": {
+     "count": 20,
+     "types": {
+      "list": 20
+     },
+     "examples": [
+      "[\"ZH099893\"]",
+      "[\"ZH013136\"]",
+      "[\"ZH099893\", \"ZH156399\"]",
+      "[\"SI000164\"]",
+      "[\"ZH032680\"]"
+     ]
+    }
+   }
+  },
+  {
+   "name": "DiagnoseFundPortfolio",
+   "calls": 20,
+   "groups": {
+    "D": 12,
+    "M": 8
+   },
+   "sources": {
+    "multi_tool": 20
+   },
+   "args": {
+    "fundList": {
+     "count": 20,
+     "types": {
+      "list": 20
+     },
+     "examples": [
+      "[{\"fundCode\": \"110027\", \"amount\": 1930}, {\"fundCode\": \"00050",
+      "[{\"fundCode\": \"008204\", \"amount\": 2319.14}, {\"fundCode\": \"00",
+      "[{\"fundCode\": \"513280\", \"amount\": 10000}, {\"fundCode\": \"5131",
+      "[{\"fundCode\": \"513850\", \"amount\": 12000}, {\"fundCode\": \"1624",
+      "[{\"fundCode\": \"513850\", \"amount\": 8000}, {\"fundCode\": \"16241"
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetLatestProfit",
+   "calls": 18,
+   "groups": {
+    "D": 7,
+    "M": 8,
+    "I": 3
+   },
+   "sources": {
+    "multi_tool": 18
+   },
+   "args": {
+    "userId": {
+     "count": 18,
+     "types": {
+      "str": 18
+     },
+     "examples": [
+      "\"9b9b9f9c9d9f99\"",
+      "\"9b989c939b9a98\"",
+      "\"9b989c9d92939e\"",
+      "\"9b989c99989c9a\"",
+      "\"9b989c92989298\""
+     ]
+    },
+    "serviceAccountIdList": {
+     "count": 18,
+     "types": {
+      "list": 18
+     },
+     "examples": [
+      "[]",
+      "[\"SA0A0JT10P8XBJB\", \"SA0A0JT10YMXMAQ\", \"SA0A0JT117M4C5Y\"]",
+      "[\"SA0A0K7KCBRP1QW\"]",
+      "[\"SA0A0K8F2GM2A7B\", \"SA0A0K8F1Q4JWBN\"]"
+     ]
+    },
+    "prodCodeList": {
+     "count": 18,
+     "types": {
+      "list": 18
+     },
+     "examples": [
+      "[]",
+      "[\"ZH123456\"]",
+      "[\"ZH036975\", \"LONG_WIN\", \"ZH012636\"]",
+      "[\"SI000164\"]",
+      "[\"LONG_WIN\", \"ZH013136\"]"
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetFundDiagnosis",
+   "calls": 16,
+   "groups": {
+    "I": 2,
+    "M": 5,
+    "D": 9
+   },
+   "sources": {
+    "multi_tool": 16
+   },
+   "args": {
+    "fundNameOrCode": {
+     "count": 16,
+     "types": {
+      "str": 16
+     },
+     "examples": [
+      "\"001180\"",
+      "\"000001\"",
+      "\"000008\"",
+      "\"003956\"",
+      "\"019524\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "BatchGetStrategyRiskInfo",
+   "calls": 15,
+   "groups": {
+    "D": 7,
+    "M": 6,
+    "I": 2
+   },
+   "sources": {
+    "multi_tool": 12,
+    "multi_turn": 3
+   },
+   "args": {
+    "strategyCodes": {
+     "count": 15,
+     "types": {
+      "list": 15
+     },
+     "examples": [
+      "[\"ZH032680\", \"ZH012636\"]",
+      "[\"ZH012636\", \"ZH013136\", \"LONG_WIN_S\", \"LONG_WIN\", \"ZH152825",
+      "[\"ZH099893\", \"ZH154241\"]",
+      "[\"ZH013136\", \"ZH158559\", \"ZH158560\", \"ZH158561\", \"ZH158562\",",
+      "[\"ZH158564\", \"ZH158565\", \"ZH158600\", \"ZH158601\", \"ZH159580\"]"
+     ]
+    }
+   }
+  },
+  {
+   "name": "BatchGetFundsDividendRecord",
+   "calls": 15,
+   "groups": {
+    "D": 8,
+    "I": 1,
+    "M": 6
+   },
+   "sources": {
+    "multi_tool": 14,
+    "multi_turn": 1
+   },
+   "args": {
+    "fundCodes": {
+     "count": 15,
+     "types": {
+      "list": 15
+     },
+     "examples": [
+      "[\"001821\", \"016778\", \"001698\", \"110027\", \"000509\"]",
+      "[\"020156\"]",
+      "[\"020147\", \"012963\", \"519732\", \"110001\", \"373020\"]",
+      "[\"005150\", \"000905\", \"128011\"]",
+      "[\"000008\", \"000834\", \"007147\", \"018738\", \"110020\"]"
+     ]
+    }
+   }
+  },
+  {
+   "name": "GuessFundCode",
+   "calls": 13,
+   "groups": {
+    "M": 9,
+    "D": 4
+   },
+   "sources": {
+    "multi_tool": 11,
+    "multi_turn": 2
+   },
+   "args": {
+    "fundNameOrCode": {
+     "count": 13,
+     "types": {
+      "str": 13
+     },
+     "examples": [
+      "\"华夏成长\"",
+      "\"南方天天利\"",
+      "\"余额宝\"",
+      "\"天弘中证银行ETF联接C\"",
+      "\"东财中证银行指数C\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "searchInvestAdvisorContent",
+   "calls": 12,
+   "groups": {
+    "M": 7,
+    "D": 4,
+    "I": 1
+   },
+   "sources": {
+    "multi_tool": 12
+   },
+   "args": {
+    "keyword": {
+     "count": 12,
+     "types": {
+      "str": 12
+     },
+     "examples": [
+      "\"花好月圆\"",
+      "\"市场温度\"",
+      "\"美联储加息 海外债券\"",
+      "\"债券利率上行 股票经济复苏\"",
+      "\"春华秋实\""
+     ]
+    },
+    "startDate": {
+     "count": 3,
+     "types": {
+      "str": 3
+     },
+     "examples": [
+      "\"2024-04-30\"",
+      "\"2024-01-01\"",
+      "\"\""
+     ]
+    },
+    "endDate": {
+     "count": 3,
+     "types": {
+      "str": 3
+     },
+     "examples": [
+      "\"2024-10-30\"",
+      "\"2025-08-17\"",
+      "\"\""
+     ]
+    },
+    "page": {
+     "count": 11,
+     "types": {
+      "int": 11
+     },
+     "examples": [
+      "1"
+     ]
+    },
+    "pageSize": {
+     "count": 11,
+     "types": {
+      "int": 11
+     },
+     "examples": [
+      "5",
+      "3"
+     ]
+    },
+    "type": {
+     "count": 5,
+     "types": {
+      "str": 5
+     },
+     "examples": [
+      "\"文章\"",
+      "\"自有策略的内容\""
+     ]
+    },
+    "author": {
+     "count": 1,
+     "types": {
+      "str": 1
+     },
+     "examples": [
+      "\"\""
+     ]
+    },
+    "skip_attachment": {
+     "count": 1,
+     "types": {
+      "bool": 1
+     },
+     "examples": [
+      "false"
+     ]
+    }
+   }
+  },
+  {
+   "name": "MonteCarloSimulate",
+   "calls": 12,
+   "groups": {
+    "D": 6,
+    "I": 1,
+    "M": 5
+   },
+   "sources": {
+    "multi_tool": 8,
+    "multi_turn": 4
+   },
+   "args": {
+    "frequency": {
+     "count": 12,
+     "types": {
+      "str": 12
+     },
+     "examples": [
+      "\"YEAR\""
+     ]
+    },
+    "periodCount": {
+     "count": 12,
+     "types": {
+      "int": 12
+     },
+     "examples": [
+      "5",
+      "1",
+      "3",
+      "10"
+     ]
+    },
+    "simulationCount": {
+     "count": 12,
+     "types": {
+      "int": 12
+     },
+     "examples": [
+      "1000"
+     ]
+    },
+    "weights": {
+     "count": 12,
+     "types": {
+      "dict": 12
+     },
+     "examples": [
+      "{\"cash\": 0, \"fixedIncome\": 0.9, \"equity\": 0.03, \"commodity\":",
+      "{\"equity\": 0.2, \"overseasEquity\": 0.2, \"fixedIncome\": 0.58, ",
+      "{\"equity\": 0.45, \"fixedIncome\": 0.4, \"cash\": 0.1, \"commodity",
+      "{\"equity\": 0.6, \"fixedIncome\": 0.3, \"cash\": 0.1, \"commodity\"",
+      "{\"cash\": 0.1, \"fixedIncome\": 0.75, \"equity\": 0.1, \"commodity"
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetPopularFund",
+   "calls": 11,
+   "groups": {
+    "I": 2,
+    "M": 3,
+    "D": 6
+   },
+   "sources": {
+    "multi_tool": 10,
+    "multi_turn": 1
+   },
+   "args": {
+    "size": {
+     "count": 11,
+     "types": {
+      "int": 11
+     },
+     "examples": [
+      "6",
+      "5"
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetFundLatestProfit",
+   "calls": 8,
+   "groups": {
+    "D": 4,
+    "M": 4
+   },
+   "sources": {
+    "multi_tool": 8
+   },
+   "args": {
+    "userId": {
+     "count": 8,
+     "types": {
+      "str": 8
+     },
+     "examples": [
+      "\"9b989c9d999f93\"",
+      "\"9b989c9a9a989c\"",
+      "\"9b989c929a9a9c\"",
+      "\"9b989c9d92939e\"",
+      "\"9b989c92929d9d\""
+     ]
+    },
+    "serviceAccountIdList": {
+     "count": 8,
+     "types": {
+      "list": 8
+     },
+     "examples": [
+      "[\"SA0A0JT0TPWXX29\"]",
+      "[\"SA0A0JSSYKWGKN0\", \"SA0A0JSSWA8BJ5S\", \"SA0A0JSSZH89JSQ\"]",
+      "[]",
+      "[\"SA0A0JT10P8XBJB\", \"SA0A0JT10YMXMAQ\", \"SA0A0JT117M4C5Y\"]"
+     ]
+    },
+    "fundCodeList": {
+     "count": 8,
+     "types": {
+      "list": 8
+     },
+     "examples": [
+      "[\"420102\", \"006597\", \"110017\", \"240003\", \"013650\", \"519680\",",
+      "[]",
+      "[\"000107\", \"000305\", \"006852\", \"000385\", \"000147\", \"000090\",",
+      "[\"519153\", \"003357\", \"007100\", \"110028\", \"004586\", \"040041\",",
+      "[\"000001\"]"
+     ]
+    }
+   }
+  },
+  {
+   "name": "BatchGetFundTradeLimit",
+   "calls": 8,
+   "groups": {
+    "M": 5,
+    "D": 3
+   },
+   "sources": {
+    "multi_tool": 6,
+    "multi_turn": 2
+   },
+   "args": {
+    "fundCodes": {
+     "count": 8,
+     "types": {
+      "list": 8
+     },
+     "examples": [
+      "[\"000107\", \"000305\", \"006852\", \"000385\", \"000147\", \"000090\",",
+      "[\"000119\", \"020521\", \"003391\", \"000509\", \"002091\", \"006962\",",
+      "[\"007280\", \"007360\", \"019450\", \"008763\", \"006075\", \"000216\",",
+      "[\"161119\", \"270048\", \"003949\", \"050027\", \"110037\", \"000015\",",
+      "[\"013308\", \"014413\", \"019817\", \"010710\", \"007380\", \"014549\","
+     ]
+    },
+    "op": {
+     "count": 1,
+     "types": {
+      "str": 1
+     },
+     "examples": [
+      "\"allot\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetProfitProd",
+   "calls": 7,
+   "groups": {
+    "M": 5,
+    "D": 2
+   },
+   "sources": {
+    "multi_tool": 7
+   },
+   "args": {
+    "userId": {
+     "count": 7,
+     "types": {
+      "str": 7
+     },
+     "examples": [
+      "\"9b989c9d999f93\"",
+      "\"9b9a9c9e9b989b\"",
+      "\"9b989c92929d9d\"",
+      "\"9b989c9d9a9d9b\"",
+      "\"9b989c9c9c9c9b\""
+     ]
+    },
+    "serviceAccountIdList": {
+     "count": 7,
+     "types": {
+      "list": 7
+     },
+     "examples": [
+      "[\"SA0A0JT0TPWXX29\"]",
+      "[]",
+      "[\"SA0A0K8F2GM2A7B\", \"SA0A0K8F1Q4JWBN\"]"
+     ]
+    },
+    "prodCodeList": {
+     "count": 7,
+     "types": {
+      "list": 7
+     },
+     "examples": [
+      "[]",
+      "[\"ZH032680\", \"ZH013136\", \"LONG_WIN\"]",
+      "[\"ZH032680\"]",
+      "[\"SI000164\", \"ZH000134\", \"ZH000135\", \"ZH000136\", \"ZH000137\",",
+      "[\"花好月圆\"]"
+     ]
+    },
+    "beginDate": {
+     "count": 2,
+     "types": {
+      "str": 2
+     },
+     "examples": [
+      "\"2025-07-25\"",
+      "\"2025-08-18\""
+     ]
+    },
+    "endDate": {
+     "count": 2,
+     "types": {
+      "str": 2
+     },
+     "examples": [
+      "\"2025-08-15\"",
+      "\"2025-08-18\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "AnalyzeAssetLiability",
+   "calls": 4,
+   "groups": {
+    "D": 2,
+    "M": 2
+   },
+   "sources": {
+    "multi_tool": 4
+   },
+   "args": {
+    "totalAssets": {
+     "count": 4,
+     "types": {
+      "dict": 4
+     },
+     "examples": [
+      "{\"investmentAssets\": {\"bankFinance\": 800, \"fixedDeposit\": 30",
+      "{\"investmentAssets\": {\"bankFinance\": 0, \"fixedDeposit\": 0, \"",
+      "{\"liquidAssets\": {\"cash\": 5000000}, \"investmentAssets\": {\"fu"
+     ]
+    },
+    "totalLiabilities": {
+     "count": 4,
+     "types": {
+      "dict": 4
+     },
+     "examples": [
+      "{\"currentLiabilities\": {\"creditCard\": 0, \"other\": 0, \"person",
+      "{\"currentLiabilities\": {\"creditCard\": 0, \"personalLoan\": 0, "
+     ]
+    },
+    "annualIncome": {
+     "count": 2,
+     "types": {
+      "int": 2
+     },
+     "examples": [
+      "150000",
+      "0"
+     ]
+    },
+    "annualExpense": {
+     "count": 2,
+     "types": {
+      "int": 2
+     },
+     "examples": [
+      "100000",
+      "0"
+     ]
+    },
+    "annualInvestmentIncome": {
+     "count": 2,
+     "types": {
+      "int": 2
+     },
+     "examples": [
+      "6000",
+      "0"
+     ]
+    },
+    "monthlyEssentialExpense": {
+     "count": 2,
+     "types": {
+      "int": 2
+     },
+     "examples": [
+      "8000",
+      "0"
+     ]
+    },
+    "currentLiabilities": {
+     "count": 1,
+     "types": {
+      "int": 1
+     },
+     "examples": [
+      "0"
+     ]
+    },
+    "investmentAssets": {
+     "count": 1,
+     "types": {
+      "float": 1
+     },
+     "examples": [
+      "4274.87"
+     ]
+    },
+    "investmentLiabilities": {
+     "count": 1,
+     "types": {
+      "int": 1
+     },
+     "examples": [
+      "0"
+     ]
+    },
+    "liquidAssets": {
+     "count": 1,
+     "types": {
+      "int": 1
+     },
+     "examples": [
+      "0"
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetAccountDailyProfits",
+   "calls": 3,
+   "groups": {
+    "I": 1,
+    "M": 2
+   },
+   "sources": {
+    "multi_tool": 3
+   },
+   "args": {
+    "userId": {
+     "count": 3,
+     "types": {
+      "str": 3
+     },
+     "examples": [
+      "\"9b989f99999a99\"",
+      "\"9b989c9d999f93\"",
+      "\"9b989c9d9e9d9d\""
+     ]
+    },
+    "includeAcc": {
+     "count": 3,
+     "types": {
+      "bool": 3
+     },
+     "examples": [
+      "true"
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetAnnouncementContent",
+   "calls": 3,
+   "groups": {
+    "D": 3
+   },
+   "sources": {
+    "multi_tool": 1,
+    "multi_turn": 2
+   },
+   "args": {
+    "fundCode": {
+     "count": 3,
+     "types": {
+      "str": 3
+     },
+     "examples": [
+      "\"008204\"",
+      "\"163406\"",
+      "\"260101\""
+     ]
+    },
+    "announcementId": {
+     "count": 3,
+     "types": {
+      "str": 3
+     },
+     "examples": [
+      "\"806146049450\"",
+      "\"808991333959\"",
+      "\"808525807216\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "AnalyzeInvestmentPerformance",
+   "calls": 3,
+   "groups": {
+    "D": 1,
+    "M": 2
+   },
+   "sources": {
+    "multi_tool": 3
+   },
+   "args": {
+    "totalInvestableAssets": {
+     "count": 3,
+     "types": {
+      "int": 2,
+      "float": 1
+     },
+     "examples": [
+      "500000",
+      "4274.87",
+      "100000"
+     ]
+    },
+    "expectedReturnRate": {
+     "count": 2,
+     "types": {
+      "float": 2
+     },
+     "examples": [
+      "0.04",
+      "0.07"
+     ]
+    },
+    "shortMediumTermScheme": {
+     "count": 3,
+     "types": {
+      "dict": 3
+     },
+     "examples": [
+      "{\"type\": \"中短期配置方案\", \"investmentAmount\": 304500, \"annualRetur",
+      "{\"type\": \"中短期配置方案\", \"investmentAmount\": 0, \"annualReturn\": 0",
+      "{\"type\": \"中短期配置方案\", \"investmentAmount\": 100000, \"annualRetur"
+     ]
+    },
+    "mediumLongTermScheme": {
+     "count": 3,
+     "types": {
+      "dict": 3
+     },
+     "examples": [
+      "{\"type\": \"中长期配置方案\", \"investmentAmount\": 195500, \"annualRetur",
+      "{\"type\": \"中长期配置方案\", \"investmentAmount\": 4274.87, \"annualRetu",
+      "{\"type\": \"中长期配置方案\", \"investmentAmount\": 0, \"annualReturn\": 0"
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetFundAssetClassAnalysis",
+   "calls": 3,
+   "groups": {
+    "M": 2,
+    "D": 1
+   },
+   "sources": {
+    "multi_turn": 3
+   },
+   "args": {
+    "holdingList": {
+     "count": 3,
+     "types": {
+      "list": 3
+     },
+     "examples": [
+      "[{\"fundCode\": \"270001\", \"amount\": 10000}]",
+      "[{\"fundCode\": \"163406\", \"amount\": 10000}, {\"fundCode\": \"5197",
+      "[{\"fundCode\": \"004253\", \"amount\": 10000}]"
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetUserInfo",
+   "calls": 2,
+   "groups": {
+    "M": 1,
+    "D": 1
+   },
+   "sources": {
+    "multi_tool": 2
+   },
+   "args": {
+    "userId": {
+     "count": 2,
+     "types": {
+      "str": 2
+     },
+     "examples": [
+      "\"9b9b9a9c929a9c\"",
+      "\"9b989c9c9d9b9d\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetAccountProfitDetail",
+   "calls": 2,
+   "groups": {
+    "M": 2
+   },
+   "sources": {
+    "multi_tool": 2
+   },
+   "args": {
+    "userId": {
+     "count": 2,
+     "types": {
+      "str": 2
+     },
+     "examples": [
+      "\"9b989c9d999f93\"",
+      "\"9b989c9d9e9d9d\""
+     ]
+    },
+    "serviceAccountId": {
+     "count": 2,
+     "types": {
+      "str": 2
+     },
+     "examples": [
+      "\"SA0A0JT0TPWXX29\"",
+      "\"SA0A0JT0W00KJ5Y\""
+     ]
+    },
+    "beginDate": {
+     "count": 2,
+     "types": {
+      "str": 2
+     },
+     "examples": [
+      "\"2025-07-31\"",
+      "\"2025-07-01\""
+     ]
+    },
+    "endDate": {
+     "count": 2,
+     "types": {
+      "str": 2
+     },
+     "examples": [
+      "\"2025-07-31\"",
+      "\"2025-08-15\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetFundsBackTest",
+   "calls": 2,
+   "groups": {
+    "D": 1,
+    "M": 1
+   },
+   "sources": {
+    "multi_tool": 1,
+    "multi_turn": 1
+   },
+   "args": {
+    "fundList": {
+     "count": 2,
+     "types": {
+      "list": 2
+     },
+     "examples": [
+      "[{\"fundCode\": \"217022\", \"amount\": 150000}, {\"fundCode\": \"008",
+      "[{\"fundCode\": \"100032\", \"amount\": 50000}, {\"fundCode\": \"1624"
+     ]
+    }
+   }
+  },
+  {
+   "name": "BatchGetFundsHolderInfo",
+   "calls": 2,
+   "groups": {
+    "M": 2
+   },
+   "sources": {
+    "multi_tool": 2
+   },
+   "args": {
+    "fundCodes": {
+     "count": 2,
+     "types": {
+      "list": 2
+     },
+     "examples": [
+      "[\"000220\", \"000339\", \"000452\", \"000523\", \"000547\", \"000591\",",
+      "[\"011103\", \"501058\"]"
+     ]
+    }
+   }
+  },
+  {
+   "name": "AnalyzeCashFlow",
+   "calls": 2,
+   "groups": {
+    "D": 1,
+    "M": 1
+   },
+   "sources": {
+    "multi_tool": 2
+   },
+   "args": {
+    "currentInvestableAssets": {
+     "count": 2,
+     "types": {
+      "int": 2
+     },
+     "examples": [
+      "500000",
+      "2000000"
+     ]
+    },
+    "returnRateConfig": {
+     "count": 2,
+     "types": {
+      "list": 2
+     },
+     "examples": [
+      "[{\"startAge\": 45, \"endAge\": 60, \"rate\": 0.04}]",
+      "[{\"startAge\": 45, \"endAge\": 60, \"rate\": 0.06}, {\"startAge\": "
+     ]
+    },
+    "familyMembers": {
+     "count": 2,
+     "types": {
+      "list": 2
+     },
+     "examples": [
+      "[{\"role\": \"本人\", \"name\": \"用户\", \"initialAge\": 45}]"
+     ]
+    },
+    "continuousIncome": {
+     "count": 2,
+     "types": {
+      "list": 2
+     },
+     "examples": [
+      "[{\"startAge\": 45, \"endAge\": 60, \"incomeType\": \"salary\", \"amo",
+      "[{\"incomeType\": \"salary\", \"startAge\": 45, \"endAge\": 60, \"amo"
+     ]
+    },
+    "continuousExpenses": {
+     "count": 2,
+     "types": {
+      "list": 2
+     },
+     "examples": [
+      "[{\"startAge\": 45, \"endAge\": 60, \"expenseType\": \"dailyExpense",
+      "[{\"expenseType\": \"dailyExpenses\", \"startAge\": 45, \"endAge\": "
+     ]
+    },
+    "oneTimeIncome": {
+     "count": 2,
+     "types": {
+      "list": 2
+     },
+     "examples": [
+      "[]"
+     ]
+    },
+    "oneTimeExpenses": {
+     "count": 2,
+     "types": {
+      "list": 2
+     },
+     "examples": [
+      "[]"
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetFundProfit",
+   "calls": 2,
+   "groups": {
+    "M": 2
+   },
+   "sources": {
+    "multi_tool": 2
+   },
+   "args": {
+    "userId": {
+     "count": 2,
+     "types": {
+      "str": 2
+     },
+     "examples": [
+      "\"9b989c92929d9d\"",
+      "\"9b9a9b9c939f9f\""
+     ]
+    },
+    "serviceAccountIdList": {
+     "count": 2,
+     "types": {
+      "list": 2
+     },
+     "examples": [
+      "[]"
+     ]
+    },
+    "fundCodes": {
+     "count": 2,
+     "types": {
+      "list": 2
+     },
+     "examples": [
+      "[\"000001\"]",
+      "[\"009326\"]"
+     ]
+    },
+    "beginDate": {
+     "count": 2,
+     "types": {
+      "str": 2
+     },
+     "examples": [
+      "\"2025-08-18\"",
+      "\"\""
+     ]
+    },
+    "endDate": {
+     "count": 2,
+     "types": {
+      "str": 2
+     },
+     "examples": [
+      "\"2025-08-18\"",
+      "\"\""
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetAssetAllocation",
+   "calls": 1,
+   "groups": {
+    "D": 1
+   },
+   "sources": {
+    "multi_tool": 1
+   },
+   "args": {
+    "fundList": {
+     "count": 1,
+     "types": {
+      "list": 1
+     },
+     "examples": [
+      "[{\"fundCode\": \"519153\", \"amount\": 19750}, {\"fundCode\": \"0033"
+     ]
+    }
+   }
+  },
+  {
+   "name": "GetUserInvestDays",
+   "calls": 1,
+   "groups": {
+    "M": 1
+   },
+   "sources": {
+    "multi_tool": 1
+   },
+   "args": {
+    "userId": {
+     "count": 1,
+     "types": {
+      "str": 1
+     },
+     "examples": [
+      "\"9b9b989c9a999a\""
+     ]
+    }
+   }
+  }
+ ],
+ "not_in_subset": [
+  "AnalyzeFamilyMembers",
+  "AnalyzeFinancialIndicators",
+  "RenderEchart",
+  "RenderHtmlToPdf"
+ ],
+ "note": "tools 是筛选后单元里实际调用的工具（建图的输入）；not_in_subset 是只出现在被排除数据里的工具，可作为干扰工具。"
+}

@@ -1,0 +1,12 @@
+\section{Implementation}
+\label{sec:implementation}
+%% Double-blind: do not name the company, product or deployment. Describe it generically.
+
+We implement \jif on an industrial ontology runtime for a wealth-management advisory service \todo{anonymized description}. A \sog is stored as one document with an object part and an operation part. The runtime serves it through three MCP endpoints: \texttt{open} binds an authenticated customer and returns the disclosed scope, \texttt{query} discloses more of the object graph, and \texttt{execute} submits a decision.
+
+The runtime supports both uses of the operation graph. In \emph{object-led} use ($F=\emptyset$), an agent invokes operations freely under access checks. In \emph{operation-led} use, a flow engine advances a control-flow graph (actions, selections, generation, fork/join, foreach, waits, sub-flows, compensation) and stops only where external input is needed. The compiler lowers a checked \pyif program into a transient operation-led flow. Its selection tasks, which an agent normally answers, are answered by the System-1 backend instead. Every write passes a single submission path with leases, idempotency keys, optimistic concurrency and an audit log, so compiled programs inherit concurrency, timeouts, retries and replay without new execution code.
+
+The compiler front end uses Python's \texttt{ast} module. \todo{lines of code for the graph builder, stub renderer, checker, elaborator and lowering; for benchmark experiments, whether lowering targets the runtime or a standalone executor.}
+
+\paragraph{Backends.} \todo{pinned Jev version; open-source backend, e.g., a multilingual cross-encoder re-ranker or a small LM scored by option log-probabilities; agent and answerer LLMs}
+\paragraph{Effort.} \todo{curation effort per \sog in person-hours and in numbers of entities, properties and operations}

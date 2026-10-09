@@ -1,0 +1,6 @@
+typesafe-sdk>=0.7,<0.8
+mcp>=2.3,<3
+openai>=1.40
+pydantic>=2.6
+pandas>=2.0
+matplotlib>=3.7

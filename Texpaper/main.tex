@@ -1,0 +1,79 @@
+%% ACM Web Conference 2027 (WWW '27) -- Research Track submission draft
+%% Long paper: 8 pages main content + references + optional appendix (max 12 pages total).
+%% Double-blind review: keep `anonymous`; remove identifying information everywhere.
+\documentclass[sigconf,review,anonymous]{acmart}
+
+\usepackage{xspace}
+\usepackage{multirow}
+
+%% ---------- Drafting macros (delete before submission) ----------
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO:} #1\textbf{]}}}
+\newcommand{\tbd}{\textcolor{red}{--}}
+
+%% ---------- Names (rename here only) ----------
+\newcommand{\sog}{SOG\xspace}            % split object--operation graph
+\newcommand{\jif}{Jev-as-IF\xspace}      % System-1 models as the evaluator of program conditionals
+\newcommand{\pyif}{\textsc{PyIF}\xspace} % restricted Python subset the agent writes
+\newcommand{\Gobj}{G_{\mathsf{O}}}
+\newcommand{\Gop}{G_{\mathsf{A}}}
+\newcommand{\kw}[1]{\textsf{#1}}
+
+%% ---------- Venue metadata (verify against the official CFP template) ----------
+\setcopyright{none}
+\copyrightyear{2027}
+\acmYear{2027}
+\acmConference[WWW '27]{Proceedings of the ACM Web Conference 2027}{May 10--14, 2027}{Dublin, Ireland}
+\acmBooktitle{Proceedings of the ACM Web Conference 2027 (WWW '27), May 10--14, 2027, Dublin, Ireland}
+\acmDOI{}
+\acmISBN{}
+
+\begin{document}
+
+\title{Jev-as-IF: Graph-Guided Compilation of Agent Tool Chains for the Web}
+
+\author{Anonymous Author(s)}
+\affiliation{%
+  \institution{Anonymous Institution}
+  \country{}}
+
+\input{sections/00-abstract}
+
+\begin{CCSXML}
+<ccs2012>
+   <concept>
+       <concept_id>10002951.10003260.10003282</concept_id>
+       <concept_desc>Information systems~Web applications</concept_desc>
+       <concept_significance>500</concept_significance>
+   </concept>
+   <concept>
+       <concept_id>10010147.10010178.10010199</concept_id>
+       <concept_desc>Computing methodologies~Planning and scheduling</concept_desc>
+       <concept_significance>300</concept_significance>
+   </concept>
+</ccs2012>
+\end{CCSXML}
+\ccsdesc[500]{Information systems~Web applications}
+\ccsdesc[300]{Computing methodologies~Planning and scheduling}
+%% TODO: verify CCS concept IDs at https://dl.acm.org/ccs
+
+\keywords{LLM agents, tool calling, Model Context Protocol, programmatic tool calling, compilation, ontology, knowledge graph, System-1 models, calibration}
+
+\maketitle
+
+\input{sections/01-introduction}
+\input{sections/02-motivation}
+\input{sections/03-sog}
+\input{sections/04-compiler}
+\input{sections/05-implementation}
+\input{sections/06-experiments}
+\input{sections/07-related}
+\input{sections/08-discussion}
+\input{sections/09-conclusion}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\appendix
+\input{sections/appendix}
+
+\end{document}

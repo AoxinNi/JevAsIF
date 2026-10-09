@@ -1,0 +1,52 @@
+\section{Stubs and a Program}
+\label{app:program}
+Stubs rendered from a disclosed \sog (abridged; names and codes are synthetic):
+\begin{small}
+\begin{verbatim}
+class Portfolio:            # an advisory portfolio
+    code: str               # identifier; label: name
+    name: str               # display name
+    type: str               # strategy type
+class Announcement:
+    fundCode: str
+    title: str              # announcement title
+    date: date
+
+def read_scope() -> list[Portfolio]:
+    """Portfolios the customer may ask about.
+    Must run first."""
+def read_holdings(code: str) -> list[Holding]: ...
+def read_announcements(fundCode: str)
+        -> list[Announcement]: ...
+\end{verbatim}
+\end{small}
+The program the agent writes for ``Which of my steady portfolios had announcements that could explain this week's drop?'':
+\begin{small}
+\begin{verbatim}
+ps = read_scope()
+steady = jev.choice(
+    "Which portfolios does the customer call "
+    "'steady'?", ps, k="*")
+hits = []
+for p in steady:
+    for h in read_holdings(code=p.code):
+        news = read_announcements(fundCode=h.fundCode)
+        hits += jev.filter(
+            "Could this announcement explain a "
+            "recent drop in net value?", news)
+answer(portfolios=steady, announcements=hits)
+\end{verbatim}
+\end{small}
+The compiler checks that \texttt{code} and \texttt{fundCode} are outputs of earlier calls in the operation graph. Elaboration labels each portfolio with its name and type from the object graph, and adds the meanings of announcement fields as criteria. Both primitives become batched Noul questions. The loops are lowered to parallel \texttt{foreach} nodes. No LLM is called during execution unless the gate refuses.
+
+\section{Screening Procedure}
+\label{app:screening}
+\todo{Matching heuristic; false positives (e.g., pagination parameters); manual verification protocol; inter-annotator agreement.}
+
+\section{\sog Construction Details}
+\label{app:construction}
+\todo{Similarity thresholds for property alignment; entity induction algorithm; examples of automatic vs.\ curated graphs.}
+
+\section{\pyif Grammar and Prompts}
+\label{app:prompts}
+\todo{Grammar of the allowed subset; agent, answerer, repair and baseline prompts.}

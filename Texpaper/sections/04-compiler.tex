@@ -1,0 +1,66 @@
+\section{\jif: Graph-Guided Tool Compilation}
+\label{sec:compiler}
+
+\begin{figure*}[t]
+  \centering
+  \fbox{\parbox[c][4.0cm][c]{0.92\textwidth}{\centering\small
+  \todo{Overview figure.} \\[4pt]
+  \sog $\xrightarrow{\text{scoped disclosure}}$ typed \pyif stubs $\rightarrow$ \textbf{LLM agent} writes one program with System-1 primitives (\texttt{jev.choice}, \texttt{jev.noul}) $\rightarrow$ \\[2pt]
+  \textbf{Compiler}: parse $\rightarrow$ check against $\Gop$ (types, derived data flow, entry, access) $\rightarrow$ elaborate primitives with $\Gobj$ (labels, meanings, rules) $\rightarrow$ batch and parallelize $\rightarrow$ lower to flow $\rightarrow$ \\[2pt]
+  \textbf{Runtime}: tools through a policy gateway; primitives $\rightarrow$ \textbf{Jev} $\rightarrow$ confidence gate $\rightarrow$ continue \;|\; one LLM repair call $\rightarrow$ \textbf{LLM answerer}}}
+  \caption{\jif. The graph guides every stage: the operation graph types and checks the program, the object graph makes each decision well posed. The agent writes code once; Jev evaluates its decisions.}
+  \label{fig:overview}
+\end{figure*}
+
+Figure~\ref{fig:overview} shows the pipeline. The agent writes a \pyif program against the disclosed stubs (\S\ref{sec:lang}). The compiler checks it against the operation graph (\S\ref{sec:check}), elaborates its System-1 primitives with the object graph (\S\ref{sec:elaborate}), optimizes and lowers it (\S\ref{sec:lowering}), and the runtime executes it under a confidence gate (\S\ref{sec:gate}).
+
+\subsection{The \pyif Language}
+\label{sec:lang}
+\pyif is a restricted subset of Python. LLMs write Python fluently, and a direct comparison with programmatic tool calling requires the same medium. The subset is small enough that the compiler can analyze every program completely.
+
+\paragraph{Allowed.} Assignments; calls to disclosed operation stubs; field and index access on their results; \texttt{for} loops and comprehensions over tool results (bounded by result size); \texttt{if}/\texttt{else}; whitelisted pure built-ins (\texttt{len}, \texttt{sorted}, \texttt{min}, \texttt{max}, \texttt{sum}, date arithmetic); and a final \texttt{answer(\ldots)} that names the facts to pass to the answerer.
+
+\paragraph{Forbidden.} Imports, \texttt{while}, recursion, user-defined functions, I/O, \texttt{eval}/\texttt{exec}, and string formatting of identifiers. These constructs are either unbounded or let the program fabricate an argument instead of obtaining it from a tool.
+
+\paragraph{System-1 primitives.} Semantic decisions are written as calls to three primitives. Each is typed by the graph.
+\begin{description}
+  \item[{\texttt{jev.choice(q, xs, k=1)}}] returns the element of \texttt{xs} that answers question \texttt{q}; with \texttt{k="*"} it returns a sublist. \texttt{xs} must be a list of entity records or identifiers obtained from a tool. The result can bind later arguments.
+  \item[{\texttt{jev.noul(q, x)}}] returns whether \texttt{q} holds for record \texttt{x} (or for the request). It is used as \texttt{if jev.noul(\ldots):}, which is the literal meaning of \emph{Jev-as-IF}.
+  \item[{\texttt{jev.filter(q, xs)}}] keeps the elements of \texttt{xs} for which \texttt{q} holds.
+\end{description}
+The \texttt{jev} module is bound to a System-1 backend. Jev is our main instance, and we also evaluate open-source backends and an LLM backend (\S\ref{sec:rq3}).
+
+\subsection{Graph-Guided Static Checking}
+\label{sec:check}
+The compiler parses the program into an abstract syntax tree, infers types from the stubs, and checks the following before any tool runs.
+\begin{enumerate}
+  \item \emph{Language}: only allowed constructs appear.
+  \item \emph{Operations}: every call targets a disclosed operation with correctly typed arguments.
+  \item \emph{Data flow}: every field access refers to a property in $\mathrm{out}$ of the producing operation, consistent with the derived edges $D$. This rules out guessed field names.
+  \item \emph{Access}: no identity- or host-filled parameter is passed. Parameters that require provenance are bound to values derived from tool results or from primitives over tool results, never to literals.
+  \item \emph{Primitives}: candidate lists come from tool results, and questions refer only to fields in scope.
+  \item \emph{Order}: scope-producing entry operations precede scope-checked ones.
+\end{enumerate}
+Violations go back to the agent as structured errors that name the line and the expected type. One repair round fixes them, and no tool has run yet.
+
+\subsection{Elaborating Primitives with the Object Graph}
+\label{sec:elaborate}
+Each primitive call becomes one System-1 question. The object graph supplies what the agent's short question lacks.
+\begin{itemize}
+  \item \emph{Options}: for \texttt{jev.choice}, the candidate identifiers, each displayed through its entity's label property (``\kw{ZH0007} --- Global Allocation QDII''), plus an abstain option $\bot$ (``none of these / cannot tell'').
+  \item \emph{Criteria}: the meanings of the properties the question refers to, and the entity's rules as boundary cases.
+  \item \emph{State}: the user request plus only the referenced field values, because irrelevant fields degrade System-1 accuracy~\cite{typesafe2026jev}.
+\end{itemize}
+\texttt{jev.choice} with \texttt{k=1} becomes a Choice. \texttt{jev.choice} with \texttt{k="*"}, \texttt{jev.filter} and \texttt{jev.noul} become one Noul per candidate. Candidate sets larger than 255 are split into two levels.
+
+\subsection{Optimization and Lowering}
+\label{sec:lowering}
+The checked program is lowered to an executable flow. Calls become action nodes, primitives become selection nodes, \texttt{if} on a primitive becomes a pair of guarded edges, and loops become \texttt{foreach} nodes. Two optimizations follow from the dependency analysis. Independent calls run in parallel. Primitives that become ready in the same round and share state are \emph{batched} into one System-1 request (speculative fan-out). Optionally, choice probabilities are averaged over $r$ cyclic permutations of the options to reduce order sensitivity~\cite{li2026jevjudge}. A value chosen by a primitive is by construction an observed value, so it passes provenance checks in the policy gateway.
+
+\subsection{Confidence-Gated Fallback}
+\label{sec:gate}
+A decision is acted on only if the System-1 answer is confident enough. Let $\hat p(c\mid x)$ be the backend's probability for option $c$. On a calibration set of resolved decisions with nonconformity $1-\hat p(y_i\mid x_i)$, let $\hat\tau$ be the $\lceil(n+1)(1-\alpha)\rceil/n$ empirical quantile. The prediction set is $\Gamma(x)=\{c:1-\hat p(c\mid x)\le\hat\tau\}$, and the runtime acts only if $\Gamma(x)=\{c\}$ with $c\neq\bot$. Under exchangeability, split conformal prediction~\cite{vovk2005algorithmic,angelopoulos2021gentle} gives $\Pr[y\in\Gamma(x)]\ge1-\alpha$. Acting on a wrong decision therefore has probability at most $\alpha$, as in KnowNo~\cite{ren2023knowno}. A program with $m$ primitives that uses $\alpha/m$ per primitive obeys a task-level bound of $\alpha$. When the gate refuses, the runtime pauses and makes \emph{one} LLM repair call. The call carries the partial trace and the option probabilities, and the LLM can decide, rewrite the rest of the program, or ask the user. \todo{selective-risk variant~\cite{geifman2017selective,angelopoulos2024crc}}
+
+\subsection{Cost}
+\label{sec:cost}
+Let $C_0$ be the agent prompt (request plus disclosed stubs) and $|o_j|$ the size of the $j$-th tool output. ReAct with $L$ calls processes about $\sum_{i=1}^{L+1}\bigl(C_0+\sum_{j<i}|o_j|\bigr)$ LLM input tokens. Programmatic tool calling saves the rounds for mechanical steps, but pays one round for every semantic decision whose data it must return to the model. \jif processes $C_0$ to write the program and $C_0+|o_{\mathrm{ans}}|$ to answer, where $o_{\mathrm{ans}}$ holds only the facts named in \texttt{answer(\ldots)}. It then adds $\Pr[\text{refuse}]$ repair calls and System-1 tokens, which are priced about two orders of magnitude lower. Object-scoped disclosure keeps $C_0$ bounded as the number of tools grows. \todo{measured constants; predicted vs.\ measured.}

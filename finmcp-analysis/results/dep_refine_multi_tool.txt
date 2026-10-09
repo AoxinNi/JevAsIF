@@ -1,0 +1,35 @@
+samples 249
+  pick 1 of n          events   299 | samples  121 (49%) | n median 5 p90 46 max 1604
+  pick all n           events   176 | samples   98 (39%) | n median 7.0 p90 17 max 39
+  pick subset k of n   events   140 | samples   84 (34%) | n median 20.0 p90 48 max 98
+  samples needing a real judgment (pick 1 or subset): 149 (60%)
+
+## pick subset k of n
+   (1, '投资国外市场的投顾组合 当前用户id是9b989c9c9e9e93', 'GetStrategyDetails', 'strategyCodes', '3/17', '策略代码')
+   (22, '小顾你好，你觉得债券基金等固收类产品，如果有增量资金的话（可能定期定量向工资，也', 'BatchGetFundsDetail', 'fundCodes', '3/5', 'fundCode')
+   (30, '我有买长赢和稳稳的幸福吗 当前用户id是9b989f9b9d9b92', 'GetUserAssetHoldingDistribution', 'poCodes', '2/12', '策略代码')
+   (31, '有一笔钱，怎么规划 当前用户id是9b989c9e999b92', 'GetUserAssetHoldingDistribution', 'poCodes', '7/11', 'assetCode')
+   (34, '工银瑞信印度市场基金 当前用户id是9b939f9b9a939e', 'BatchGetFundsDetail', 'fundCodes', '2/3', 'fundCode')
+   (43, '其他五剑不收吗 当前用户id是9b989f989c9892', 'BatchGetFundsFeeRule', 'fundCodes', '20/98', '基金代码')
+   (44, '收费标准 当前用户id是9b989c92989298', 'BatchGetStrategiesComposition', 'strategyCodes', '2/3', '策略代码')
+   (44, '收费标准 当前用户id是9b989c92989298', 'BatchGetFundsFeeRule', 'fundCodes', '20/48', '基金代码')
+
+## pick 1 of n
+   (3, '海外投顾哪家强？ 当前用户id是9b989c9d989b9f', 'GetStrategyDetails', 'strategyCodes', '1/17', '策略代码')
+   (5, '帮我分析下 张翼飞这个基金经理 当前用户id是9b989c9d9d9298', 'BatchGetFundsDetail', 'fundCodes', '1/2', 'code')
+   (5, '帮我分析下 张翼飞这个基金经理 当前用户id是9b989c9d9d9298', 'BatchGetFundsDetail', 'fundCodes', '1/2', 'fundCode')
+   (5, '帮我分析下 张翼飞这个基金经理 当前用户id是9b989c9d9d9298', 'SearchFunds', 'keyword', '1/2', 'fundCode')
+   (11, '对于“长赢”策略，当前环境下的市场时钟（Market Clock）分析显示其是处', 'GetStrategyDetails', 'strategyCodes', '1/12', '策略代码')
+   (16, '我怕亏钱，有什么稳一点的建议 当前用户id是9b989c939a9c9b', 'GetStrategyRiskInfo', 'strategyCode', '1/4', 'assetCode')
+   (21, '我最近收到年终50万，推荐我一些策略买 当前用户id是9b989c9c9d9b9', 'GetStrategyAssetClassAnalysis', 'strategyCode', '1/4', 'assetCode')
+   (21, '我最近收到年终50万，推荐我一些策略买 当前用户id是9b989c9c9d9b9', 'GetStrategyAssetClassAnalysis', 'strategyCode', '1/4', 'assetCode')
+
+## pick all n
+   (5, '帮我分析下 张翼飞这个基金经理 当前用户id是9b989c9d9d9298', 'BatchGetFundsDetail', 'fundCodes', '2/2', 'fundCode')
+   (20, '可以给我推荐一些基金经理从业5年以上的，风险较低的资产配置吗？ 当前用户id是9', 'BatchGetFundsDetail', 'fundCodes', '13/13', 'fundCode')
+   (22, '小顾你好，你觉得债券基金等固收类产品，如果有增量资金的话（可能定期定量向工资，也', 'BatchGetFundsDetail', 'fundCodes', '5/5', 'fundCode')
+   (38, '我持有多少长赢资产 当前用户id是9b989c999f9c9e', 'GetUserAssetHoldingDistribution', 'poCodes', '12/12', '策略代码')
+   (41, '买的花好月圆 如果取出 要多少手续费 当前用户id是9b989c929a9a9c', 'BatchGetFundsFeeRule', 'fundCodes', '10/10', '基金代码')
+   (43, '其他五剑不收吗 当前用户id是9b989f989c9892', 'GetStrategyDetails', 'strategyCodes', '6/6', '策略代码')
+   (43, '其他五剑不收吗 当前用户id是9b989f989c9892', 'BatchGetStrategiesComposition', 'strategyCodes', '6/6', '策略代码')
+   (50, '养老储蓄罐 当前用户id是9b9a9c9e9b989b', 'GetStrategyDetails', 'strategyCodes', '2/2', '策略代码')

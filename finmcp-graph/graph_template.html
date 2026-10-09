@@ -1,0 +1,708 @@
+<title>FinMCP 顾问本体</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Serif+SC:wght@600;700&display=swap">
+<style>
+/* Layout: header with key figures, then one ontology canvas (operation zone | object zone, banded by domain) beside a detail panel. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --surface-2: #f5f7f9;
+  --ink: #16212c;
+  --muted: #5b6977;
+  --line: #d4dbe2;
+  --line-strong: #9aa7b4;
+  --accent: #c06a00;      /* input that must be picked among upstream candidates: a Jev decision point */
+  --focus: #2457c5;
+  --in: #2f69b8;          /* object -> action (input) */
+  --out: #2f8a55;         /* action -> object (output) */
+  --both: #8456b8;        /* reads and writes the same object */
+  --zone-op: #eaf1fb;
+  --zone-obj: #e9f6f0;
+  --d-cust: #15788b;
+  --d-strat: #4a51a8;
+  --d-fund: #b1384b;
+  --d-plan: #557b1f;
+  --d-info: #8a4b9c;
+  --d-aux: #6c7a87;
+  --f-display: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --f-body: "IBM Plex Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --f-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --stage-h: clamp(620px, 86vh, 1100px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141a; --surface: #151e27; --surface-2: #1a2531; --ink: #e2e8ee; --muted: #93a2b0;
+    --line: #2a3846; --line-strong: #566676; --accent: #f0a23a; --focus: #7aa5ff;
+    --in: #6fa3ec; --out: #5cc28a; --both: #b48ee6; --zone-op: #17222f; --zone-obj: #15251f;
+    --d-cust: #4db7ca; --d-strat: #9298f0; --d-fund: #ee7b8c; --d-plan: #9dc35b; --d-info: #c893d8; --d-aux: #9ba8b4;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141a; --surface: #151e27; --surface-2: #1a2531; --ink: #e2e8ee; --muted: #93a2b0;
+  --line: #2a3846; --line-strong: #566676; --accent: #f0a23a; --focus: #7aa5ff;
+  --in: #6fa3ec; --out: #5cc28a; --both: #b48ee6; --zone-op: #17222f; --zone-obj: #15251f;
+  --d-cust: #4db7ca; --d-strat: #9298f0; --d-fund: #ee7b8c; --d-plan: #9dc35b; --d-info: #c893d8; --d-aux: #9ba8b4;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 14px/1.6 var(--f-body); }
+.wrap { max-width: 1560px; margin: 0 auto; padding-inline: 20px; padding-block: 24px 40px; display: grid; gap: 18px; }
+@media (max-width: 600px) { .wrap { padding-inline: 16px; } }
+code, .mono { font-family: var(--f-mono); font-size: 0.92em; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.top { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px 32px; align-items: end; }
+@media (max-width: 980px) { .top { grid-template-columns: 1fr; } }
+.eyebrow { margin: 0 0 6px; font: 500 12px/1.4 var(--f-mono); letter-spacing: 0.04em; color: var(--muted); }
+h1 { margin: 0; font: 700 32px/1.2 var(--f-display); text-wrap: balance; }
+.lede { margin: 10px 0 0; max-width: 66ch; color: var(--muted); }
+.stats { display: grid; grid-template-columns: repeat(3, auto); gap: 10px 26px; margin: 0; }
+@media (max-width: 600px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.stats div { display: grid; }
+.stats dt { font-size: 12px; color: var(--muted); letter-spacing: 0.02em; }
+.stats dd { margin: 0; font: 500 22px/1.25 var(--f-mono); font-variant-numeric: tabular-nums; }
+.stats dd small { font-size: 12px; color: var(--muted); font-weight: 400; }
+.stats .ok dd { color: var(--d-plan); }
+
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.tabs button { background: none; border: 0; border-bottom: 2px solid transparent; padding: 8px 14px 9px; cursor: pointer; color: var(--muted); font-weight: 500; margin-bottom: -1px; }
+.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+.tabs button:hover { color: var(--ink); }
+.tabs .hint { margin-left: auto; align-self: center; font-size: 12px; color: var(--muted); }
+@media (max-width: 700px) { .tabs .hint { display: none; } }
+
+.stage { display: grid; grid-template-columns: minmax(0, 1fr) 390px; gap: 16px; align-items: start; }
+@media (max-width: 1000px) { .stage { grid-template-columns: minmax(0, 1fr); } }
+.canvas { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; min-width: 0; overflow: hidden; }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 12.5px; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; min-width: 0; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--dc); flex: none; }
+.swatch { width: 22px; height: 0; border-top: 2px solid var(--line-strong); flex: none; }
+.swatch.in { border-top-color: var(--in); } .swatch.out { border-top-color: var(--out); } .swatch.both { border-top-color: var(--both); }
+.swatch.jev { border-top-color: var(--accent); border-top-width: 3px; }
+.swatch.ctx { border-top-style: dotted; }
+.tools { display: flex; flex-wrap: wrap; gap: 6px 12px; margin-left: auto; align-items: center; }
+.btn { background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 3px 10px; cursor: pointer; font-size: 12.5px; color: var(--ink); }
+.btn:hover { border-color: var(--line-strong); }
+.check { display: inline-flex; gap: 5px; align-items: center; cursor: pointer; color: var(--ink); white-space: nowrap; }
+svg.graph { display: block; width: 100%; height: var(--stage-h); touch-action: none; cursor: grab; background: var(--surface); user-select: none; -webkit-user-select: none; }
+svg.graph:active { cursor: grabbing; }
+
+/* Graph styling: every colour comes from the tokens. */
+.d-cust { --dc: var(--d-cust); } .d-strat { --dc: var(--d-strat); } .d-fund { --dc: var(--d-fund); }
+.d-plan { --dc: var(--d-plan); } .d-info { --dc: var(--d-info); } .d-aux { --dc: var(--d-aux); }
+.zone.op { fill: var(--zone-op); stroke: color-mix(in srgb, var(--in) 35%, var(--surface)); }
+.zone.obj { fill: var(--zone-obj); stroke: color-mix(in srgb, var(--out) 35%, var(--surface)); }
+.zone { stroke-width: 1.2; stroke-dasharray: 7 5; }
+.zone-label { fill: var(--muted); font: 700 14px var(--f-body); letter-spacing: 0.06em; }
+.band-label { fill: var(--dc); font: 600 12px var(--f-body); letter-spacing: 0.08em; }
+.band-rule { stroke: var(--line); stroke-dasharray: 2 5; }
+.node { cursor: pointer; }
+.node rect.box { fill: color-mix(in srgb, var(--dc) 10%, var(--surface)); stroke: color-mix(in srgb, var(--dc) 55%, var(--surface)); stroke-width: 1.2; }
+.node.obj rect.box { fill: color-mix(in srgb, var(--dc) 20%, var(--surface)); stroke: var(--dc); stroke-width: 1.5; }
+.node:hover rect.box { stroke: var(--dc); }
+.node.sel rect.box { stroke: var(--dc); stroke-width: 3; }
+.node .t1 { fill: var(--ink); font: 600 13px var(--f-body); }
+.node .t2 { fill: var(--muted); font: 400 10.5px var(--f-mono); }
+.node .cnt { fill: var(--muted); font: 500 10.5px var(--f-mono); }
+.node circle.pip { fill: var(--dc); }
+.node rect.ring { fill: none; stroke: var(--dc); stroke-width: 1; stroke-dasharray: 3 3; }
+.rel { fill: none; stroke: var(--line-strong); stroke-width: 1.2; }
+.rel-label { fill: var(--muted); font: 400 11px var(--f-body); paint-order: stroke; stroke: var(--zone-obj); stroke-width: 4px; stroke-linejoin: round; }
+.lnk { fill: none; stroke-opacity: 0.42; }
+.lnk.in { stroke: var(--in); } .lnk.out { stroke: var(--out); } .lnk.both { stroke: var(--both); }
+.lnk.jev { stroke: var(--accent); stroke-opacity: 0.7; }
+.lnk.ctx { stroke-dasharray: 2 4; stroke-opacity: 0.3; }
+.lnk-label { display: none; fill: var(--ink); font: 500 10.5px var(--f-mono); paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; }
+.m-rel { fill: var(--line-strong); } .m-in { fill: var(--in); } .m-out { fill: var(--out); } .m-both { fill: var(--both); } .m-jev { fill: var(--accent); }
+svg.dim .node, svg.dim .rel, svg.dim .rel-label, svg.dim .lnk { opacity: 0.12; transition: opacity 0.15s; }
+svg.dim .node.on, svg.dim .rel.on, svg.dim .rel-label.on { opacity: 1; }
+svg.dim .lnk.on { opacity: 1; stroke-opacity: 0.95; }
+svg.dim .lnk-label.on { display: block; }
+svg.hide-rel .rel, svg.hide-rel .rel-label, svg.hide-rel-labels .rel-label, svg.hide-ctx .lnk.ctx { display: none; }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 18px 22px; min-width: 0; max-height: calc(var(--stage-h) + 46px); overflow: auto; display: grid; gap: 16px; align-content: start; }
+@media (max-width: 1000px) { .panel { max-height: none; } }
+.panel h2 { margin: 0; font: 700 21px/1.3 var(--f-display); text-wrap: balance; }
+.panel h3 { margin: 0 0 6px; font: 600 12px/1.4 var(--f-body); letter-spacing: 0.06em; color: var(--muted); }
+.panel p { margin: 0; }
+.panel .sub { color: var(--muted); font-size: 12.5px; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; margin-top: 4px; }
+.panel section { display: grid; gap: 6px; min-width: 0; }
+.tag { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; padding: 1px 8px; border-radius: 4px; background: var(--surface-2); border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.tag.dom { color: var(--ink); border-color: color-mix(in srgb, var(--dc) 50%, var(--surface)); background: color-mix(in srgb, var(--dc) 10%, var(--surface)); }
+.tag.acc { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, var(--surface)); background: color-mix(in srgb, var(--accent) 9%, var(--surface)); }
+.tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.tbl th { text-align: left; font-weight: 500; color: var(--muted); padding: 4px 6px 4px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.tbl td { padding: 5px 6px 5px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tbl td.num { text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tbl tr:last-child td { border-bottom: 0; }
+.scroll-x { overflow-x: auto; }
+ul.rules { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.link { background: none; border: 0; padding: 0; color: var(--focus); cursor: pointer; text-align: left; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--focus) 35%, transparent); text-underline-offset: 2px; }
+.link:hover { text-decoration-color: var(--focus); }
+.objgrp { display: grid; gap: 3px; padding: 8px 10px; border-radius: 6px; background: var(--surface-2); }
+.objgrp .head { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.kv { display: grid; grid-template-columns: minmax(0, auto) minmax(0, 1fr); gap: 2px 10px; font-size: 12.5px; }
+.path { color: var(--muted); font-family: var(--f-mono); font-size: 11px; word-break: break-all; }
+.flowlist { display: grid; gap: 4px; font-size: 12.5px; }
+.flowlist .row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: baseline; }
+.flowlist .n { font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.flowlist .n b { color: var(--accent); font-weight: 500; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid color-mix(in srgb, var(--dc, var(--line-strong)) 45%, var(--surface)); background: color-mix(in srgb, var(--dc, var(--line-strong)) 9%, var(--surface)); border-radius: 999px; padding: 2px 10px; font-size: 12.5px; cursor: pointer; color: var(--ink); white-space: nowrap; }
+.chip:hover { border-color: var(--dc, var(--line-strong)); }
+.muted { color: var(--muted); }
+.note { font-size: 12.5px; color: var(--muted); }
+.rule-box { display: grid; gap: 6px; padding: 10px 12px; border-radius: 8px; background: var(--surface-2); font-size: 12.5px; }
+.rule-box div { display: flex; gap: 8px; align-items: center; }
+
+/* Schema tab */
+.schema { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 960px) { .schema { grid-template-columns: minmax(0, 1fr); } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.card.wide { grid-column: 1 / -1; }
+.card h2 { margin: 0; font: 700 18px/1.3 var(--f-display); }
+.card p { margin: 0; max-width: 72ch; }
+.card ol, .card ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.bar { height: 8px; border-radius: 4px; background: var(--surface-2); border: 1px solid var(--line); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--d-plan); }
+.cov { display: grid; grid-template-columns: 88px minmax(0, 1fr) auto; gap: 8px 12px; align-items: center; font-size: 13px; }
+.cov .num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="eyebrow">ZSZQ 组合详解 v0.4 schema · executionMode: object · finmcp-advisory-object-v04</p>
+      <h1>FinMCP 顾问本体</h1>
+      <p class="lede">从 FinMCP-Bench 筛选子集（324 个单元）里抽出名词性概念作为对象本体，把实际用到的 52 个工具作为操作本体，放在同一张图上。动作的每个输入、输出参数都是某个对象的属性：输入画成从对象指向动作的线，输出画成从动作指向对象的线。两张图之间只靠这一条规则连接。</p>
+    </div>
+    <dl class="stats" id="stats"></dl>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="视图">
+    <button role="tab" id="tab-graph" aria-controls="view-graph" aria-selected="true" data-view="graph">本体视图</button>
+    <button role="tab" id="tab-schema" aria-controls="view-schema" aria-selected="false" data-view="schema">Schema 对照</button>
+    <span class="hint">滚轮缩放 · 拖动平移 · 点节点看详情 · 点空白处取消</span>
+  </nav>
+
+  <section id="view-graph" role="tabpanel" aria-labelledby="tab-graph">
+    <div class="stage">
+      <div class="canvas">
+        <div class="toolbar">
+          <div class="legend">
+            <span><i class="swatch in"></i>输入：对象 → 动作</span>
+            <span><i class="swatch out"></i>输出：动作 → 对象</span>
+            <span><i class="swatch both"></i>同一对象既读又写</span>
+            <span><i class="swatch jev"></i>输入要从上游候选中挑选</span>
+            <span><i class="swatch"></i>对象关系</span>
+          </div>
+          <div class="tools">
+            <label class="check"><input type="checkbox" id="opt-rel" checked> 对象关系</label>
+            <label class="check"><input type="checkbox" id="opt-rel-labels" checked> 关系名</label>
+            <label class="check"><input type="checkbox" id="opt-ctx" checked> 客户标识与查询条件</label>
+            <button class="btn" type="button" id="btn-fit">适应窗口</button>
+          </div>
+        </div>
+        <svg class="graph" id="svg-graph" role="img" aria-label="本体视图：操作本体与对象本体，以动作的输入输出参数相连"></svg>
+      </div>
+      <aside class="panel" id="panel" aria-live="polite"></aside>
+    </div>
+  </section>
+
+  <section id="view-schema" role="tabpanel" aria-labelledby="tab-schema" hidden>
+    <div class="schema" id="schema"></div>
+  </section>
+</div>
+
+<script type="application/json" id="graph-data">__GRAPH_DATA__</script>
+<script>
+(() => {
+"use strict";
+const D = JSON.parse(document.getElementById("graph-data").textContent);
+const NS = "http://www.w3.org/2000/svg";
+const $ = (s, root = document) => root.querySelector(s);
+
+function svgEl(tag, attrs, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs || {}) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function h(tag, attrs, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v == null || v === false) continue;
+    if (k === "class") e.className = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v);
+  }
+  for (const k of kids.flat(Infinity)) if (k != null && k !== false) e.append(k.nodeType ? k : document.createTextNode(String(k)));
+  return e;
+}
+const push = (m, k, v) => (m.get(k) || m.set(k, []).get(k)).push(v);
+const objOf = ref => ref.slice(0, ref.indexOf("."));          // only the first dot separates object from property
+const propOf = ref => ref.slice(ref.indexOf(".") + 1);
+const fmt = n => n.toLocaleString("en-US");
+
+/* ---------- indexes ---------- */
+const OBJ = new Map(D.objects.map(o => [o.id, o]));
+const ACT = new Map(D.actions.map(a => [a.id, a]));
+const DOM_ORDER = ["aux", "cust", "strat", "fund", "plan", "info"].filter(d => D.domains[d]);
+const objDom = id => D.objectDomain[id];
+const actDom = id => D.actionDomain[id];
+const produces = new Map(), consumes = new Map();
+for (const a of D.actions) {
+  for (const r of a.output) push(produces, r, a.id);
+  for (const r of a.input) push(consumes, r, a.id);
+}
+const param = new Map();   // "tool|ref" -> registry param
+for (const [t, s] of Object.entries(D.mapping)) for (const p of s.params) param.set(t + "|" + p.property, p);
+const isEcho = (t, r) => ACT.get(t).input.includes(r);      // output that only hands an input back
+const hasSource = r => (produces.get(r) || []).some(t => !isEcho(t, r));
+const HUBS = [...produces.keys()].filter(r => (consumes.get(r) || []).some(t => param.get(t + "|" + r)?.fill !== "identity")).sort();
+const HUBSET = new Set(HUBS);
+const stat = new Map();    // "P|tool|ref" / "C|ref|tool" -> {obs, sel}
+const bump = (k, e) => { const s = stat.get(k) || stat.set(k, { obs: 0, sel: 0 }).get(k); s.obs += e.observed; s.sel += e.selection; };
+for (const e of D.edges) { bump("P|" + e.from + "|" + e.property, e); bump("C|" + e.property + "|" + e.to, e); }
+const st = k => stat.get(k) || { obs: 0, sel: 0 };
+const hubTotal = r => (consumes.get(r) || []).reduce((acc, t) => { const s = st("C|" + r + "|" + t); acc.obs += s.obs; acc.sel += s.sel; return acc; }, { obs: 0, sel: 0 });
+const usage = t => D.usage[t] || 0;
+const isCtx = (t, r) => param.get(t + "|" + r)?.fill === "identity" || objOf(r) === "QueryCondition";
+
+/* ---------- header figures ---------- */
+(() => {
+  const R = D.report, C = R.coverage;
+  const items = [
+    ["对象", fmt(R.objects), `${fmt(R.properties)} 个属性`],
+    ["对象关系", fmt(R.relations), ""],
+    ["动作", fmt(R.actions), "+ 1 个结束节点"],
+    ["可追踪属性", fmt(HUBS.length), "动作间的全部依赖"],
+    ["ZSZQ 编译器", R.zszq_compile.ok ? "通过" : "未通过", "compile_map", R.zszq_compile.ok],
+    ["数据流覆盖", (C.all.recall * 100).toFixed(1) + "%", `${fmt(C.all.covered)} / ${fmt(C.all.total)}`, true],
+  ];
+  $("#stats").append(...items.map(([k, v, s, ok]) => h("div", { class: ok ? "ok" : null }, h("dt", null, k), h("dd", null, v, s ? h("small", null, " " + s) : null))));
+})();
+
+/* ---------- pan / zoom ---------- */
+function viewport(svg, g) {
+  const s = { x: 0, y: 0, k: 1 };
+  const apply = () => g.setAttribute("transform", `translate(${s.x},${s.y}) scale(${s.k})`);
+  const zoomAt = (px, py, f) => {
+    const k = Math.min(3, Math.max(0.12, s.k * f));
+    s.x = px - (px - s.x) * k / s.k; s.y = py - (py - s.y) * k / s.k; s.k = k; apply();
+  };
+  svg.addEventListener("wheel", e => {
+    e.preventDefault();
+    const r = svg.getBoundingClientRect();
+    zoomAt(e.clientX - r.left, e.clientY - r.top, Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0015)));
+  }, { passive: false });
+  let drag = null;
+  svg.addEventListener("pointerdown", e => { if (e.button === 0) drag = { x: e.clientX, y: e.clientY, sx: s.x, sy: s.y, moved: false }; });
+  window.addEventListener("pointermove", e => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (!drag.moved && Math.abs(dx) + Math.abs(dy) > 4) drag.moved = true;
+    if (drag.moved) { s.x = drag.sx + dx; s.y = drag.sy + dy; apply(); }
+  });
+  window.addEventListener("pointerup", () => { if (drag) svg.dataset.dragged = drag.moved ? "1" : ""; drag = null; });
+  return {
+    fit(pad = 24) {
+      const b = g.getBBox(), w = svg.clientWidth, hgt = svg.clientHeight;
+      if (!w || !hgt || !b.width) return false;
+      const k = Math.min((w - 2 * pad) / b.width, (hgt - 2 * pad) / b.height, 1.2);
+      s.k = k; s.x = (w - b.width * k) / 2 - b.x * k; s.y = (hgt - b.height * k) / 2 - b.y * k; apply();
+      return true;
+    },
+    focus(x, y) {
+      const w = svg.clientWidth, hgt = svg.clientHeight;
+      s.k = Math.max(s.k, 0.85); s.x = w / 2 - x * s.k; s.y = hgt / 2 - y * s.k; apply();
+    },
+    wasDrag: () => svg.dataset.dragged === "1",
+  };
+}
+
+/* ---------- unified ontology view ----------
+   Operation zone (left) and object zone (right), cut into horizontal bands by domain.
+   The only links between the zones are the actions' parameters: input Obj.prop draws object -> action,
+   output Obj.prop draws action -> object. Object relations are arcs on the right of the object column. */
+const view = (() => {
+  const svg = $("#svg-graph");
+  const defs = svgEl("defs", {}, svg);
+  for (const k of ["rel", "in", "out", "both", "jev"]) {
+    const mk = svgEl("marker", { id: "m-" + k, viewBox: "0 0 10 10", refX: 9, refY: 5, markerWidth: 6.5, markerHeight: 6.5, orient: "auto-start-reverse" }, defs);
+    svgEl("path", { d: "M0,0 L10,5 L0,10 z", class: "m-" + k }, mk);
+  }
+  const root = svgEl("g", {}, svg);
+  const gZ = svgEl("g", {}, root), gR = svgEl("g", {}, root), gE = svgEl("g", {}, root), gN = svgEl("g", {}, root), gL = svgEl("g", {}, root);
+
+  const AW = 214, AH = 40, AGX = 16, ROWA = 48;          // action nodes, two sub-columns
+  const OW = 200, OH = 42, ROWO = 52;                    // object nodes, one column
+  const OX = 2 * AW + AGX + 330;                         // object column left edge
+  const LABEL_H = 26, BAND_GAP = 22;
+  const pos = new Map();                                 // id -> {x, y, w, h} (top-left)
+  const cy = id => pos.get(id).y + pos.get(id).h / 2;
+
+  // Links: one per (action, object), carrying the input and output properties.
+  const links = [];
+  for (const a of D.actions) {
+    const m = new Map();
+    const get = o => m.get(o) || m.set(o, { act: a.id, obj: o, ins: [], outs: [] }).get(o);
+    for (const r of a.input) get(objOf(r)).ins.push(r);
+    for (const r of a.output) if (!isEcho(a.id, r)) get(objOf(r)).outs.push(r);
+    for (const l of m.values()) {
+      l.type = l.ins.length && l.outs.length ? "both" : l.ins.length ? "in" : "out";
+      l.ctx = !l.outs.length && l.ins.every(r => isCtx(a.id, r));
+      l.obs = 0; l.sel = 0;
+      for (const r of l.ins) if (HUBSET.has(r)) { const s = st("C|" + r + "|" + a.id); l.obs += s.obs; l.sel += s.sel; }
+      for (const r of l.outs) if (HUBSET.has(r)) l.obs += st("P|" + a.id + "|" + r).obs;
+      l.jev = l.ins.some(r => { const s = st("C|" + r + "|" + a.id); return HUBSET.has(r) && s.obs > 0 && s.sel * 2 >= s.obs; });
+      links.push(l);
+    }
+  }
+  const linksOf = new Map();
+  for (const l of links) { push(linksOf, l.act, l); push(linksOf, l.obj, l); }
+
+  // Bands: objects first (fixed order), then actions sorted by the mean height of the objects they touch.
+  let y = 0;
+  const bands = [];
+  for (const d of DOM_ORDER) {
+    const objs = D.objects.filter(o => objDom(o.id) === d);
+    const acts = D.actions.filter(a => actDom(a.id) === d);
+    const hA = Math.ceil(acts.length / 2) * ROWA - (ROWA - AH), hO = objs.length * ROWO - (ROWO - OH);
+    const top = y + LABEL_H, hB = Math.max(hA, hO);
+    objs.forEach((o, i) => pos.set(o.id, { x: OX, y: top + (hB - hO) / 2 + i * ROWO, w: OW, h: OH }));
+    bands.push({ d, top, hB, hA, acts, objs });
+    y = top + hB + BAND_GAP;
+  }
+  for (const b of bands) {
+    const bary = a => {
+      const ls = (linksOf.get(a.id) || []).filter(l => !l.ctx);
+      return ls.length ? ls.reduce((s, l) => s + cy(l.obj), 0) / ls.length : b.top + b.hB / 2;
+    };
+    const sorted = b.acts.map(a => [bary(a), a]).sort((p, q) => p[0] - q[0] || usage(q[1].id) - usage(p[1].id)).map(p => p[1]);
+    sorted.forEach((a, i) => pos.set(a.id, { x: (i % 2) * (AW + AGX), y: b.top + (b.hB - b.hA) / 2 + Math.floor(i / 2) * ROWA, w: AW, h: AH }));
+  }
+  const bottom = y - BAND_GAP;
+
+  const arcBulge = (ya, yb) => 34 + Math.min(Math.abs(yb - ya) * 0.24, 250);
+  const maxBulge = Math.max(...D.relations.map(r => arcBulge(cy(r.from), cy(r.to))));
+  const objRight = OX + OW;
+
+  // Zones and domain bands.
+  const zoneOp = { x: -26, y: -58, w: 2 * AW + AGX + 52, h: bottom + 58 + 22 };
+  const zoneObj = { x: OX - 26, y: -58, w: OW + maxBulge * 0.8 + 90, h: bottom + 58 + 22 };
+  for (const [z, cls, label] of [[zoneOp, "op", "操作本体 · 业务动作与执行边界"], [zoneObj, "obj", "对象本体 · 业务概念与语义关系"]]) {
+    svgEl("rect", { x: z.x, y: z.y, width: z.w, height: z.h, rx: 18, class: "zone " + cls }, gZ);
+    svgEl("text", { x: z.x + 22, y: z.y + 32, class: "zone-label" }, gZ).textContent = label;
+  }
+  bands.forEach((b, i) => {
+    const ry = b.top - LABEL_H - BAND_GAP / 2 + 2;
+    if (i) svgEl("line", { x1: zoneOp.x, x2: zoneObj.x + zoneObj.w, y1: ry, y2: ry, class: "band-rule" }, gZ);
+    const g = svgEl("g", { class: "d-" + b.d }, gZ);
+    svgEl("text", { x: 0, y: b.top - 9, class: "band-label" }, g).textContent = `${D.domains[b.d]} · ${b.acts.filter(a => a.mode === "action").length} 个动作`;
+    svgEl("text", { x: OX, y: b.top - 9, class: "band-label" }, g).textContent = `${D.domains[b.d]} · ${b.objs.length} 个对象`;
+  });
+
+  // Relation arcs on the right of the object column.
+  const relEls = D.relations.map(r => {
+    const ya = cy(r.from), yb = cy(r.to), bx = arcBulge(ya, yb);
+    const line = svgEl("path", { d: `M${objRight},${ya} C${objRight + bx},${ya} ${objRight + bx},${yb} ${objRight + 4},${yb}`, class: "rel", "marker-end": "url(#m-rel)" }, gR);
+    svgEl("title", {}, line).textContent = `${OBJ.get(r.from).label} → ${OBJ.get(r.to).label}：${r.label}`;
+    const lab = svgEl("text", { x: objRight + bx * 0.75 + 4, y: (ya + yb) / 2 + 4, class: "rel-label" }, gR);
+    lab.textContent = r.label;
+    return { r, line, lab };
+  });
+
+  // Parameter links between the zones.
+  const shortList = (refs, n = 3) => { const ps = [...new Set(refs.map(propOf))]; return ps.slice(0, n).join(", ") + (ps.length > n ? ` +${ps.length - n}` : ""); };
+  const maxObs = Math.max(1, ...links.map(l => l.obs));
+  const linkEls = links.map(l => {
+    const a = pos.get(l.act), o = pos.get(l.obj);
+    const x1 = a.x + a.w, y1 = a.y + a.h / 2, x2 = o.x - 3, y2 = o.y + o.h / 2;
+    const dx = Math.max(60, (x2 - x1) * 0.5);
+    const sx = x1 + (l.type === "out" ? 0 : 3);
+    const d = `M${sx},${y1} C${x1 + dx},${y1} ${x2 - dx},${y2} ${x2},${y2}`;
+    const kind = l.jev ? "jev" : l.type;
+    const w = l.obs ? 1.3 + 3.2 * Math.log1p(l.obs) / Math.log1p(maxObs) : 1.2;
+    const p = svgEl("path", { d, class: `lnk ${l.type}${l.jev ? " jev" : ""}${l.ctx ? " ctx" : ""}`, "stroke-width": w.toFixed(2) }, gE);
+    if (l.type !== "in") p.setAttribute("marker-end", `url(#m-${kind})`);
+    if (l.type !== "out") p.setAttribute("marker-start", `url(#m-${kind})`);
+    const parts = [];
+    if (l.ins.length) parts.push("入 " + shortList(l.ins));
+    if (l.outs.length) parts.push("出 " + shortList(l.outs));
+    svgEl("title", {}, p).textContent = `${ACT.get(l.act).label} ⇄ ${OBJ.get(l.obj).label}\n` +
+      (l.ins.length ? `输入：${l.ins.join(", ")}\n` : "") + (l.outs.length ? `输出：${l.outs.join(", ")}` : "") +
+      (l.obs ? `\n观测到 ${l.obs} 次数据流` + (l.sel ? `，其中 ${l.sel} 次从候选中挑选` : "") : "");
+    // label at the curve's midpoint, shown only while the link is highlighted
+    const mx = (sx + 3 * (x1 + dx) + 3 * (x2 - dx) + x2) / 8, my = (y1 + y2) / 2;
+    const lab = svgEl("text", { x: mx, y: my - 4, "text-anchor": "middle", class: "lnk-label" }, gL);
+    lab.textContent = parts.join(" · ");
+    return { l, p, lab };
+  });
+
+  // Nodes.
+  const nodeEls = new Map();
+  const addNode = (id, kind) => {
+    const p = pos.get(id), dom = kind === "obj" ? objDom(id) : actDom(id);
+    const g = svgEl("g", { class: `node ${kind} d-${dom}`, transform: `translate(${p.x},${p.y})`, tabindex: 0, role: "button" }, gN);
+    const isEntry = id === D.meta.objectEntry || id === D.meta.actionEntry;
+    if (isEntry) svgEl("rect", { class: "ring", x: -5, y: -5, width: p.w + 10, height: p.h + 10, rx: 10 }, g);
+    svgEl("rect", { class: "box", width: p.w, height: p.h, rx: kind === "obj" ? 8 : 6 }, g);
+    if (kind === "obj") {
+      const o = OBJ.get(id);
+      svgEl("text", { class: "t1", x: 12, y: 18 }, g).textContent = o.label;
+      svgEl("text", { class: "t2", x: 12, y: 33 }, g).textContent = `${id} · ${Object.keys(o.properties).length} 个属性`;
+      g.setAttribute("aria-label", `对象 ${o.label} ${id}`);
+    } else {
+      const a = ACT.get(id);
+      svgEl("circle", { class: "pip", cx: 11, cy: 14, r: 3.5 }, g);
+      svgEl("text", { class: "t1", x: 21, y: 18 }, g).textContent = a.label;
+      svgEl("text", { class: "t2", x: 21, y: 32 }, g).textContent = a.mode === "end" ? "mode: end" : id;
+      if (a.mode !== "end") svgEl("text", { class: "cnt", x: p.w - 8, y: 32, "text-anchor": "end" }, g).textContent = "×" + usage(id);
+      g.setAttribute("aria-label", `动作 ${a.label} ${id}`);
+    }
+    if (isEntry) svgEl("title", {}, g).textContent = "入口";
+    g.addEventListener("click", ev => { ev.stopPropagation(); if (!vp.wasDrag()) select(id); });
+    g.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); select(id); } });
+    nodeEls.set(id, g);
+  };
+  D.objects.forEach(o => addNode(o.id, "obj"));
+  D.actions.forEach(a => addNode(a.id, "act"));
+
+  const vp = viewport(svg, root);
+  svg.addEventListener("click", () => { if (!vp.wasDrag()) select(null); });
+
+  function select(id, center) {
+    const onN = new Set(), onL = new Set(), onR = new Set();
+    let hubRef = null;
+    if (id && id.startsWith("H:")) {
+      hubRef = id.slice(2);
+      const o = objOf(hubRef);
+      onN.add(o);
+      linkEls.forEach(({ l }, i) => {
+        if (l.obj === o && (l.ins.includes(hubRef) || l.outs.includes(hubRef))) { onL.add(i); onN.add(l.act); }
+      });
+    } else if (id) {
+      onN.add(id);
+      linkEls.forEach(({ l }, i) => { if (l.act === id || l.obj === id) { onL.add(i); onN.add(l.act); onN.add(l.obj); } });
+      if (OBJ.has(id)) relEls.forEach(({ r }, i) => { if (r.from === id || r.to === id) { onR.add(i); onN.add(r.from); onN.add(r.to); } });
+    }
+    svg.classList.toggle("dim", !!id);
+    const selId = hubRef ? objOf(hubRef) : id;
+    for (const [k, g] of nodeEls) { g.classList.toggle("on", onN.has(k)); g.classList.toggle("sel", k === selId); }
+    linkEls.forEach(({ p, lab }, i) => { p.classList.toggle("on", onL.has(i)); lab.classList.toggle("on", onL.has(i)); });
+    relEls.forEach(({ line, lab }, i) => { line.classList.toggle("on", onR.has(i)); lab.classList.toggle("on", onR.has(i)); });
+    if (center && selId && pos.has(selId)) { const p = pos.get(selId); vp.focus(p.x + p.w / 2, p.y + p.h / 2); }
+    renderPanel(id);
+  }
+  $("#opt-rel").addEventListener("change", e => svg.classList.toggle("hide-rel", !e.target.checked));
+  $("#opt-rel-labels").addEventListener("change", e => svg.classList.toggle("hide-rel-labels", !e.target.checked));
+  $("#opt-ctx").addEventListener("change", e => svg.classList.toggle("hide-ctx", !e.target.checked));
+  $("#btn-fit").addEventListener("click", () => vp.fit());
+  return { select, fit: () => vp.fit(), links };
+})();
+
+/* ---------- panel ---------- */
+const domTag = d => h("span", { class: `tag dom d-${d}` }, h("i", { class: "dot" }), D.domains[d]);
+const actLink = id => h("button", { class: "link", type: "button", onclick: () => go(id) }, ACT.get(id).label);
+const objLink = id => h("button", { class: "link", type: "button", onclick: () => go(id) }, OBJ.get(id).label);
+const hubLink = ref => h("button", { class: "link mono", type: "button", onclick: () => go("H:" + ref) }, ref);
+const refLink = ref => HUBSET.has(ref) ? hubLink(ref) : h("code", null, ref);
+const FILL = { identity: "会话注入", agent: "智能体填写", const: "常量", host: "宿主提供" };
+const counts = s => s.obs ? h("span", { class: "n" }, `${s.obs} 次`, s.sel ? [" · ", h("b", null, `挑选 ${s.sel}`)] : null) : h("span", { class: "n" }, "未出现");
+
+function renderPanel(id) {
+  const P = $("#panel");
+  P.replaceChildren();
+  if (!id) return renderOverview(P);
+  if (id.startsWith("H:")) return renderHubPanel(id.slice(2), P);
+  if (OBJ.has(id)) return renderObjectPanel(id, P);
+  return renderActionPanel(id, P);
+}
+
+function renderOverview(P) {
+  const L = view.links;
+  const n = t => L.filter(l => l.type === t).length;
+  P.append(
+    h("div", null, h("h2", null, "本体视图"), h("p", { class: "sub" }, "入口对象：", objLink(D.meta.objectEntry), "· 入口动作：", actLink(D.meta.actionEntry))),
+    h("p", null, "左边是操作本体（动作），右边是对象本体（对象），按业务领域分成几段横带。对象之间的业务关系画在对象列右侧。"),
+    h("section", null, h("h3", null, "两张图之间的连线规则"),
+      h("div", { class: "rule-box" },
+        h("div", null, h("i", { class: "swatch in" }), "动作的输入参数是 对象.属性 → 从对象连到动作"),
+        h("div", null, h("i", { class: "swatch out" }), "动作的输出是 对象.属性 → 从动作连到对象"),
+        h("div", null, h("i", { class: "swatch both" }), "同一个对象既是输入又是输出 → 双向箭头")),
+      h("p", { class: "note" }, `同一个动作和同一个对象之间只画一条线：输入 ${n("in")} 条、输出 ${n("out")} 条、双向 ${n("both")} 条。点中某个节点时，线上会标出具体是哪些属性。把输入原样带回的输出（回显）不画。`)),
+    h("section", null, h("h3", null, "可追踪属性"),
+      h("p", { class: "note" }, "既被某个动作产出、又被另一个动作当参数用的属性。动作之间的全部依赖都经过它们；橙色的线表示这个输入多数时候要从上游返回的多个候选里挑一个或一部分，也就是 Jev 做判断的地方。"),
+      h("div", { class: "flowlist" }, ...HUBS.map(r => ({ r, s: hubTotal(r) })).sort((a, b) => b.s.obs - a.s.obs).map(({ r, s }) =>
+        h("div", { class: "row" }, h("span", null, hubLink(r), hasSource(r) ? null : h("span", { class: "muted" }, " 仅回显")), counts(s))))),
+    h("p", { class: "note" }, "“客户标识与查询条件”是虚线：客户标识由会话注入，查询条件来自客户原话，都不依赖其他动作。可以在上方关掉它们，图会清爽很多。"));
+}
+
+function renderObjectPanel(id, P) {
+  const o = OBJ.get(id);
+  const props = Object.entries(o.properties);
+  const out = D.relations.filter(r => r.from === id), inn = D.relations.filter(r => r.to === id);
+  const writers = new Map(), readers = new Map();
+  for (const a of D.actions) {
+    const w = a.output.filter(r => objOf(r) === id && !isEcho(a.id, r)), rd = a.input.filter(r => objOf(r) === id);
+    if (w.length) writers.set(a.id, w);
+    if (rd.length) readers.set(a.id, rd);
+  }
+  P.append(
+    h("div", null, h("h2", null, o.label), h("div", { class: "sub" }, h("code", null, o.id), domTag(objDom(id)), id === D.meta.objectEntry ? h("span", { class: "tag" }, "入口对象") : null)),
+    h("p", null, o.description),
+    h("section", null, h("h3", null, `属性（${props.length}）`),
+      h("div", { class: "scroll-x" }, h("table", { class: "tbl" },
+        h("thead", null, h("tr", null, h("th", null, "属性"), h("th", null, "含义"), h("th", null, "产出"), h("th", null, "消费"))),
+        h("tbody", null, ...props.map(([k, v]) => {
+          const ref = id + "." + k;
+          return h("tr", null, h("td", null, HUBSET.has(ref) ? hubLink(k) : h("code", null, k)), h("td", null, v),
+            h("td", { class: "num" }, (produces.get(ref) || []).filter(t => !isEcho(t, ref)).length || "–"), h("td", { class: "num" }, (consumes.get(ref) || []).length || "–"));
+        })))),
+      props.some(([k]) => HUBSET.has(id + "." + k)) ? h("p", { class: "note" }, "带链接的是可追踪属性：既被产出、又被别的动作当参数用。") : null),
+    o.rules.length ? h("section", null, h("h3", null, "规则"), h("ul", { class: "rules" }, ...o.rules.map(r => h("li", null, r)))) : null,
+    h("section", null, h("h3", null, "对象关系"),
+      h("div", { class: "flowlist" },
+        ...out.map(r => h("div", { class: "row" }, h("span", null, "→ ", objLink(r.to)), h("span", { class: "n" }, r.label))),
+        ...inn.map(r => h("div", { class: "row" }, h("span", null, "← ", objLink(r.from)), h("span", { class: "n" }, r.label))))),
+    h("section", null, h("h3", null, `输出到这里的动作（${writers.size}）`),
+      writers.size ? h("div", { class: "flowlist" }, ...[...writers].sort((a, b) => b[1].length - a[1].length).map(([t, rs]) => h("div", { class: "row" }, h("span", null, actLink(t)), h("span", { class: "n" }, rs.length > 3 ? `${rs.length} 个属性` : rs.map(propOf).join(", "))))) : h("p", { class: "note" }, "没有动作产出它：它的属性来自客户原话、会话，或由智能体填写。")),
+    readers.size ? h("section", null, h("h3", null, `以它为输入的动作（${readers.size}）`),
+      h("div", { class: "flowlist" }, ...[...readers].sort((a, b) => usage(b[0]) - usage(a[0])).map(([t, rs]) => h("div", { class: "row" }, h("span", null, actLink(t)), h("span", { class: "n" }, rs.map(propOf).join(", ")))))) : null);
+}
+
+function renderActionPanel(id, P) {
+  const a = ACT.get(id), m = D.mapping[id];
+  if (a.mode === "end") {
+    P.append(h("div", null, h("h2", null, a.label), h("div", { class: "sub" }, h("code", null, a.id), h("span", { class: "tag" }, "mode: end"))),
+      h("p", null, a.instruction), h("p", { class: "note" }, "结束节点没有输入输出，所以和对象之间没有连线。"),
+      h("section", null, h("h3", null, "规则"), h("ul", { class: "rules" }, ...a.rules.map(r => h("li", null, r)))));
+    return;
+  }
+  const outByObj = new Map();
+  for (const r of a.output) push(outByObj, objOf(r), r);
+  const up = a.input.filter(r => HUBSET.has(r) && hasSource(r) && param.get(id + "|" + r)?.fill !== "identity");
+  const down = a.output.filter(r => HUBSET.has(r) && !a.input.includes(r));
+  P.append(
+    h("div", null, h("h2", null, a.label), h("div", { class: "sub" }, h("code", null, a.tool), domTag(actDom(id)),
+      id === D.meta.actionEntry ? h("span", { class: "tag" }, "入口动作") : null, h("span", null, `筛选子集中调用 ${usage(id)} 次`))),
+    h("section", null, h("h3", null, `输入：${m.params.length} 个参数 → ${new Set(a.input.map(objOf)).size} 个对象`),
+      m.params.length ? h("div", { class: "scroll-x" }, h("table", { class: "tbl" },
+        h("thead", null, h("tr", null, h("th", null, "工具参数"), h("th", null, "对象.属性"), h("th", null, "填写"))),
+        h("tbody", null, ...m.params.map(p => h("tr", null, h("td", null, h("code", null, p.apiField)), h("td", null, refLink(p.property)),
+          h("td", null, FILL[p.fill] || p.fill, p.check === "traced" ? [" ", h("span", { class: "tag acc", title: "取值必须来自本次运行中某个上游动作的输出" }, "须可追溯")] : null)))))) : h("p", { class: "note" }, "无参数。"),
+      m.constants.length ? h("p", { class: "note" }, "固定取值、不暴露给智能体：", m.constants.map(c => h("code", null, c + " "))) : null,
+      m.dropped.length ? h("p", { class: "note" }, "不建模（分页大小等）：", m.dropped.map(c => h("code", null, c + " "))) : null),
+    h("section", null, h("h3", null, `输出：${a.output.length} 个属性 → ${outByObj.size} 个对象`),
+      ...[...outByObj].map(([o, refs]) => h("div", { class: "objgrp" },
+        h("div", { class: "head" }, objLink(o), h("code", { class: "muted" }, o)),
+        h("div", { class: "kv" }, ...refs.flatMap(r => [h("span", null, HUBSET.has(r) ? hubLink(r) : h("code", null, propOf(r)), isEcho(id, r) ? [" ", h("span", { class: "tag", title: "把输入原样带回，不算新的来源，图中不画" }, "回显")] : null),
+          h("span", { class: "path" }, (m.fields[r] || []).join("  ·  "))]))))),
+    up.length ? h("section", null, h("h3", null, "上游：哪些动作的输出能填这些参数"),
+      ...up.map(r => h("div", { class: "objgrp" }, h("div", { class: "head" }, hubLink(r), counts(st("C|" + r + "|" + id))),
+        h("div", { class: "flowlist" }, ...(produces.get(r) || []).filter(t => t !== id && !isEcho(t, r)).map(t => h("div", { class: "row" }, h("span", null, actLink(t)), counts(st("P|" + t + "|" + r)))))))) : null,
+    down.length ? h("section", null, h("h3", null, "下游：哪些动作会用它的输出"),
+      ...down.map(r => h("div", { class: "objgrp" }, h("div", { class: "head" }, hubLink(r)),
+        h("div", { class: "flowlist" }, ...(consumes.get(r) || []).filter(t => t !== id).map(t => h("div", { class: "row" }, h("span", null, actLink(t)), counts(st("C|" + r + "|" + t)))))))) : null,
+    a.rules.length ? h("section", null, h("h3", null, "规则"), h("ul", { class: "rules" }, ...a.rules.map(r => h("li", null, r)))) : null);
+}
+
+function renderHubPanel(ref, P) {
+  const o = OBJ.get(objOf(ref)), s = hubTotal(ref);
+  const prods = (produces.get(ref) || []).filter(t => !isEcho(t, ref));
+  const echoes = (produces.get(ref) || []).filter(t => isEcho(t, ref));
+  const cons = (consumes.get(ref) || []).filter(t => param.get(t + "|" + ref)?.fill !== "identity");
+  P.append(
+    h("div", null, h("h2", { class: "mono" }, ref), h("div", { class: "sub" }, objLink(o.id), domTag(objDom(o.id)), h("span", { class: "tag" }, "可追踪属性"))),
+    h("p", null, o.properties[propOf(ref)]),
+    h("p", null, s.obs ? [`筛选子集里有 ${fmt(s.obs)} 次数据流经过这里，其中 `, h("b", { style: "color:var(--accent)" }, fmt(s.sel)), ` 次（${Math.round(s.sel / s.obs * 100)}%）要从上游返回的多个候选中挑选。`] : "schema 允许这条依赖，但筛选子集里没有出现。"),
+    h("p", { class: "note" }, "图中高亮的是：产出这个属性的动作 → 对象，以及对象 → 以它为参数的动作。"),
+    h("section", null, h("h3", null, `产出方（${prods.length}）`),
+      prods.length ? h("div", { class: "flowlist" }, ...prods.sort((a, b) => st("P|" + b + "|" + ref).obs - st("P|" + a + "|" + ref).obs).map(t => h("div", { class: "row" }, h("span", null, actLink(t)), counts(st("P|" + t + "|" + ref))))) : h("p", { class: "note" }, "没有真正的产出方，只有回显。")),
+    h("section", null, h("h3", null, `消费方（${cons.length}）`),
+      h("div", { class: "flowlist" }, ...cons.sort((a, b) => st("C|" + ref + "|" + b).obs - st("C|" + ref + "|" + a).obs).map(t => h("div", { class: "row" }, h("span", null, actLink(t)), counts(st("C|" + ref + "|" + t)))))),
+    echoes.length ? h("section", null, h("h3", null, `回显（${echoes.length}）`),
+      h("p", { class: "note" }, "这些动作把输入的值原样带回，不算作来源："), h("div", { class: "chips" }, ...echoes.map(t => h("button", { class: `chip d-${actDom(t)}`, type: "button", onclick: () => go(t) }, ACT.get(t).label)))) : null);
+}
+
+/* ---------- schema tab ---------- */
+(() => {
+  const R = D.report, C = R.coverage, M = D.meta;
+  const nParams = Object.values(D.mapping).reduce((s, m) => s + m.params.length, 0);
+  const nTraced = Object.values(D.mapping).reduce((s, m) => s + m.params.filter(p => p.check === "traced").length, 0);
+  const nIdent = Object.values(D.mapping).reduce((s, m) => s + m.params.filter(p => p.fill === "identity").length, 0);
+  const consts = Object.entries(D.mapping).filter(([, m]) => m.constants.length);
+  const dropped = Object.entries(D.mapping).filter(([, m]) => m.dropped.length);
+  const row = (k, v, note) => h("tr", null, h("td", null, h("code", null, k)), h("td", null, v), h("td", { class: "muted" }, note || ""));
+  const covRow = (name, c) => [h("span", null, name), h("div", { class: "bar" }, h("i", { style: `width:${(c.recall * 100).toFixed(1)}%` })), h("span", { class: "num" }, `${(c.recall * 100).toFixed(1)}%  ${fmt(c.covered)}/${fmt(c.total)}`)];
+  $("#schema").append(
+    h("div", { class: "card wide" }, h("h2", null, "与组合详解 v0.4 的结构对照"),
+      h("p", null, "顶层结构、对象节点、关系边、动作节点、结束节点都按 business-strategy-detail-object-v04.json 的写法组织，并用 ZSZQ 运行包里的编译器（ontology_mcp.compiler.compile_map）检查通过。本体视图沿用最小运行包 v0.8 工作台的画法：操作本体、对象本体分区，两区之间只按动作的 input / output 连线。"),
+      h("div", { class: "scroll-x" }, h("table", { class: "tbl" },
+        h("thead", null, h("tr", null, h("th", null, "v0.4 字段"), h("th", null, "本图取值"), h("th", null, "说明"))),
+        h("tbody", null,
+          row("id / version", h("code", null, `${M.id} · ${M.version}`)),
+          row("executionMode", h("code", null, M.executionMode), "对象模式：动作只挂在对象属性上，不写流程边"),
+          row("objectOntology.entry", objLink(M.objectEntry), "从客户出发，按关系逐跳展开"),
+          row("operationOntology.entry", actLink(M.actionEntry), "FinMCP 没有确定服务范围的工具，改用当前时间作入口：相对日期都要以它换算"),
+          row("operationOntology.edges", h("code", null, "[]"), "编译器要求为空；动作与对象的连线由 input / output 推导"),
+          row("disclosure", h("code", null, `hops ${M.disclosure.hops} · maxObjects ${M.disclosure.maxObjects}`), "与组合详解相同的渐进披露"),
+          row("object node", `${R.objects} 个对象，${R.properties} 个属性`, "id / label / description / properties / rules"),
+          row("relation edge", `${R.relations} 条`, "id / from / to / label"),
+          row("action node", `${R.actions} 个`, "tool / input / output 都写成 对象.属性"),
+          row("end node", actLink("close_consultation"), "mode: end，带 instruction"))))),
+    h("div", { class: "card" }, h("h2", null, "编译检查"),
+      h("p", null, R.zszq_compile.ok ? "通过：所有对象可从入口到达，动作图没有流程边，每个动作都有工具和输出，所有 对象.属性 引用都能解析。" : "未通过。"),
+      h("p", { class: "note" }, "编译器给出的可追踪属性："),
+      h("div", { class: "chips" }, ...R.zszq_compile.traceable.map(r => h("button", { class: `chip d-${objDom(objOf(r))}`, type: "button", onclick: () => go("H:" + r) }, h("i", { class: "dot" }), r))),
+      h("p", { class: "note mono" }, "hash " + R.zszq_compile.hash.slice(0, 16) + "…")),
+    h("div", { class: "card" }, h("h2", null, "工具注册映射"),
+      h("p", null, `与 ZSZQ 的 tool-registry.json 同构：每个工具参数映射到一个本体属性（params.apiField），每个属性映射到返回结果里的字段路径（fields）。共 ${nParams} 个参数，其中 ${nIdent} 个是会话注入的客户标识，${nTraced} 个要求可追溯到上游输出。`),
+      h("p", { class: "note" }, "固定参数：", consts.map(([t, m]) => [h("code", null, `${t}.${m.constants.join("/")}`), " "])),
+      h("p", { class: "note" }, "不建模的参数：", dropped.map(([t, m]) => [h("code", null, `${t}.${m.dropped.join("/")}`), " "])),
+      h("p", { class: "note" }, "路径写法：", h("code", null, "[*]"), " 列表元素，", h("code", null, "<code>"), " ", h("code", null, "<category>"), " 等是以代码或类别为键的字典，", h("code", null, "**"), " 任意层级。")),
+    h("div", { class: "card" }, h("h2", null, "数据流覆盖"),
+      h("p", null, "把筛选子集参考轨迹里观测到的每一次“上游返回值 → 下游参数”，与映射给两端的属性比对：两端落在同一个属性上，才算这张图能解释这次依赖。"),
+      h("div", { class: "cov" }, ...covRow("挑选", C.selection), ...covRow("直接引用", C.reference), ...covRow("合计", C.all)),
+      h("p", { class: "note" }, "未覆盖的主要是参考轨迹本身的问题，例如把策略代码当作基金代码传给基金公告接口。")),
+    h("div", { class: "card" }, h("h2", null, "建模取舍"),
+      h("ul", null,
+        h("li", null, "查询条件（关键词、日期、分页、排序）收进 ", objLink("QueryCondition"), "：v0.4 要求每个参数都是某个对象的属性。"),
+        h("li", null, "投顾组合持仓的产品代码就是策略代码：持仓类工具同时产出 ", h("code", null, "Holding.productCode"), " 和 ", hubLink("Strategy.strategyCode"), "，收益类工具的产品参数绑定到策略代码。"),
+        h("li", null, "组合成分里的备选基金代码同时作为 ", hubLink("Fund.fundCode"), " 产出，因为下游会拿它查费率和交易规则。"),
+        h("li", null, "把输入原样带回的输出（回显）保留在映射里，但不画成动作到对象的输出线。"),
+        h("li", null, "工具名、参数名、返回字段名全部保留在映射文件里，本体只用中文语义和 对象.属性。"))),
+    h("div", { class: "card wide" }, h("h2", null, `全局规则（${M.globalRules.length}）`), h("ol", null, ...M.globalRules.map(r => h("li", null, r)))));
+})();
+
+/* ---------- tabs & navigation ---------- */
+let fitted = false;
+function show(v) {
+  for (const b of document.querySelectorAll(".tabs [role=tab]")) b.setAttribute("aria-selected", String(b.dataset.view === v));
+  $("#view-graph").hidden = v !== "graph";
+  $("#view-schema").hidden = v !== "schema";
+  if (v === "graph" && !fitted) fitted = view.fit();
+  try { localStorage.setItem("finmcp-graph-tab", v); } catch (e) { /* storage unavailable */ }
+}
+function go(id) {
+  show("graph");
+  view.select(id, true);
+  $("#view-graph").scrollIntoView({ block: "nearest" });
+}
+for (const b of document.querySelectorAll(".tabs [role=tab]")) b.addEventListener("click", () => show(b.dataset.view));
+window.addEventListener("resize", () => { if (!$("#view-graph").hidden) view.fit(); });
+
+view.select(null);
+let start = location.hash.slice(1);
+if (!["graph", "schema"].includes(start)) { try { start = localStorage.getItem("finmcp-graph-tab") || "graph"; } catch (e) { start = "graph"; } }
+show(["graph", "schema"].includes(start) ? start : "graph");
+requestAnimationFrame(() => { if (!$("#view-graph").hidden) fitted = view.fit(); });
+})();
+</script>

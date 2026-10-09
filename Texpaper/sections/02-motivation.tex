@@ -1,0 +1,29 @@
+\section{Background and Motivation}
+\label{sec:motivation}
+
+\subsection{Dependent Tool Chains on the Web}
+An agent-ready Web service exposes operations with typed inputs and JSON outputs. With MCP~\cite{anthropic2024mcp}, an agent discovers these operations at run time and calls them through a uniform protocol. A request is typically served by a chain of calls in which later inputs depend on earlier outputs. In a ReAct loop every dependent call costs a full LLM round, and the model re-reads the system prompt, the tool definitions and all previous observations each time. Cost therefore grows roughly quadratically with chain length. Code-writing agents collapse the chain into one program, but only as far as each step can be written as code.
+
+\subsection{Which Steps Need the Model?}
+\label{sec:kinds}
+Table~\ref{tab:kinds} classifies how a step obtains what it needs from earlier results. Constants, references and transformations can be written in code. Generation needs a language model and belongs at the end of the chain, where the answer is written. The remaining kind is the \emph{semantic decision}: a judgment over a closed set that only materializes at run time. It covers choosing among returned entities, choosing a branch, keeping or dropping items, and checking a qualitative precondition. Code cannot express such a decision, and an LLM is far more than it needs. A semantic decision needs a closed-set judgment with a calibrated probability.
+
+\begin{table}[t]
+  \caption{How a step obtains what it needs. \jif gives every kind except generation an executor that does not call the LLM.}
+  \label{tab:kinds}
+  \small
+  \begin{tabular}{@{}p{1.7cm}p{3.4cm}p{2.4cm}@{}}
+    \toprule
+    Kind & Example & Executor \\
+    \midrule
+    Constant & date range stated in the request & program literal \\
+    Reference & fee code of the selected portfolio & program (field access) \\
+    Transform & days between two dates & program (code) \\
+    \textbf{Semantic decision} & which of 12 portfolios is ``the steady one''; which announcements could explain a drop & \textbf{System-1 primitive} (\jif) \\
+    Generation & the final explanation to the user & LLM \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{System-1 Models}
+Non-generative ``System-1'' models such as Jev~\cite{typesafe2026jev} answer three typed question forms: \emph{Choice} (one of up to 255 options, with a probability per option), \emph{Noul} (probability of yes) and \emph{Score} (ordered levels). They answer in tens to hundreds of milliseconds, are priced per input token, and charge nothing for output. Many questions over the same state can be answered in one request. An independent evaluation~\cite{li2026jevjudge} found that Jev's confidence orders its errors: accuracy is 47.7\% when the top probability is below 0.6 and 99.1\% when it is at least 0.99. The same study also reports sensitivity to option order and confident errors on adversarially styled inputs. Jev's documentation advises keeping arithmetic and date comparison in code, pruning irrelevant state, and stating decision criteria explicitly~\cite{typesafe2026jev}. These are exactly the properties an evaluator of program conditionals needs, together with the weaknesses the compiler must guard against.

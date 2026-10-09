@@ -1,0 +1,2566 @@
+{
+ "note": "本体属性 ↔ FinMCP 工具参数与返回字段（对应 ZSZQ 工具注册表的 params.apiField 与 fields）。",
+ "tools": {
+  "GetCurrentTime": {
+   "label": "获取当前时间",
+   "params": [],
+   "fields": {
+    "MarketCalendar.currentTime": [
+     "data.datetime"
+    ],
+    "MarketCalendar.weekday": [
+     "data.weekday"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetTxnDayRange": {
+   "label": "推算交易日",
+   "params": [
+    {
+     "name": "beforeDays",
+     "property": "MarketCalendar.beforeDays",
+     "apiField": "beforeDays",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "afterDays",
+     "property": "MarketCalendar.afterDays",
+     "apiField": "afterDays",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "centerTime",
+     "property": "MarketCalendar.centerTime",
+     "apiField": "centerTime",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "fundCode",
+     "property": "Fund.fundCode",
+     "apiField": "fundCode",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "MarketCalendar.tradingDays": [
+     "[*]"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetUserInfo": {
+   "label": "查询用户基本信息",
+   "params": [
+    {
+     "name": "customerId",
+     "property": "Customer.customerId",
+     "apiField": "userId",
+     "fill": "identity",
+     "check": null
+    }
+   ],
+   "fields": {
+    "Customer.userName": [
+     "userName"
+    ],
+    "Customer.realName": [
+     "realName"
+    ],
+    "Customer.gender": [
+     "gender"
+    ],
+    "Customer.registeredAt": [
+     "registeredAt"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetUserInvestDays": {
+   "label": "查询用户投资天数",
+   "params": [
+    {
+     "name": "customerId",
+     "property": "Customer.customerId",
+     "apiField": "userId",
+     "fill": "identity",
+     "check": null
+    }
+   ],
+   "fields": {
+    "Customer.investDays": [
+     "data.inv_days"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetUserAssetBrief": {
+   "label": "查询用户资产概况",
+   "params": [
+    {
+     "name": "customerId",
+     "property": "Customer.customerId",
+     "apiField": "userId",
+     "fill": "identity",
+     "check": null
+    }
+   ],
+   "fields": {
+    "AssetOverview.totalAsset": [
+     "totalAsset"
+    ],
+    "AssetOverview.holdingProfit": [
+     "holdingProfit"
+    ],
+    "AssetOverview.holdingProfitRate": [
+     "holdingProfitRate"
+    ],
+    "AssetOverview.accumulatedProfit": [
+     "accumulatedProfit"
+    ],
+    "AssetOverview.accumulatedProfitRate": [
+     "accumulatedProfitRate"
+    ],
+    "AssetOverview.latestDailyProfit": [
+     "latestDailyProfit"
+    ],
+    "AssetOverview.latestDailyProfitRate": [
+     "latestDailyProfitRate"
+    ],
+    "AssetOverview.profitDate": [
+     "profitDate"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetUserAssetView": {
+   "label": "查询用户资产视图",
+   "params": [
+    {
+     "name": "customerId",
+     "property": "Customer.customerId",
+     "apiField": "userId",
+     "fill": "identity",
+     "check": null
+    }
+   ],
+   "fields": {
+    "Account.accountId": [
+     "rootView.assetId",
+     "walletView.assetId",
+     "umaViewList[*].assetId",
+     "umaViewList[*].holdingProdList[*].assetId"
+    ],
+    "Account.accountName": [
+     "rootView.assetName",
+     "walletView.assetName",
+     "umaViewList[*].assetName"
+    ],
+    "Account.accountType": [
+     "rootView.assetType",
+     "walletView.assetType",
+     "umaViewList[*].assetType"
+    ],
+    "Holding.productCode": [
+     "umaViewList[*].holdingProdList[*].assetCode"
+    ],
+    "Holding.productName": [
+     "umaViewList[*].holdingProdList[*].assetName"
+    ],
+    "Holding.productType": [
+     "umaViewList[*].holdingProdList[*].assetType"
+    ],
+    "Strategy.strategyCode": [
+     "umaViewList[*].holdingProdList[*].assetCode"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetUserAssetHoldingDistribution": {
+   "label": "查询用户持仓分布",
+   "params": [
+    {
+     "name": "customerId",
+     "property": "Customer.customerId",
+     "apiField": "userId",
+     "fill": "identity",
+     "check": null
+    },
+    {
+     "name": "fundCode",
+     "property": "Fund.fundCode",
+     "apiField": "fundCodes",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "strategyCode",
+     "property": "Strategy.strategyCode",
+     "apiField": "poCodes",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "Holding.productCode": [
+     "fundAssetDistributions[*].productCode",
+     "poAssetDistributions[*].productCode"
+    ],
+    "Holding.productName": [
+     "fundAssetDistributions[*].productName",
+     "poAssetDistributions[*].productName"
+    ],
+    "Holding.holdingAsset": [
+     "**.staticShareAsset"
+    ],
+    "Holding.holdingShare": [
+     "**.staticShare"
+    ],
+    "Holding.subAccountName": [
+     "**.distributionList[*].umaName"
+    ],
+    "Holding.locatedStrategyCode": [
+     "**.distributionList[*].locatedPoCode"
+    ],
+    "Holding.locatedStrategyName": [
+     "**.distributionList[*].locatedPoName"
+    ],
+    "Strategy.strategyCode": [
+     "poAssetDistributions[*].productCode"
+    ],
+    "Fund.fundCode": [
+     "fundAssetDistributions[*].productCode"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetLatestProfit": {
+   "label": "查询投顾组合最新收益",
+   "params": [
+    {
+     "name": "customerId",
+     "property": "Customer.customerId",
+     "apiField": "userId",
+     "fill": "identity",
+     "check": null
+    },
+    {
+     "name": "accountId",
+     "property": "Account.accountId",
+     "apiField": "serviceAccountIdList",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "strategyCode",
+     "property": "Strategy.strategyCode",
+     "apiField": "prodCodeList",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "ProfitRecord.dailyProfit": [
+     "[*].dailyProfit"
+    ],
+    "ProfitRecord.dailyProfitRate": [
+     "[*].dailyProfitRate"
+    ],
+    "ProfitRecord.profitDate": [
+     "[*].profitDate"
+    ],
+    "ProfitRecord.productName": [
+     "[*].poName"
+    ],
+    "Holding.productCode": [
+     "[*].poCode"
+    ],
+    "Strategy.strategyCode": [
+     "[*].poCode"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetFundLatestProfit": {
+   "label": "查询基金最新收益",
+   "params": [
+    {
+     "name": "customerId",
+     "property": "Customer.customerId",
+     "apiField": "userId",
+     "fill": "identity",
+     "check": null
+    },
+    {
+     "name": "accountId",
+     "property": "Account.accountId",
+     "apiField": "serviceAccountIdList",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "fundCode",
+     "property": "Fund.fundCode",
+     "apiField": "fundCodeList",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "ProfitRecord.dailyProfit": [
+     "[*].dailyProfit"
+    ],
+    "ProfitRecord.dailyProfitRate": [
+     "[*].dailyProfitRate"
+    ],
+    "ProfitRecord.profitDate": [
+     "[*].profitDate"
+    ],
+    "ProfitRecord.productName": [
+     "[*].fundName"
+    ],
+    "Fund.fundCode": [
+     "[*].fundCode"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetProfitProd": {
+   "label": "查询产品区间收益",
+   "params": [
+    {
+     "name": "customerId",
+     "property": "Customer.customerId",
+     "apiField": "userId",
+     "fill": "identity",
+     "check": null
+    },
+    {
+     "name": "accountId",
+     "property": "Account.accountId",
+     "apiField": "serviceAccountIdList",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "strategyCode",
+     "property": "Strategy.strategyCode",
+     "apiField": "prodCodeList",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "startDate",
+     "property": "QueryCondition.startDate",
+     "apiField": "beginDate",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "endDate",
+     "property": "QueryCondition.endDate",
+     "apiField": "endDate",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "ProfitRecord.intervalProfit": [
+     "[*].profit"
+    ],
+    "ProfitRecord.intervalProfitRate": [
+     "[*].profitRate"
+    ],
+    "ProfitRecord.holdingDays": [
+     "[*].holdingDays"
+    ],
+    "ProfitRecord.xirrAnnualizedRate": [
+     "[*].xirrAnnualizedRate"
+    ],
+    "ProfitRecord.productName": [
+     "[*].prodName"
+    ],
+    "Holding.productCode": [
+     "[*].prodCode"
+    ],
+    "Strategy.strategyCode": [
+     "[*].prodCode"
+    ],
+    "Holding.productType": [
+     "[*].prodType"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetAccountDailyProfits": {
+   "label": "查询账户每日收益",
+   "params": [
+    {
+     "name": "customerId",
+     "property": "Customer.customerId",
+     "apiField": "userId",
+     "fill": "identity",
+     "check": null
+    }
+   ],
+   "fields": {
+    "ProfitRecord.dailyProfit": [
+     "dailyProfitList[*].dailyProfit"
+    ],
+    "ProfitRecord.profitDate": [
+     "dailyProfitList[*].navDate"
+    ],
+    "ProfitRecord.isTxnDate": [
+     "dailyProfitList[*].isTxnDate"
+    ],
+    "ProfitRecord.fee": [
+     "dailyProfitList[*].fee"
+    ]
+   },
+   "constants": [
+    "includeAcc"
+   ],
+   "dropped": []
+  },
+  "GetAccountProfitDetail": {
+   "label": "查询账户区间收益",
+   "params": [
+    {
+     "name": "customerId",
+     "property": "Customer.customerId",
+     "apiField": "userId",
+     "fill": "identity",
+     "check": null
+    },
+    {
+     "name": "accountId",
+     "property": "Account.accountId",
+     "apiField": "serviceAccountId",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "startDate",
+     "property": "QueryCondition.startDate",
+     "apiField": "beginDate",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "endDate",
+     "property": "QueryCondition.endDate",
+     "apiField": "endDate",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "ProfitRecord.intervalProfit": [
+     "profit",
+     "subIntervalProfitList[*].profit"
+    ],
+    "ProfitRecord.intervalProfitRate": [
+     "profitRate",
+     "subIntervalProfitList[*].profitRate"
+    ],
+    "ProfitRecord.holdingDays": [
+     "holdingDays"
+    ],
+    "ProfitRecord.xirrAnnualizedRate": [
+     "xirrAnnualizedRate"
+    ],
+    "Account.accountId": [
+     "subIntervalProfitList[*].serviceAccountId"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetFundProfit": {
+   "label": "查询基金区间收益",
+   "params": [
+    {
+     "name": "customerId",
+     "property": "Customer.customerId",
+     "apiField": "userId",
+     "fill": "identity",
+     "check": null
+    },
+    {
+     "name": "accountId",
+     "property": "Account.accountId",
+     "apiField": "serviceAccountIdList",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "fundCode",
+     "property": "Fund.fundCode",
+     "apiField": "fundCodes",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "startDate",
+     "property": "QueryCondition.startDate",
+     "apiField": "beginDate",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "endDate",
+     "property": "QueryCondition.endDate",
+     "apiField": "endDate",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "ProfitRecord.intervalProfit": [
+     "[*].profit"
+    ],
+    "ProfitRecord.intervalProfitRate": [
+     "[*].profitRate"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "StrategySearchByKeyword": {
+   "label": "按关键词搜索投顾策略",
+   "params": [
+    {
+     "name": "keyword",
+     "property": "QueryCondition.keyword",
+     "apiField": "keyword",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "category",
+     "property": "QueryCondition.category",
+     "apiField": "category",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "pageNum",
+     "property": "QueryCondition.pageNum",
+     "apiField": "pageNum",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "pageSize",
+     "property": "QueryCondition.pageSize",
+     "apiField": "pageSize",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "Strategy.strategyCode": [
+     "rows[*].策略代码"
+    ],
+    "Strategy.strategyName": [
+     "rows[*].策略名称"
+    ],
+    "Strategy.riskLevelName": [
+     "rows[*].策略风险等级"
+    ],
+    "Strategy.introduction": [
+     "rows[*].策略简介"
+    ],
+    "Strategy.description": [
+     "rows[*].策略描述"
+    ],
+    "Strategy.establishedDate": [
+     "rows[*].策略成立时间"
+    ]
+   },
+   "constants": [],
+   "dropped": [
+    "size"
+   ]
+  },
+  "GetStrategyDetails": {
+   "label": "查询投顾策略详情",
+   "params": [
+    {
+     "name": "strategyCode",
+     "property": "Strategy.strategyCode",
+     "apiField": "strategyCodes",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "pageNum",
+     "property": "QueryCondition.pageNum",
+     "apiField": "pageNum",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "pageSize",
+     "property": "QueryCondition.pageSize",
+     "apiField": "pageSize",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "Strategy.strategyCode": [
+     "rows[*].策略代码"
+    ],
+    "Strategy.strategyName": [
+     "rows[*].策略名称"
+    ],
+    "Strategy.introduction": [
+     "rows[*].策略简介"
+    ],
+    "Strategy.establishedDate": [
+     "rows[*].策略成立时间"
+    ],
+    "Strategy.riskLevelName": [
+     "rows[*].策略风险等级"
+    ],
+    "Strategy.managerName": [
+     "rows[*].管理人名称"
+    ],
+    "Strategy.managerIntro": [
+     "rows[*].管理人简介"
+    ],
+    "Strategy.nav": [
+     "rows[*].策略净值"
+    ],
+    "Strategy.navDate": [
+     "rows[*].最新净值日期"
+    ],
+    "Strategy.url": [
+     "rows[*].url"
+    ],
+    "Performance.dayReturn": [
+     "rows[*].日收益率"
+    ],
+    "Performance.weekReturn": [
+     "rows[*].周收益率"
+    ],
+    "Performance.monthReturn": [
+     "rows[*].月收益率"
+    ],
+    "Performance.quarterReturn": [
+     "rows[*].季度收益率"
+    ],
+    "Performance.halfYearReturn": [
+     "rows[*].半年收益率"
+    ],
+    "Performance.yearReturn": [
+     "rows[*].年收益率"
+    ],
+    "Performance.sinceInceptionReturn": [
+     "rows[*].成立以来收益率"
+    ],
+    "Performance.annualizedReturn": [
+     "rows[*].年化收益率"
+    ],
+    "Performance.maxDrawdown": [
+     "rows[*].最大回撤"
+    ],
+    "Performance.sharpeRatio": [
+     "rows[*].夏普比率"
+    ],
+    "Performance.volatility": [
+     "rows[*].波动率"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetStrategyRiskInfo": {
+   "label": "查询投顾策略风险评级",
+   "params": [
+    {
+     "name": "strategyCode",
+     "property": "Strategy.strategyCode",
+     "apiField": "strategyCode",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "Strategy.strategyCode": [
+     "strategyCode"
+    ],
+    "Strategy.strategyName": [
+     "strategyName"
+    ],
+    "Strategy.url": [
+     "url"
+    ],
+    "RiskRating.riskLevel": [
+     "riskLevel"
+    ],
+    "RiskRating.risk5LevelName": [
+     "risk5LevelName"
+    ],
+    "RiskRating.riskScore": [
+     "riskScore"
+    ],
+    "RiskRating.recommendedHoldingDuration": [
+     "recommendedHoldingDuration"
+    ],
+    "RiskRating.scoreEffectiveDate": [
+     "scoreEffectiveDate"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "BatchGetStrategyRiskInfo": {
+   "label": "批量查询投顾策略风险评级",
+   "params": [
+    {
+     "name": "strategyCode",
+     "property": "Strategy.strategyCode",
+     "apiField": "strategyCodes",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "Strategy.strategyCode": [
+     "[*].strategyCode"
+    ],
+    "Strategy.strategyName": [
+     "[*].strategyName"
+    ],
+    "RiskRating.riskLevel": [
+     "[*].riskLevel"
+    ],
+    "RiskRating.risk5LevelName": [
+     "[*].risk5LevelName"
+    ],
+    "RiskRating.riskScore": [
+     "[*].riskScore"
+    ],
+    "RiskRating.recommendedHoldingDuration": [
+     "[*].recommendedHoldingDuration"
+    ],
+    "RiskRating.scoreEffectiveDate": [
+     "[*].scoreEffectiveDate"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetStrategyAssetClassAnalysis": {
+   "label": "查询投顾策略的资产类别分布",
+   "params": [
+    {
+     "name": "strategyCode",
+     "property": "Strategy.strategyCode",
+     "apiField": "strategyCode",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "AssetClass.categoryCode": [
+     "strategyAssetClassCategoryInfo[*]**.categoryCode"
+    ],
+    "AssetClass.categoryName": [
+     "strategyAssetClassCategoryInfo[*]**.categoryName"
+    ],
+    "AssetClass.levelType": [
+     "strategyAssetClassCategoryInfo[*]**.levelType"
+    ],
+    "AssetClass.ratio": [
+     "strategyAssetClassCategoryInfo[*]**.ratio"
+    ],
+    "AssetClass.amount": [
+     "strategyAssetClassCategoryInfo[*]**.amount"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "BatchGetStrategiesComposition": {
+   "label": "批量查询投顾策略的持有成分",
+   "params": [
+    {
+     "name": "strategyCode",
+     "property": "Strategy.strategyCode",
+     "apiField": "strategyCodes",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "Strategy.strategyCode": [
+     "<code>.<category>.持有成分[*].策略代码"
+    ],
+    "Fund.fundName": [
+     "<code>.<category>.持有成分[*].基金名称"
+    ],
+    "Fund.fundFullName": [
+     "<code>.<category>.持有成分[*].基金全称"
+    ],
+    "Fund.nav": [
+     "<code>.<category>.持有成分[*].最新净值"
+    ],
+    "Fund.navDate": [
+     "<code>.<category>.持有成分[*].最新净值日期"
+    ],
+    "Fund.dailyReturn": [
+     "<code>.<category>.持有成分[*].日涨跌幅"
+    ],
+    "Fund.fundInvestType": [
+     "<code>.<category>.持有成分[*].基金类型"
+    ],
+    "Component.componentRatio": [
+     "<code>.<category>.持有成分[*].持仓占比"
+    ],
+    "Component.categoryName": [
+     "<code>.<category>"
+    ],
+    "Component.categoryRatio": [
+     "<code>.<category>.分类占比"
+    ],
+    "Component.priority": [
+     "<code>.<category>.持有成分[*].优先级"
+    ],
+    "Component.alternativeFundCode": [
+     "<code>.<category>.持有成分[*].替代基金列表[*].备选基金代码"
+    ],
+    "Fund.fundCode": [
+     "<code>.<category>.持有成分[*].基金代码",
+     "<code>.<category>.持有成分[*].替代基金列表[*].备选基金代码"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "BatchGetPoTradeComposition": {
+   "label": "批量查询投顾组合的交易成分",
+   "params": [
+    {
+     "name": "strategyCode",
+     "property": "Strategy.strategyCode",
+     "apiField": "strategyCodes",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "Strategy.strategyCode": [
+     "<code>.<category>.交易成分[*].策略代码"
+    ],
+    "Fund.fundName": [
+     "<code>.<category>.交易成分[*].基金名称"
+    ],
+    "Fund.fundFullName": [
+     "<code>.<category>.交易成分[*].基金全称"
+    ],
+    "Fund.fundInvestType": [
+     "<code>.<category>.交易成分[*].基金类型"
+    ],
+    "Component.componentRatio": [
+     "<code>.<category>.交易成分[*].持仓占比"
+    ],
+    "Component.categoryName": [
+     "<code>.<category>"
+    ],
+    "Component.categoryRatio": [
+     "<code>.<category>.交易分类占比"
+    ],
+    "Component.priority": [
+     "<code>.<category>.交易成分[*].优先级"
+    ],
+    "Component.alternativeFundCode": [
+     "<code>.<category>.交易成分[*].替代基金列表[*].备选基金代码"
+    ],
+    "Component.alternativeReason": [
+     "<code>.<category>.交易成分[*].替代基金列表[*].原因"
+    ],
+    "Fund.fundCode": [
+     "<code>.<category>.交易成分[*].基金代码",
+     "<code>.<category>.交易成分[*].替代基金列表[*].备选基金代码"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetPortfolioNavHistory": {
+   "label": "查询投顾组合净值走势",
+   "params": [
+    {
+     "name": "strategyCode",
+     "property": "Strategy.strategyCode",
+     "apiField": "poCode",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "startDate",
+     "property": "QueryCondition.startDate",
+     "apiField": "start",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "endDate",
+     "property": "QueryCondition.endDate",
+     "apiField": "end",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "dimensionType",
+     "property": "NavPoint.dimensionType",
+     "apiField": "dimensionType",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "isDesc",
+     "property": "QueryCondition.isDesc",
+     "apiField": "isDesc",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "NavPoint.navDate": [
+     "[*].navDate"
+    ],
+    "NavPoint.nav": [
+     "[*].nav"
+    ],
+    "NavPoint.dailyReturn": [
+     "[*].dailyReturn"
+    ]
+   },
+   "constants": [
+    "noACL",
+    "poManagerId",
+    "brokerCode"
+   ],
+   "dropped": []
+  },
+  "SearchFunds": {
+   "label": "按关键词和条件搜索基金",
+   "params": [
+    {
+     "name": "keyword",
+     "property": "QueryCondition.keyword",
+     "apiField": "keyword",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "category",
+     "property": "QueryCondition.category",
+     "apiField": "category",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "sortColumn",
+     "property": "QueryCondition.sortColumn",
+     "apiField": "sortColumn",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "sortOrder",
+     "property": "QueryCondition.sortOrder",
+     "apiField": "sortOrder",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "tradeStatus",
+     "property": "QueryCondition.tradeStatus",
+     "apiField": "tradeStatus",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "pageNum",
+     "property": "QueryCondition.pageNum",
+     "apiField": "page",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "pageSize",
+     "property": "QueryCondition.pageSize",
+     "apiField": "size",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "Fund.fundCode": [
+     "funds[*].fundCode"
+    ],
+    "Fund.fundName": [
+     "funds[*].fundName"
+    ],
+    "Fund.fundInvestType": [
+     "funds[*].fundInvestType"
+    ],
+    "Fund.status": [
+     "funds[*].status"
+    ],
+    "Fund.setupDate": [
+     "funds[*].setupDate"
+    ],
+    "Fund.oneYearReturn": [
+     "funds[*].returnYear"
+    ],
+    "Fund.url": [
+     "funds[*].url"
+    ]
+   },
+   "constants": [],
+   "dropped": [
+    "pageSize"
+   ]
+  },
+  "GuessFundCode": {
+   "label": "按名称或代码识别基金",
+   "params": [
+    {
+     "name": "fundNameOrCode",
+     "property": "QueryCondition.fundNameOrCode",
+     "apiField": "fundNameOrCode",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "Fund.fundCode": [
+     "fundCode"
+    ],
+    "Fund.fundName": [
+     "fundName"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetPopularFund": {
+   "label": "查询热门基金",
+   "params": [
+    {
+     "name": "pageSize",
+     "property": "QueryCondition.pageSize",
+     "apiField": "size",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "Fund.fundCode": [
+     "[*].fundCode"
+    ],
+    "Fund.fundName": [
+     "[*].fundName"
+    ],
+    "Fund.weekReturn": [
+     "[*].oneWeekReturn"
+    ],
+    "Fund.yearToDateReturn": [
+     "[*].curYearReturn"
+    ],
+    "Fund.oneYearReturn": [
+     "[*].oneYearReturn"
+    ],
+    "Fund.url": [
+     "[*].url"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "BatchGetFundsDetail": {
+   "label": "批量查询基金详情",
+   "params": [
+    {
+     "name": "fundCode",
+     "property": "Fund.fundCode",
+     "apiField": "fundCodes",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "Fund.fundCode": [
+     "[*].fundCode",
+     "[*].data.summary.fundCode"
+    ],
+    "Fund.fundName": [
+     "[*].data.summary.fundName"
+    ],
+    "Fund.fundInvestType": [
+     "[*].data.summary.fundInvestType"
+    ],
+    "Fund.risk5Level": [
+     "[*].data.summary.risk5Level"
+    ],
+    "Fund.setupDate": [
+     "[*].data.summary.uiSetupDate"
+    ],
+    "Fund.nav": [
+     "[*].data.summary.nav"
+    ],
+    "Fund.navDate": [
+     "[*].data.summary.navDate"
+    ],
+    "Fund.dailyReturn": [
+     "[*].data.summary.dailyReturn"
+    ],
+    "Fund.netAsset": [
+     "[*].data.summary.netAsset"
+    ],
+    "Fund.oneYearReturn": [
+     "[*].data.summary.oneYearReturn"
+    ],
+    "Fund.indexCode": [
+     "[*].data.summary.indexCode"
+    ],
+    "Fund.indexName": [
+     "[*].data.summary.indexName"
+    ],
+    "Fund.url": [
+     "[*].url"
+    ],
+    "FundManager.fundManagerId": [
+     "[*].data.managers[*].fundManagerId"
+    ],
+    "FundManager.managerName": [
+     "[*].data.managers[*].fundManagerName"
+    ],
+    "FundManager.career": [
+     "[*].data.managers[*].curtDesc"
+    ],
+    "FundManager.tenureYears": [
+     "[*].data.managers[*].periodYears"
+    ],
+    "FundManager.tenureReturn": [
+     "[*].data.managers[*].periodReturn"
+    ],
+    "FundHolding.assetName": [
+     "[*].data.assetPortfolios[*].name"
+    ],
+    "FundHolding.assetRatio": [
+     "[*].data.assetPortfolios[*].ratio"
+    ],
+    "FundHolding.industryName": [
+     "[*].data.industryPortfolios[*].name"
+    ],
+    "FundHolding.industryRatio": [
+     "[*].data.industryPortfolios[*].ratio"
+    ],
+    "TradeRule.canAllot": [
+     "[*].data.tradeLimit.canAllot"
+    ],
+    "TradeRule.canRedeem": [
+     "[*].data.tradeLimit.canRedeem"
+    ],
+    "TradeRule.canSubscribe": [
+     "[*].data.tradeLimit.canSubscribe"
+    ],
+    "TradeRule.canConvert": [
+     "[*].data.tradeLimit.canConvert"
+    ],
+    "TradeRule.minBuyAmount": [
+     "[*].data.tradeLimit.minBuyAmount"
+    ],
+    "TradeRule.redeemToWalletDays": [
+     "[*].data.tradeLimit.redeemToWalletTransferIntoTxnDays"
+    ],
+    "TradeRule.redeemToCardDays": [
+     "[*].data.tradeLimit.redeemToCardTransferIntoTxnDays"
+    ],
+    "TradeRule.timeFlow": [
+     "[*].data.tradeTimeFlows.<flow>.flows[*].timeLabel"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetFundDiagnosis": {
+   "label": "单只基金诊断",
+   "params": [
+    {
+     "name": "fundCode",
+     "property": "Fund.fundCode",
+     "apiField": "fundNameOrCode",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "Fund.fundName": [
+     "fundSummary.recentInfo.data.fundName"
+    ],
+    "Fund.nav": [
+     "fundSummary.recentInfo.data.nav"
+    ],
+    "Fund.navDate": [
+     "fundSummary.recentInfo.data.navDate"
+    ],
+    "Fund.dailyReturn": [
+     "fundSummary.recentInfo.data.dailyReturn"
+    ],
+    "Fund.netAsset": [
+     "fundSummary.recentInfo.data.netAsset"
+    ],
+    "RiskRating.risk5LevelName": [
+     "fundSummary.diagnoseSummary.data.riskLevelInfo.fundRiskLevel"
+    ],
+    "RiskRating.suitableInvestor": [
+     "fundSummary.diagnoseSummary.data.riskLevelInfo.userRiskLevel"
+    ],
+    "RiskRating.riskDescription": [
+     "fundSummary.diagnoseSummary.data.riskLevelInfo.comment"
+    ],
+    "Performance.valuation": [
+     "fundSummary.diagnoseSummary.data.riskOpp.valuation"
+    ],
+    "Performance.trend": [
+     "fundSummary.diagnoseSummary.data.riskOpp.trend"
+    ],
+    "Performance.peerComparison": [
+     "fundSummary.diagnoseSummary.data.riskOpp.compare"
+    ],
+    "Performance.winRate": [
+     "fundSummary.diagnoseSummary.data.winProb.winRate"
+    ],
+    "Performance.yearReturn": [
+     "fundSummary.performance.data.oneYearReturn"
+    ],
+    "Performance.sinceInceptionReturn": [
+     "fundSummary.performance.data.setupDayReturn"
+    ],
+    "FundHolding.industryName": [
+     "fundSummary.industryPortfolios.data.industryPortfolios[*].name"
+    ],
+    "FundHolding.industryRatio": [
+     "fundSummary.industryPortfolios.data.industryPortfolios[*].ratio"
+    ],
+    "FundHolding.assetName": [
+     "fundSummary.assetPortfolios.data.assetPortfolios[*].name"
+    ],
+    "FundHolding.assetRatio": [
+     "fundSummary.assetPortfolios.data.assetPortfolios[*].ratio"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetBatchFundPerformance": {
+   "label": "批量查询基金业绩",
+   "params": [
+    {
+     "name": "fundCode",
+     "property": "Fund.fundCode",
+     "apiField": "fundCodes",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "Fund.fundCode": [
+     "[*].fundCode"
+    ],
+    "Performance.stageType": [
+     "[*].data.**.stageType"
+    ],
+    "Performance.stageReturn": [
+     "[*].data.stageReturns[*].stageReturn"
+    ],
+    "Performance.similarAvgReturn": [
+     "[*].data.stageReturns[*].similarAvgReturn"
+    ],
+    "Performance.rankText": [
+     "[*].data.**.rankText"
+    ],
+    "Performance.metricName": [
+     "[*].data.metricsAnalyzes[*].metrics[*].desc"
+    ],
+    "Performance.metricValue": [
+     "[*].data.metricsAnalyzes[*].metrics[*].metricsValueText"
+    ],
+    "Performance.quartileRank": [
+     "[*].data.metricsAnalyzes[*].metrics[*].quartileRank"
+    ],
+    "NavPoint.dimensionType": [
+     "[*].data.stageReturns[*].stageType"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "BatchGetFundNavHistory": {
+   "label": "批量查询基金净值走势",
+   "params": [
+    {
+     "name": "fundCode",
+     "property": "Fund.fundCode",
+     "apiField": "fundCodes",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "dimensionType",
+     "property": "NavPoint.dimensionType",
+     "apiField": "dimensionType",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "isDesc",
+     "property": "QueryCondition.isDesc",
+     "apiField": "isDesc",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "Fund.fundCode": [
+     "[*].fundCode"
+    ],
+    "NavPoint.navDate": [
+     "[*].data.data[*].navDate"
+    ],
+    "NavPoint.nav": [
+     "[*].data.data[*].nav"
+    ],
+    "NavPoint.dailyReturn": [
+     "[*].data.data[*].dailyReturn"
+    ],
+    "NavPoint.unitYield": [
+     "[*].data.data[*].unitYield"
+    ],
+    "NavPoint.yearlyRoe": [
+     "[*].data.data[*].yearlyRoe"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "AnalyzeFundRisk": {
+   "label": "基金风险评分",
+   "params": [
+    {
+     "name": "fundCode",
+     "property": "Fund.fundCode",
+     "apiField": "fundCodes",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "Fund.fundCode": [
+     "data[*].identifier"
+    ],
+    "RiskRating.riskScore": [
+     "data[*].risk_score"
+    ],
+    "RiskRating.rSquared": [
+     "data[*].r_squared"
+    ],
+    "RiskRating.scoreEffectiveDate": [
+     "data[*].effectiveDate"
+    ],
+    "RiskRating.modelStatus": [
+     "data[*].status"
+    ],
+    "RiskRating.riskDescription": [
+     "data[*].description"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "BatchGetFundsFeeRule": {
+   "label": "批量查询基金费率",
+   "params": [
+    {
+     "name": "fundCode",
+     "property": "Fund.fundCode",
+     "apiField": "fundCodes",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "Fund.fundCode": [
+     "[*].fundCode",
+     "[*].data.fundCode"
+    ],
+    "Fund.fundName": [
+     "[*].data.fundName"
+    ],
+    "FeeRule.feeType": [
+     "[*].data.<rule>"
+    ],
+    "FeeRule.limitText": [
+     "[*].data.<rule>[*].uiLimitText"
+    ],
+    "FeeRule.feeRate": [
+     "[*].data.<rule>[*].feeRate"
+    ],
+    "FeeRule.feeRateText": [
+     "[*].data.<rule>[*].uiFeeRateText"
+    ],
+    "FeeRule.fixedFee": [
+     "[*].data.<rule>[*].fixedFee"
+    ],
+    "FeeRule.discount": [
+     "[*].data.<rule>[*].discount"
+    ],
+    "FeeRule.isSpecialFee": [
+     "[*].data.<rule>[*].isSpecialFee"
+    ],
+    "FeeRule.specialDescription": [
+     "[*].data.<rule>[*].specialDescription"
+    ],
+    "FeeRule.managerFeeRate": [
+     "[*].data.runFeeRateRule.managerFeeRate"
+    ],
+    "FeeRule.trusteeFeeRate": [
+     "[*].data.runFeeRateRule.trusteeFeeRate"
+    ],
+    "FeeRule.saleFeeRate": [
+     "[*].data.runFeeRateRule.saleFeeRate"
+    ],
+    "FeeRule.totalCost": [
+     "[*].data.feeRateSummary.totalCost"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "BatchGetFundTradeRules": {
+   "label": "批量查询基金交易规则",
+   "params": [
+    {
+     "name": "fundCode",
+     "property": "Fund.fundCode",
+     "apiField": "fundCodes",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "op",
+     "property": "TradeRule.op",
+     "apiField": "op",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "txnTime",
+     "property": "TradeRule.txnTime",
+     "apiField": "txnTime",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "Fund.fundCode": [
+     "[*].fundCode"
+    ],
+    "TradeRule.timeFlow": [
+     "[*].data.tradeTimeFlows.<flow>.flows[*].timeLabel"
+    ],
+    "TradeRule.tips": [
+     "[*].data.tradeTimeFlows.<flow>.tips[*]"
+    ],
+    "TradeRule.redeemToWalletDays": [
+     "[*].data.redeemSpecialRules.redeemToWalletTransferIntoTxnDays"
+    ],
+    "TradeRule.redeemToCardDays": [
+     "[*].data.redeemSpecialRules.redeemToCardTransferIntoTxnDays"
+    ],
+    "TradeRule.minBuyAmount": [
+     "[*].data.minBuyAmount"
+    ],
+    "TradeRule.maxBuyAmount": [
+     "[*].data.maxBuyAmount"
+    ],
+    "FeeRule.feeRate": [
+     "[*].data.feeRateRules.<rule>[*].feeRate"
+    ],
+    "FeeRule.feeRateText": [
+     "[*].data.feeRateRules.<rule>[*].uiFeeRateText"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "BatchGetFundTradeLimit": {
+   "label": "批量查询基金交易限制",
+   "params": [
+    {
+     "name": "fundCode",
+     "property": "Fund.fundCode",
+     "apiField": "fundCodes",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "op",
+     "property": "TradeRule.op",
+     "apiField": "op",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "Fund.fundCode": [
+     "[*].fundCode"
+    ],
+    "TradeRule.canAllot": [
+     "[*].data.canAllot"
+    ],
+    "TradeRule.canRedeem": [
+     "[*].data.canRedeem"
+    ],
+    "TradeRule.canSubscribe": [
+     "[*].data.canSubscribe"
+    ],
+    "TradeRule.canConvert": [
+     "[*].data.canConvert"
+    ],
+    "TradeRule.minBuyAmount": [
+     "[*].data.minBuyAmount"
+    ],
+    "TradeRule.minRedeemShare": [
+     "[*].data.personalLowestRedeemShare"
+    ],
+    "TradeRule.minPeriodicAmount": [
+     "[*].data.personalLowestPeriodicAmount"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "BatchGetFundsDividendRecord": {
+   "label": "批量查询基金分红记录",
+   "params": [
+    {
+     "name": "fundCode",
+     "property": "Fund.fundCode",
+     "apiField": "fundCodes",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "Fund.fundCode": [
+     "[*].fundCode",
+     "[*].data.fundCode"
+    ],
+    "Dividend.recordDate": [
+     "[*].data.dividends[*].recordDate"
+    ],
+    "Dividend.payDate": [
+     "[*].data.dividends[*].payDate"
+    ],
+    "Dividend.unitDividendAmount": [
+     "[*].data.dividends[*].unitDividendAmount"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "BatchGetFundsHolding": {
+   "label": "批量查询基金持仓明细",
+   "params": [
+    {
+     "name": "fundCode",
+     "property": "Fund.fundCode",
+     "apiField": "fundCodes",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "Fund.fundCode": [
+     "[*].fundCode",
+     "[*].data.fundCode"
+    ],
+    "FundHolding.stockInvestRatio": [
+     "[*].data.stockInvestRatio"
+    ],
+    "FundHolding.bondInvestRatio": [
+     "[*].data.bondInvestRatio"
+    ],
+    "FundHolding.securityCode": [
+     "[*].data.stockInvests[*].code",
+     "[*].data.bondInvests[*].code"
+    ],
+    "FundHolding.securityName": [
+     "[*].data.stockInvests[*].name",
+     "[*].data.bondInvests[*].name"
+    ],
+    "FundHolding.holdingRatio": [
+     "[*].data.stockInvests[*].ratio",
+     "[*].data.bondInvests[*].ratio"
+    ],
+    "FundHolding.previousRatio": [
+     "[*].data.stockInvests[*].previousRatio",
+     "[*].data.bondInvests[*].previousRatio"
+    ],
+    "FundHolding.changeType": [
+     "[*].data.stockInvests[*].compareChangeType",
+     "[*].data.bondInvests[*].compareChangeType"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "BatchGetFundsHolderInfo": {
+   "label": "批量查询基金持有人结构",
+   "params": [
+    {
+     "name": "fundCode",
+     "property": "Fund.fundCode",
+     "apiField": "fundCodes",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "Fund.fundCode": [
+     "[*].fundCode",
+     "[*].data.fundCode"
+    ],
+    "HolderStructure.reportDate": [
+     "[*].data.**.latestNetAssetHolderInfo.reportDate"
+    ],
+    "HolderStructure.personalHoldingRatio": [
+     "[*].data.**.latestNetAssetHolderInfo.personalHoldingRatio"
+    ],
+    "HolderStructure.institutionHoldingRatio": [
+     "[*].data.**.latestNetAssetHolderInfo.instHoldingRatio"
+    ],
+    "HolderStructure.netAssetChangeRatio": [
+     "[*].data.**.latestNetAssetHolderInfo.netAssetChangeRatio"
+    ],
+    "HolderStructure.fundShare": [
+     "[*].data.**.latestNetAssetHolderInfo.fundShare"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetFundAnnouncements": {
+   "label": "查询基金公告列表",
+   "params": [
+    {
+     "name": "fundCode",
+     "property": "Fund.fundCode",
+     "apiField": "fundCodes",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "pageNum",
+     "property": "QueryCondition.pageNum",
+     "apiField": "pageNum",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "pageSize",
+     "property": "QueryCondition.pageSize",
+     "apiField": "pageSize",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "announcementType",
+     "property": "Announcement.announcementType",
+     "apiField": "announcementType",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "startDate",
+     "property": "QueryCondition.startDate",
+     "apiField": "startDate",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "endDate",
+     "property": "QueryCondition.endDate",
+     "apiField": "endDate",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "Fund.fundCode": [
+     "rows[*].基金代码"
+    ],
+    "Fund.fundName": [
+     "rows[*].基金简称"
+    ],
+    "Fund.fundFullName": [
+     "rows[*].基金全称"
+    ],
+    "Announcement.announcementId": [
+     "rows[*].公告ID"
+    ],
+    "Announcement.announcementDate": [
+     "rows[*].公告日期"
+    ],
+    "Announcement.source": [
+     "rows[*].公告来源"
+    ],
+    "Announcement.title": [
+     "rows[*].公告标题"
+    ],
+    "Announcement.url": [
+     "rows[*].公告链接"
+    ],
+    "Announcement.announcementType": [
+     "rows[*].公告类型"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetAnnouncementContent": {
+   "label": "查询公告正文",
+   "params": [
+    {
+     "name": "fundCode",
+     "property": "Fund.fundCode",
+     "apiField": "fundCode",
+     "fill": "agent",
+     "check": "traced"
+    },
+    {
+     "name": "announcementId",
+     "property": "Announcement.announcementId",
+     "apiField": "announcementId",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "Announcement.content": [
+     "content"
+    ],
+    "Announcement.title": [
+     "title"
+    ],
+    "Announcement.announcementId": [
+     "id"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "SearchFinancialNews": {
+   "label": "搜索财经资讯",
+   "params": [
+    {
+     "name": "keyword",
+     "property": "QueryCondition.keyword",
+     "apiField": "keyword",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "pageNum",
+     "property": "QueryCondition.pageNum",
+     "apiField": "page",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "pageSize",
+     "property": "QueryCondition.pageSize",
+     "apiField": "pageSize",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "startDate",
+     "property": "QueryCondition.startDate",
+     "apiField": "startDate",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "endDate",
+     "property": "QueryCondition.endDate",
+     "apiField": "endDate",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "Article.articleId": [
+     "data.items[*].id"
+    ],
+    "Article.title": [
+     "data.items[*].title"
+    ],
+    "Article.summary": [
+     "data.items[*].summary"
+    ],
+    "Article.source": [
+     "data.items[*].sources"
+    ],
+    "Article.url": [
+     "data.items[*].url"
+    ],
+    "Article.publishDate": [
+     "data.items[*].publishDate"
+    ]
+   },
+   "constants": [],
+   "dropped": [
+    "size"
+   ]
+  },
+  "SearchManagerViewpoint": {
+   "label": "搜索基金经理观点",
+   "params": [
+    {
+     "name": "keyword",
+     "property": "QueryCondition.keyword",
+     "apiField": "keyword",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "pageNum",
+     "property": "QueryCondition.pageNum",
+     "apiField": "page",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "pageSize",
+     "property": "QueryCondition.pageSize",
+     "apiField": "pageSize",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "author",
+     "property": "QueryCondition.author",
+     "apiField": "author",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "startDate",
+     "property": "QueryCondition.startDate",
+     "apiField": "startDate",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "endDate",
+     "property": "QueryCondition.endDate",
+     "apiField": "endDate",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "Article.articleId": [
+     "data.list[*].id"
+    ],
+    "Article.title": [
+     "data.list[*].title"
+    ],
+    "Article.viewpoint": [
+     "data.list[*].viewpoint"
+    ],
+    "Article.topicName": [
+     "data.list[*].topicName"
+    ],
+    "Article.publishDate": [
+     "data.list[*].publishTime"
+    ],
+    "Article.url": [
+     "data.list[*].articleUrl"
+    ],
+    "Article.industryName": [
+     "data.list[*].industryName"
+    ],
+    "FundManager.managerName": [
+     "data.list[*].managerName"
+    ],
+    "FundManager.companyName": [
+     "data.list[*].companyName"
+    ],
+    "Fund.fundCode": [
+     "data.list[*].fundCode",
+     "data.list[*].representativeFund.code"
+    ],
+    "Fund.fundName": [
+     "data.list[*].representativeFund.name"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "searchInvestAdvisorContent": {
+   "label": "搜索投顾内容",
+   "params": [
+    {
+     "name": "keyword",
+     "property": "QueryCondition.keyword",
+     "apiField": "keyword",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "startDate",
+     "property": "QueryCondition.startDate",
+     "apiField": "startDate",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "endDate",
+     "property": "QueryCondition.endDate",
+     "apiField": "endDate",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "pageNum",
+     "property": "QueryCondition.pageNum",
+     "apiField": "page",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "pageSize",
+     "property": "QueryCondition.pageSize",
+     "apiField": "pageSize",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "contentType",
+     "property": "QueryCondition.contentType",
+     "apiField": "type",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "author",
+     "property": "QueryCondition.author",
+     "apiField": "author",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "Article.articleId": [
+     "items[*].id"
+    ],
+    "Article.title": [
+     "items[*].title"
+    ],
+    "Article.summary": [
+     "items[*].summary"
+    ],
+    "Article.source": [
+     "items[*].author"
+    ],
+    "Article.articleType": [
+     "items[*].type"
+    ],
+    "Article.publishDate": [
+     "items[*].publishDate"
+    ],
+    "Article.content": [
+     "items[*].content"
+    ]
+   },
+   "constants": [
+    "skip_attachment"
+   ],
+   "dropped": []
+  },
+  "GetAssetAllocationPlan": {
+   "label": "生成资产配置方案",
+   "params": [
+    {
+     "name": "expectedInvestTime",
+     "property": "AllocationPlan.expectedInvestTime",
+     "apiField": "expectedInvestTime",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "expectedAnnualizedReturnRate",
+     "property": "AllocationPlan.expectedAnnualizedReturnRate",
+     "apiField": "expectedAnnualizedReturnRate",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "expectedDrawdown",
+     "property": "AllocationPlan.expectedDrawdown",
+     "apiField": "expectedDrawdown",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "AllocationPlan.assetPlanId": [
+     "assetPlanId"
+    ],
+    "AllocationPlan.planDescription": [
+     "planDescription"
+    ],
+    "AllocationPlan.correctedBy": [
+     "correctedInvestParams.correctedBy"
+    ],
+    "AssetClass.categoryCode": [
+     "assetClassesDetail[*].type"
+    ],
+    "AssetClass.categoryName": [
+     "assetClassesDetail[*].name"
+    ],
+    "AssetClass.ratio": [
+     "assetClassesDetail[*].ratio"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetCompositeModel": {
+   "label": "查询配置方案的基金组合",
+   "params": [
+    {
+     "name": "assetPlanId",
+     "property": "AllocationPlan.assetPlanId",
+     "apiField": "assetPlanId",
+     "fill": "agent",
+     "check": "traced"
+    }
+   ],
+   "fields": {
+    "AllocationPlan.assetPlanId": [
+     "assetPlanId"
+    ],
+    "AllocationPlan.risk5LevelName": [
+     "risk5LevelName"
+    ],
+    "AssetClass.categoryCode": [
+     "detail[*].classes"
+    ],
+    "AssetClass.categoryName": [
+     "detail[*].name"
+    ],
+    "AssetClass.ratio": [
+     "detail[*].ratio"
+    ],
+    "Fund.fundCode": [
+     "detail[*].funds[*].fundCode"
+    ],
+    "Fund.fundName": [
+     "detail[*].funds[*].fundName"
+    ],
+    "Component.componentRatio": [
+     "detail[*].funds[*].ratio"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetFundAssetClassAnalysis": {
+   "label": "分析一组基金的资产类别",
+   "params": [
+    {
+     "name": "fundList",
+     "property": "PortfolioAnalysis.fundList",
+     "apiField": "holdingList",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "AssetClass.categoryCode": [
+     "fundAssetClassCategoryInfo[*]**.categoryCode"
+    ],
+    "AssetClass.categoryName": [
+     "fundAssetClassCategoryInfo[*]**.categoryName"
+    ],
+    "AssetClass.levelType": [
+     "fundAssetClassCategoryInfo[*]**.levelType"
+    ],
+    "AssetClass.ratio": [
+     "fundAssetClassCategoryInfo[*]**.ratio"
+    ],
+    "AssetClass.amount": [
+     "fundAssetClassCategoryInfo[*]**.amount"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetAssetAllocation": {
+   "label": "计算一组基金的大类配置",
+   "params": [
+    {
+     "name": "fundList",
+     "property": "PortfolioAnalysis.fundList",
+     "apiField": "fundList",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "AssetClass.categoryCode": [
+     "assetClassesDetail[*].categoryCode"
+    ],
+    "AssetClass.categoryName": [
+     "assetClassesDetail[*].categoryName"
+    ],
+    "AssetClass.ratio": [
+     "assetClassesDetail[*].ratio"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "DiagnoseFundPortfolio": {
+   "label": "诊断一组基金",
+   "params": [
+    {
+     "name": "fundList",
+     "property": "PortfolioAnalysis.fundList",
+     "apiField": "fundList",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "PortfolioAnalysis.radarScore": [
+     "<section>.radarScore"
+    ],
+    "PortfolioAnalysis.diagnosisTitle": [
+     "<section>.diagnosisResult.title"
+    ],
+    "PortfolioAnalysis.diagnosisDescription": [
+     "<section>.diagnosisResult.description"
+    ],
+    "AssetClass.categoryCode": [
+     "assetAllocation.assetClassesDetail[*].categoryCode"
+    ],
+    "AssetClass.categoryName": [
+     "assetAllocation.assetClassesDetail[*].categoryName"
+    ],
+    "AssetClass.ratio": [
+     "assetAllocation.assetClassesDetail[*].ratio"
+    ],
+    "PortfolioAnalysis.correlationMatrix": [
+     "correlation.correlationDetails[*].correlations[*]"
+    ],
+    "Fund.fundCode": [
+     "correlation.correlationDetails[*].fundCode"
+    ],
+    "PortfolioAnalysis.backtestStartDate": [
+     "backTest.backTestDetail.startDate"
+    ],
+    "PortfolioAnalysis.backtestEndDate": [
+     "backTest.backTestDetail.endDate"
+    ],
+    "PortfolioAnalysis.backtestAnnualizedReturn": [
+     "backTest.backTestDetail.annualizedReturn"
+    ],
+    "PortfolioAnalysis.backtestMaxDrawdown": [
+     "backTest.backTestDetail.maxDrawdown"
+    ],
+    "PortfolioAnalysis.backtestVolatility": [
+     "backTest.backTestDetail.volatility"
+    ],
+    "PortfolioAnalysis.backtestSharpeRatio": [
+     "backTest.backTestDetail.sharpeRatio"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetFundsBackTest": {
+   "label": "一组基金的历史回测",
+   "params": [
+    {
+     "name": "fundList",
+     "property": "PortfolioAnalysis.fundList",
+     "apiField": "fundList",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "PortfolioAnalysis.backtestStartDate": [
+     "backTestDetail.startDate"
+    ],
+    "PortfolioAnalysis.backtestEndDate": [
+     "backTestDetail.endDate"
+    ],
+    "PortfolioAnalysis.backtestAnnualizedReturn": [
+     "backTestDetail.annualizedReturn"
+    ],
+    "PortfolioAnalysis.backtestMaxDrawdown": [
+     "backTestDetail.maxDrawdown"
+    ],
+    "PortfolioAnalysis.backtestVolatility": [
+     "backTestDetail.volatility"
+    ],
+    "PortfolioAnalysis.backtestSharpeRatio": [
+     "backTestDetail.sharpeRatio"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "GetFundsCorrelation": {
+   "label": "一组基金的相关性",
+   "params": [
+    {
+     "name": "fundList",
+     "property": "PortfolioAnalysis.fundList",
+     "apiField": "fundList",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "PortfolioAnalysis.correlationMatrix": [
+     "correlationDetails[*].correlations[*]"
+    ],
+    "Fund.fundCode": [
+     "correlationDetails[*].fundCode"
+    ],
+    "Fund.fundName": [
+     "correlationDetails[*].fundName"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "AnalyzePortfolioRisk": {
+   "label": "组合风险评分",
+   "params": [
+    {
+     "name": "holdings",
+     "property": "PortfolioAnalysis.holdings",
+     "apiField": "holdings",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "PortfolioAnalysis.portfolioRiskScore": [
+     "data[*].risk_score"
+    ],
+    "RiskRating.rSquared": [
+     "data[*].r_squared"
+    ],
+    "RiskRating.scoreEffectiveDate": [
+     "data[*].effectiveDate"
+    ],
+    "RiskRating.riskDescription": [
+     "data[*].description"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "MonteCarloSimulate": {
+   "label": "蒙特卡洛模拟",
+   "params": [
+    {
+     "name": "simulationFrequency",
+     "property": "PortfolioAnalysis.simulationFrequency",
+     "apiField": "frequency",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "simulationPeriodCount",
+     "property": "PortfolioAnalysis.simulationPeriodCount",
+     "apiField": "periodCount",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "simulationCount",
+     "property": "PortfolioAnalysis.simulationCount",
+     "apiField": "simulationCount",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "simulationWeights",
+     "property": "PortfolioAnalysis.simulationWeights",
+     "apiField": "weights",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "assumedReturn",
+     "property": "PortfolioAnalysis.assumedReturn",
+     "apiField": "returnAnnualized",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "PortfolioAnalysis.simulatedReturn": [
+     "returnScenario"
+    ],
+    "PortfolioAnalysis.simulatedVolatility": [
+     "volatilityScenario"
+    ],
+    "PortfolioAnalysis.simulatedMaxDrawdown": [
+     "maxDrawdownScenario"
+    ],
+    "PortfolioAnalysis.positiveReturnRatio": [
+     "data[*].positiveReturnRatio"
+    ],
+    "PortfolioAnalysis.returnPercentiles": [
+     "data[*].return50thPercentile"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "AnalyzeAssetLiability": {
+   "label": "家庭资产负债分析",
+   "params": [
+    {
+     "name": "totalAssets",
+     "property": "FinancialProfile.totalAssets",
+     "apiField": "totalAssets",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "totalLiabilities",
+     "property": "FinancialProfile.totalLiabilities",
+     "apiField": "totalLiabilities",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "annualIncome",
+     "property": "FinancialProfile.annualIncome",
+     "apiField": "annualIncome",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "annualExpense",
+     "property": "FinancialProfile.annualExpense",
+     "apiField": "annualExpense",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "annualInvestmentIncome",
+     "property": "FinancialProfile.annualInvestmentIncome",
+     "apiField": "annualInvestmentIncome",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "monthlyEssentialExpense",
+     "property": "FinancialProfile.monthlyEssentialExpense",
+     "apiField": "monthlyEssentialExpense",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "currentLiabilities",
+     "property": "FinancialProfile.currentLiabilities",
+     "apiField": "currentLiabilities",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "investmentAssets",
+     "property": "FinancialProfile.investmentAssets",
+     "apiField": "investmentAssets",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "investmentLiabilities",
+     "property": "FinancialProfile.investmentLiabilities",
+     "apiField": "investmentLiabilities",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "liquidAssets",
+     "property": "FinancialProfile.liquidAssets",
+     "apiField": "liquidAssets",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "FinancialProfile.netWorth": [
+     "netWorthValue"
+    ],
+    "FinancialProfile.liabilitiesRatio": [
+     "liabilitiesRatio"
+    ],
+    "FinancialProfile.investableAssets": [
+     "investableAssets"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "AnalyzeCashFlow": {
+   "label": "家庭现金流分析",
+   "params": [
+    {
+     "name": "currentInvestableAssets",
+     "property": "FinancialProfile.currentInvestableAssets",
+     "apiField": "currentInvestableAssets",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "returnRateConfig",
+     "property": "FinancialProfile.returnRateConfig",
+     "apiField": "returnRateConfig",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "familyMembers",
+     "property": "FinancialProfile.familyMembers",
+     "apiField": "familyMembers",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "continuousIncome",
+     "property": "FinancialProfile.continuousIncome",
+     "apiField": "continuousIncome",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "continuousExpenses",
+     "property": "FinancialProfile.continuousExpenses",
+     "apiField": "continuousExpenses",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "oneTimeIncome",
+     "property": "FinancialProfile.oneTimeIncome",
+     "apiField": "oneTimeIncome",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "oneTimeExpenses",
+     "property": "FinancialProfile.oneTimeExpenses",
+     "apiField": "oneTimeExpenses",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "FinancialProfile.cashFlowSummary": [
+     "summary"
+    ],
+    "FinancialProfile.shortMediumTermInvestmentAmount": [
+     "summary.shortMediumTermInvestmentAmount"
+    ],
+    "FinancialProfile.mediumLongTermInvestmentAmount": [
+     "summary.mediumLongTermInvestmentAmount"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  },
+  "AnalyzeInvestmentPerformance": {
+   "label": "投资方案可行性测算",
+   "params": [
+    {
+     "name": "totalInvestableAssets",
+     "property": "FinancialProfile.totalInvestableAssets",
+     "apiField": "totalInvestableAssets",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "expectedReturnRate",
+     "property": "FinancialProfile.expectedReturnRate",
+     "apiField": "expectedReturnRate",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "shortMediumTermScheme",
+     "property": "FinancialProfile.shortMediumTermScheme",
+     "apiField": "shortMediumTermScheme",
+     "fill": "agent",
+     "check": null
+    },
+    {
+     "name": "mediumLongTermScheme",
+     "property": "FinancialProfile.mediumLongTermScheme",
+     "apiField": "mediumLongTermScheme",
+     "fill": "agent",
+     "check": null
+    }
+   ],
+   "fields": {
+    "FinancialProfile.weightedReturnRate": [
+     "weightedReturnRate"
+    ],
+    "FinancialProfile.feasibilityStatus": [
+     "feasibilityStatus"
+    ],
+    "FinancialProfile.feasibilityConclusion": [
+     "feasibilityConclusion"
+    ]
+   },
+   "constants": [],
+   "dropped": []
+  }
+ }
+}

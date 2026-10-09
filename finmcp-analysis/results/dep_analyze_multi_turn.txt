@@ -1,0 +1,50 @@
+===== data/benchmark_multi_turn.json: 219 samples
+  other(const/enum/generated)              918   43.7%
+  from_user_query                          619   29.5%
+  selection(upstream,>1 candidates)        317   15.1%
+  direct_ref(upstream,unique)              232   11.1%
+  bool/flag                                 13    0.6%
+  samples with any upstream dependency: 131 (60%); with selection-type: 71 (32%)
+  candidate set size: median 10 max 72 p90 39
+  LLM tool-call turns per sample: mean 5.00 median 4 max 20
+  tool calls per sample: mean 5.00 max 20
+  tool response chars: median 900 mean 4113 p90 9483
+
+## other(const/enum/generated)
+   (0, 'BatchGetFundTradeRules', 'fundCodes', 'Y10001')
+   (0, 'BatchGetFundTradeRules', 'op', 'allot')
+   (0, 'BatchGetFundTradeRules', 'txnTime', '2024-06-03 10:00:00')
+   (0, 'BatchGetFundTradeRules', 'op', 'allot')
+   (0, 'BatchGetFundTradeRules', 'txnTime', '2024-06-03 10:00:00')
+   (1, 'BatchGetFundTradeRules', 'fundCodes', 'woody_steady_happiness')
+   (1, 'BatchGetFundTradeRules', 'op', 'redeem')
+   (1, 'BatchGetFundTradeRules', 'txnTime', '2025-09-27 15:00:00')
+   (2, 'BatchGetFundTradeRules', 'fundCodes', '100032')
+   (2, 'BatchGetFundTradeRules', 'op', 'redeem')
+   (2, 'BatchGetFundTradeRules', 'txnTime', '2024-12-30 15:00:00')
+   (3, 'BatchGetFundNavHistory', 'dimensionType', 'oneMonth')
+   (3, 'BatchGetFundTradeRules', 'op', 'redeem')
+   (3, 'BatchGetFundTradeRules', 'txnTime', '2025-04-03 10:00:00')
+   (3, 'RenderHtmlToPdf', 'html', '<h1>赎回交易记录摘要</h1><p><strong>客户姓名：</strong>Noah Brown</p><p><strong>居住地址：</strong>浙江省杭州市</p><p><strong>基金名称：</strong>摩根天添盈货币A</p><p><strong>基金代码：</strong>000855</p><p><strong>赎回操作时间：</strong>2025年4月3日</p><p><strong>预计到账时间：</strong>2025年4月7日（周一）</p><p><strong>赎回金额：</strong>约10,000元人民币</p><p><strong>赎回类型：</strong>快速赎回</p><p><strong>赎回状态：</strong>已确认</p><p><strong>银行账户信息：</strong>绑定的银行卡号（略）</p><p><strong>备注：</strong>资金尚未到账，需银行协助核查。</p><p>请银行协助核查是否已收到基金公司的转账请求。如有任何疑问，请联系基金公司以获取进一步支持。</p>')
+
+## direct_ref(upstream,unique)
+   (5, 'GetCompositeModel', 'assetPlanId', 'AAP000121', ('?', 'assetPlanId', 1))
+   (9, 'GetCompositeModel', 'assetPlanId', 'AAP000117', ('?', 'assetPlanId', 1))
+   (16, 'AnalyzeFinancialIndicators', 'totalAssets', '840000', ('?', 'totalAssetsValue', 1))
+   (16, 'AnalyzeFinancialIndicators', 'totalLiabilities', '184500', ('?', 'totalLiabilitiesValue', 1))
+   (22, 'GetStrategyAssetClassAnalysis', 'strategyCode', 'ZH155420', ('?', '策略代码', 1))
+   (22, 'BatchGetStrategiesComposition', 'strategyCodes', 'ZH155420', ('?', '策略代码', 1))
+
+## selection(upstream,>1 candidates)
+   (5, 'GetFundAnnouncements', 'fundCodes', '007339', ('?', 'fundCode', 29))
+   (5, 'GetFundAnnouncements', 'fundCodes', '000216', ('?', 'fundCode', 29))
+   (6, 'BatchGetFundsDetail', 'fundCodes', '012733', ('?', 'fundCode', 10))
+   (6, 'BatchGetFundsDetail', 'fundCodes', '008585', ('?', 'fundCode', 10))
+   (13, 'BatchGetFundsFeeRule', 'fundCodes', '000216', ('?', 'fundCode', 10))
+   (13, 'BatchGetFundsFeeRule', 'fundCodes', '000217', ('?', 'fundCode', 10))
+   (13, 'BatchGetFundsFeeRule', 'fundCodes', '000218', ('?', 'fundCode', 10))
+   (13, 'BatchGetFundsFeeRule', 'fundCodes', '000307', ('?', 'fundCode', 10))
+   (13, 'BatchGetFundsFeeRule', 'fundCodes', '002610', ('?', 'fundCode', 10))
+   (13, 'BatchGetFundsFeeRule', 'fundCodes', '002963', ('?', 'fundCode', 10))
+   (13, 'BatchGetFundsFeeRule', 'fundCodes', '004253', ('?', 'fundCode', 10))
+   (16, 'AnalyzeFinancialIndicators', 'liquidAssets', '5000', ('?', 'totalValue', 6))
